@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import com.example.backend.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,4 +20,5 @@ public class UserEntity {
     private String surname;
     private String email;
     private String password;
+    private UserRole role;
 }
