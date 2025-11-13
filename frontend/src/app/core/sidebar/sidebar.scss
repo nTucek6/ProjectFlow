@@ -1,0 +1,39 @@
+#sidebar {
+  margin: 20px 15px 0;
+}
+
+.nav-items-title {
+  font-weight: 550;
+}
+
+.nav-items {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.nav-items:first-of-type {
+  margin-top: 15px;
+}
+
+.nav-items:last-of-type {
+  margin-bottom: 0px;
+}
+
+.nav-items a:first-of-type {
+  margin-top: 10px;
+}
+
+.nav-items > a {
+  text-decoration: none;
+  color: black;
+  align-items: center;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.nav-items > a > mat-icon {
+  font-size: 20px;
+}

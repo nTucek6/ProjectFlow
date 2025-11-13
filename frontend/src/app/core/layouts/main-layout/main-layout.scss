@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  height: 100%;
+
+}
+
+.app-container {
+  height: 100vh;
+}
+
+#top-navigation{
+  width: 100%;
+  background-color: black;
+  height: 50px;
+}
+
+mat-drawer-container{
+ height: calc(100vh - 50px);
+}
+
+mat-drawer {
+  width: 250px;
+  border-right: 2px solid #E0E0E0;
+  border-radius: 0;
+}
+
+#site-content {
+  margin: 20px 20px 50px 0;
+  padding-left: 15px;
+  overflow-y: auto;
+  min-height: 100%;
+}

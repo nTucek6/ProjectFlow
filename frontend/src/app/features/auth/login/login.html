@@ -1,0 +1,55 @@
+<div class="main-container">
+  <h1 class="title">{{ "title" | translate }}</h1>
+  <h2>{{ "auth.subtitle" | translate }}</h2>
+  <p>{{ "auth.login_instruction" | translate }}</p>
+  
+  <form #loginForm="ngForm" (ngSubmit)="formSubmit()" id="login-form" autocomplete="auto">
+    
+    <mat-form-field class="form-group">
+      <input
+        type="email"
+        matInput
+        name="email"
+        required
+        [(ngModel)]="email"
+        #emailRef="ngModel"
+        [placeholder]="'auth.email' | translate"
+        autocomplete="auto"
+      />
+      <mat-error *ngIf="emailRef.invalid && emailRef.touched">
+        {{ "auth.email_required" | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="form-group">
+      <input
+        type="password"
+        matInput
+        name="password"
+        required
+        [(ngModel)]="password"
+        #passwordRef="ngModel"
+        [placeholder]="'auth.password' | translate"
+        autocomplete="auto"
+      />
+      <mat-error *ngIf="passwordRef.invalid && passwordRef.touched">
+        {{ "auth.password_required" | translate }}
+      </mat-error>
+    </mat-form-field>
+
+    <button 
+      type="submit" 
+      class="login-btn" 
+      mat-button 
+      [disabled]="loginForm.invalid">
+      {{ "auth.login" | translate }}
+    </button>
+  </form>
+
+  <div class="other-option">
+    <a>Forgot password?</a>
+    <a>No account?</a>
+  </div>
+
+
+</div>
