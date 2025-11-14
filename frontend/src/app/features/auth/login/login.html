@@ -1,10 +1,12 @@
+<div id="main-window">
 <div class="main-container">
+  <img src="" />
   <h1 class="title">{{ "title" | translate }}</h1>
+  <p>Student project tracking system</p>
   <h2>{{ "auth.subtitle" | translate }}</h2>
   <p>{{ "auth.login_instruction" | translate }}</p>
   
   <form #loginForm="ngForm" (ngSubmit)="formSubmit()" id="login-form" autocomplete="auto">
-    
     <mat-form-field class="form-group">
       <input
         type="email"
@@ -50,6 +52,5 @@
     <a>Forgot password?</a>
     <a>No account?</a>
   </div>
-
-
+</div>
 </div>

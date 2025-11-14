@@ -8,6 +8,8 @@ import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AuthService } from '../../../shared/services/auth.service';
+import { UserCredentials } from '../../../shared/model/user-credentials';
 
 
 @Component({
@@ -18,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class Login {
    private router = inject(Router);
+   private authService = inject(AuthService)
 
     email: string = '';
   password: string = '';
@@ -28,12 +31,15 @@ export class Login {
       return;
     }
 
-     this.router.navigate(['/']);
+     this.authService.getUser(1).subscribe((response) => {
+      console.log(response);
+      this.router.navigate(['/']);
+    });
 
-    /*const userCredentials: UserCredentials = {
+   /* const userCredentials: UserCredentials = {
       email: this.email,
       password: this.password,
-    };
+    }
 
     this.authService.authenticate(userCredentials).subscribe((response) => {
       this.authService.setUser(response);

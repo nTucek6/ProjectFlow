@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.UserDto;
-import com.example.backend.model.UserEntity;
 import com.example.backend.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
