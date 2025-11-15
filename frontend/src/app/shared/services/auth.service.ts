@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { UserCredentials } from '../model/user-credentials';
 import { UserDto } from '../dto/user.dto';
 
@@ -10,7 +10,7 @@ import { UserDto } from '../dto/user.dto';
 })
 export class AuthService {
   
-   private apiUrl = `${environment.apiUrl}/user`;
+   private apiUrl = `${environment.authUrl}`;
 
    private http: HttpClient = inject(HttpClient);
 
@@ -37,6 +37,16 @@ export class AuthService {
   }
     getUserId() {
     return this.userSubject.getValue()?.id;
+  }
+
+
+  isLoggedIn(): Observable<boolean>{
+      return this.http.get<UserDto>(`${this.apiUrl}/me`).pipe(
+      map(() => true),
+      catchError((err) => {
+        return of(false);
+      })
+    );
   }
 
 

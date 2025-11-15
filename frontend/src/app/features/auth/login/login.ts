@@ -22,7 +22,7 @@ export class Login {
    private router = inject(Router);
    private authService = inject(AuthService)
 
-    email: string = '';
+  email: string = '';
   password: string = '';
 
   formSubmit() {
@@ -31,20 +31,15 @@ export class Login {
       return;
     }
 
-     this.authService.getUser(1).subscribe((response) => {
-      console.log(response);
-      this.router.navigate(['/']);
-    });
-
-   /* const userCredentials: UserCredentials = {
+   const userCredentials: UserCredentials = {
       email: this.email,
       password: this.password,
     }
 
     this.authService.authenticate(userCredentials).subscribe((response) => {
+      console.log(response)
       this.authService.setUser(response);
       this.router.navigate(['/']);
-    }); */
+    });
   }
-
 }

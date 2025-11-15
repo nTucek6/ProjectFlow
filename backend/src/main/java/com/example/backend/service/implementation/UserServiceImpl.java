@@ -2,6 +2,7 @@ package com.example.backend.service.implementation;
 
 import com.example.backend.dto.UserDto;
 import com.example.backend.mapper.UserMapper;
+import com.example.backend.model.User;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,5 +19,10 @@ public class UserServiceImpl implements UserService {
     public UserDto findById(Long id) {
         return UserMapper.mapUserToUserDto(userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found")));
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }
