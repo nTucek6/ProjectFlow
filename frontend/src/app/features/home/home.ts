@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { TwoLineInfoCard } from "../../shared/components/two-line-info-card/two-line-info-card";
+import { ProjectOverviewCard } from "../../shared/components/project-overview-card/project-overview-card";
 
 @Component({
   selector: 'app-home',
-  imports: [TwoLineInfoCard],
+  imports: [TwoLineInfoCard, ProjectOverviewCard],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -14,9 +15,7 @@ export class Home {
   user_name = '';
 
   ngOnInit(): void {
-    const temp = this.authService.getUserFirstName();
-    console.log(temp)
-
-    if (temp != null) this.user_name = temp;
+    const name = this.authService.getUserFirstName();
+    if (name != null) this.user_name = name;
   }
 }

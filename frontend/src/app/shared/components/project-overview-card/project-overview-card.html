@@ -1,0 +1,9 @@
+<section>
+    <h2>{{project_name}}</h2>
+    <p>Mentor: {{mentor}}</p>
+    <p>Deadline: {{deadline | date}}</p>
+    <p>In progress {{status}}</p>
+    <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+    <p>{{progress}}%</p>
+    <button mat-button (click)="navigateToProject()">Open Project</button>
+</section>
