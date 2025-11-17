@@ -1,13 +1,17 @@
 <div id="sidebar">
   <div class="nav-items">
-    <h5 class="nav-items-title">{{ "sidebar.discover" | translate }}</h5>
+    <!-- <h5 class="nav-items-title">{{ "sidebar.discover" | translate }}</h5> -->
     <a routerLink="/"
-      ><mat-icon
-        aria-hidden="false"
-        aria-label="Home icon"
-        fontIcon="home"
-      ></mat-icon
-      >{{ "sidebar.home" | translate }}</a
+      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="home"></mat-icon
+      >{{ 'sidebar.dashboard' | translate }}</a
+    >
+    <a routerLink="/"
+      ><mat-icon aria-hidden="false" aria-label="Folder Open icon" fontIcon="folder_open"></mat-icon
+      >{{ 'sidebar.projects' | translate }}</a
+    >
+    <a routerLink="/"
+      ><mat-icon aria-hidden="false" aria-label="Access Time icon" fontIcon="access_time"></mat-icon
+      >{{ 'sidebar.recent' | translate }}</a
     >
   </div>
 </div>

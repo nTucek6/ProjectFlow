@@ -8,7 +8,9 @@
   },
 
   "sidebar": {
-    "home": "Home"
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "recent": "Recent"
   },
 
     "auth": {

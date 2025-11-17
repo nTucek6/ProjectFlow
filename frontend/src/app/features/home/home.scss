@@ -1,0 +1,11 @@
+#basic_data{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap:100px;
+}
+
+.basic_data_child{
+     flex: 1 1 200px;   
+}

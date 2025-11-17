@@ -11,16 +11,23 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuthService } from '../../../shared/services/auth.service';
 import { UserCredentials } from '../../../shared/model/user-credentials';
 
-
 @Component({
   selector: 'app-login',
-  imports: [MatButtonModule, TranslatePipe, FormsModule, CommonModule,RouterLink,MatInputModule,MatFormFieldModule],
+  imports: [
+    MatButtonModule,
+    TranslatePipe,
+    FormsModule,
+    CommonModule,
+    //RouterLink,
+    MatInputModule,
+    MatFormFieldModule,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
-   private router = inject(Router);
-   private authService = inject(AuthService)
+  private router = inject(Router);
+  private authService = inject(AuthService);
 
   email: string = '';
   password: string = '';
@@ -31,13 +38,13 @@ export class Login {
       return;
     }
 
-   const userCredentials: UserCredentials = {
+    const userCredentials: UserCredentials = {
       email: this.email,
       password: this.password,
-    }
+    };
 
     this.authService.authenticate(userCredentials).subscribe((response) => {
-      console.log(response)
+      console.log(response);
       this.authService.setUser(response);
       this.router.navigate(['/']);
     });

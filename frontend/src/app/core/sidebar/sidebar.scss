@@ -29,11 +29,14 @@
   text-decoration: none;
   color: black;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   display: flex;
-  align-items: center;
+  font-size: 15px;
 }
 
 .nav-items > a > mat-icon {
   font-size: 20px;
+  height: 100%;
+  width: auto;
+  margin-right: 5px;
 }

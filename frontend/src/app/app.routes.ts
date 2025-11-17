@@ -5,16 +5,15 @@ import { authGuard } from './core/guard/auth-guard';
 import { mainPageGuard } from './core/guard/main-page-guard';
 
 export const routes: Routes = [
-    {
+  {
     path: '',
     component: MainLayout,
-    canActivate:[mainPageGuard],
+    canActivate: [mainPageGuard],
     children: [
       {
         path: '',
         title: 'Home',
-        loadComponent: () =>
-          import('./features/home/home').then((m) => m.Home),
+        loadComponent: () => import('./features/home/home').then((m) => m.Home),
       },
     ],
   },
@@ -25,11 +24,8 @@ export const routes: Routes = [
       {
         path: 'login',
         title: 'Login',
-        canActivate:[authGuard],
-        loadComponent: () =>
-          import('./features/auth/login/login').then(
-            (m) => m.Login
-          ),
+        canActivate: [authGuard],
+        loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
       },
     ],
   },

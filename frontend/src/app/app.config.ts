@@ -8,6 +8,7 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@ang
 
 import { routes } from './app.routes';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { AuthExpiredInterceptor } from './core/interceptors/auth-expired.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,11 +25,11 @@ export const appConfig: ApplicationConfig = {
       lang: 'en'
     }),
 
-    /*{
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthExpiredInterceptor,
       multi: true,
-    },*/
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

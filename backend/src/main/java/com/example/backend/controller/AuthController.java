@@ -54,8 +54,8 @@ public class AuthController {
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(email);
             String accessToken = jwtService.generateToken(email);
 
-            CookieUtil.addRefreshTokenIdCookieToResponse(response, String.valueOf(refreshToken.getId()), jwtProperties.getRefreshTokenId());
-            CookieUtil.addAccessTokenCookieToResponse(response, accessToken, jwtProperties.getAccessToken());
+            CookieUtil.addRefreshTokenIdCookieToResponse(response, String.valueOf(refreshToken.getId()), jwtProperties.getRefreshTokenId(), jwtProperties.getRefreshTokenExpire());
+            CookieUtil.addAccessTokenCookieToResponse(response, accessToken, jwtProperties.getAccessToken(), jwtProperties.getAccessTokenExpire());
 
             UserDto userDto = UserMapper.mapUserToUserDto(userService.findByEmail(email));
 
@@ -88,7 +88,7 @@ public class AuthController {
 
         String accessToken = jwtService.generateToken(user.getEmail());
 
-        CookieUtil.addAccessTokenCookieToResponse(response, accessToken, jwtProperties.getAccessToken());
+        CookieUtil.addAccessTokenCookieToResponse(response, accessToken, jwtProperties.getAccessToken(), jwtProperties.getAccessTokenExpire());
 
         return ResponseEntity.ok(UserMapper.mapUserToUserDto(user));
     }
@@ -133,5 +133,4 @@ public class AuthController {
 
         return ResponseEntity.noContent().build();
     }
-
 }

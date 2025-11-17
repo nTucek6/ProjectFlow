@@ -1,12 +1,9 @@
 <section class="app-container">
-  <div id="top-navigation">
-</div>
-<mat-drawer-container>
-  <mat-drawer mode="side" opened>
-    <app-sidebar></app-sidebar>
-  </mat-drawer>
-  <mat-drawer-content id="site-content"
-    ><router-outlet></router-outlet
-  ></mat-drawer-content>
-</mat-drawer-container>
+  <app-top-navigation (sidebarToggle)="onSidebarToggle($event)"></app-top-navigation>
+  <mat-drawer-container>
+    <mat-drawer mode="side" [opened]="isSidebarOpen">
+      <app-sidebar></app-sidebar>
+    </mat-drawer>
+    <mat-drawer-content id="site-content"><router-outlet></router-outlet></mat-drawer-content>
+  </mat-drawer-container>
 </section>

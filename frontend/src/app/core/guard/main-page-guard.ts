@@ -13,6 +13,6 @@ export const mainPageGuard: CanActivateFn = (route, state) => {
         router.navigate(['/login']);
       }
     }),
-    map(isLoggedIn => isLoggedIn)
+    map((isLoggedIn) => isLoggedIn)
   );
 };

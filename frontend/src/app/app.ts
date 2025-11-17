@@ -1,12 +1,23 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
   protected readonly title = signal('ProjectFlow');
+
+  private authService = inject(AuthService);
+
+  ngOnInit() {
+    this.authService.refreshToken().subscribe((response) => {
+      if (response) {
+        this.authService.setUser(response);
+      }
+    });
+  }
 }

@@ -9,10 +9,9 @@ import { UserDto } from '../dto/user.dto';
   providedIn: 'root',
 })
 export class AuthService {
-  
-   private apiUrl = `${environment.authUrl}`;
+  private apiUrl = `${environment.authUrl}`;
 
-   private http: HttpClient = inject(HttpClient);
+  private http: HttpClient = inject(HttpClient);
 
   private authorizedSubject = new BehaviorSubject<boolean>(false);
   isAuthorized$ = this.authorizedSubject.asObservable();
@@ -21,27 +20,27 @@ export class AuthService {
   user$ = this.userSubject.asObservable();
 
   authenticate(userCredentials: UserCredentials): Observable<UserDto> {
-    return this.http
-      .post<UserDto>(`${this.apiUrl}/login`, userCredentials)
-      .pipe(
-        tap(() => this.authorizedSubject.next(true)),
-        catchError((error: HttpErrorResponse) => {
-          alert(error.error);
-          return throwError(() => error);
-        })
-      );
+    return this.http.post<UserDto>(`${this.apiUrl}/login`, userCredentials).pipe(
+      tap(() => this.authorizedSubject.next(true)),
+      catchError((error: HttpErrorResponse) => {
+        alert(error.error);
+        return throwError(() => error);
+      })
+    );
   }
 
-  setUser(user: UserDto): void {
+  setUser(user: UserDto | null): void {
     this.userSubject.next(user);
   }
-    getUserId() {
+  getUserId() {
     return this.userSubject.getValue()?.id;
   }
+  getUserFirstName() {
+    return this.userSubject.getValue()?.name;
+  }
 
-
-  isLoggedIn(): Observable<boolean>{
-      return this.http.get<UserDto>(`${this.apiUrl}/me`).pipe(
+  isLoggedIn(): Observable<boolean> {
+    return this.http.get<UserDto>(`${this.apiUrl}/me`).pipe(
       map(() => true),
       catchError((err) => {
         return of(false);
@@ -49,10 +48,19 @@ export class AuthService {
     );
   }
 
-
-    getUser(userId: Number) : Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${userId}`)
+  getUser(userId: Number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${userId}`);
   }
 
+  refreshToken(): Observable<UserDto> {
+    return this.http
+      .post<UserDto>(`${this.apiUrl}/refreshToken`, null)
+      .pipe(tap(() => this.authorizedSubject.next(true)));
+  }
 
+  logout(): Observable<void> {
+    return this.http
+      .post<void>(`${this.apiUrl}/logout`, null)
+      .pipe(tap(() => this.authorizedSubject.next(false)));
+  }
 }

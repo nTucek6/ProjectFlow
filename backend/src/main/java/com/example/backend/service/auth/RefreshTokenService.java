@@ -1,5 +1,6 @@
 package com.example.backend.service.auth;
 
+import com.example.backend.configuration.JwtProperties;
 import com.example.backend.model.RefreshToken;
 import com.example.backend.repository.RefreshTokenRepository;
 import com.example.backend.service.UserService;
@@ -21,20 +22,22 @@ public class RefreshTokenService {
     private RefreshTokenRepository refreshTokenRepository;
     private UserService userService;
 
+    private final JwtProperties jwtProperties;
+
     public RefreshToken createRefreshToken(String email) {
-
         Optional<RefreshToken> existingRefreshToken = refreshTokenRepository.findByUserInfo_Email(email);
-
         existingRefreshToken.ifPresent(_ -> {
                     refreshTokenRepository.delete(existingRefreshToken.get());
                     refreshTokenRepository.flush();
                 }
         );
 
+        log.info(String.valueOf(jwtProperties.getRefreshTokenExpire()));
+
         RefreshToken refreshToken = RefreshToken.builder()
                 .userInfo(userService.findByEmail(email))
                 .token(UUID.randomUUID().toString())
-                .expiryDate(Instant.now().plusMillis(600000)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
+                .expiryDate(Instant.now().plusSeconds(this.jwtProperties.getRefreshTokenExpireSeconds()))
                 .build();
         return refreshTokenRepository.save(refreshToken);
     }
@@ -57,7 +60,6 @@ public class RefreshTokenService {
             // handle not found case
             return null;
         }
-        //  return refreshTokenRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {
