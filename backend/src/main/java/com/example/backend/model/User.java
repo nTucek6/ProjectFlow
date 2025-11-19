@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,6 +26,8 @@ public class User {
     private String password;
     private UserRole role;
 
-    @ManyToMany(mappedBy = "members")
-    private Set<Project> projects;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProjectMember> projects;
+
 }

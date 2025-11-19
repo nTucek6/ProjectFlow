@@ -1,33 +1,40 @@
 package com.example.backend.model;
 
 
+import com.example.backend.enums.ProjectRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Table(name = "projects")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Date createdAt;
-    private Date deadline;
+    private LocalDateTime createdAt;
+    private LocalDateTime deadline;
 
-    @ManyToMany
-    @JoinTable(
-            name = "project_members",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> members;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<ProjectMember> members;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Task> tasks;
+
+    public User getOwner() {
+        List<ProjectMember> memberList = new ArrayList<>(members); // safe copy
+        return memberList.stream()
+                .filter(pm -> pm.getRole() == ProjectRole.OWNER)
+                .map(ProjectMember::getUser)
+                .findFirst()
+                .orElse(null);
+    }
 
 }
