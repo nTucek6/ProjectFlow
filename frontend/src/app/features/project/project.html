@@ -1,0 +1,16 @@
+<h3>Project: {{ project?.name }}</h3>
+
+<nav>
+  <div class="nav-items">
+    <a routerLink="overview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="home"></mat-icon
+      >{{ 'project.overview' | translate }}</a
+    >
+    <a routerLink="board" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="home"></mat-icon
+      >{{ 'project.board' | translate }}</a
+    >
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

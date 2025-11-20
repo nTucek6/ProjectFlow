@@ -11,7 +11,8 @@ import { debounceTime, distinctUntilChanged, map, Subject, switchMap } from 'rxj
 import { ProjectFilterParams } from '../../shared/model/project-filter-params';
 import { SearchProjectDto } from '../../shared/dto/search-project.dto';
 import { MatIcon } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
+import { MatIconButton, MatAnchor } from '@angular/material/button';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-projects',
@@ -23,7 +24,9 @@ import { MatIconButton } from '@angular/material/button';
     DatePipe,
     MatIcon,
     MatIconButton,
-  ],
+    MatAnchor,
+    RouterLink
+],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })

@@ -1,11 +1,14 @@
 package com.example.backend.service.implementation;
 
+import com.example.backend.dto.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
 import com.example.backend.filterParams.ProjectFilterParams;
 import com.example.backend.mapper.ProjectMapper;
+import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.Project;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.ProjectService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,5 +43,11 @@ public class ProjectServiceImpl implements ProjectService {
         return new ArrayList<>(p.getContent().
                 stream()
                 .map(project ->ProjectMapper.mapProjectToSearchProjectDto(project, project.getOwner())).toList());
+    }
+
+    @Override
+    public ProjectDto findById(Long id) {
+        return ProjectMapper.mapProjectToProjectDto(projectRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Project not found")));
     }
 }

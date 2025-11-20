@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ProjectDto } from '../dto/project.dto';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -13,6 +13,9 @@ export class ProjectService {
   private apiUrl = `${environment.apiUrl}/project`;
 
   private http: HttpClient = inject(HttpClient);
+
+  private projectSubject = new BehaviorSubject<ProjectDto | null>(null);
+  project$ = this.projectSubject.asObservable();
 
   fetchProjects(
     page: number,
@@ -49,6 +52,14 @@ export class ProjectService {
       });
     }
 
-    return this.http.get<SearchProjectDto[]>(`${this.apiUrl}`, {params});
+    return this.http.get<SearchProjectDto[]>(`${this.apiUrl}`, { params });
+  }
+
+  getProjectById(id: number): Observable<ProjectDto> {
+    return this.http.get<ProjectDto>(`${this.apiUrl}/${id}`);
+  }
+
+  setProject(project: ProjectDto | null): void {
+    this.projectSubject.next(project);
   }
 }

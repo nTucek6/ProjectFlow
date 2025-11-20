@@ -32,5 +32,10 @@
     "firstname_required": "First name is required",
     "lastname_required": "Last name is required",
     "passwords_do_not_match": "Passwords do not match"
+  },
+
+  "project": {
+    "overview": "Overview",
+    "board": "Board"
   }
 }

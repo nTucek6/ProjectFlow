@@ -15,10 +15,29 @@ export const routes: Routes = [
         title: 'Home',
         loadComponent: () => import('./features/home/home').then((m) => m.Home),
       },
-       {
+      {
         path: 'projects',
         title: 'Projects',
         loadComponent: () => import('./features/projects/projects').then((m) => m.Projects),
+      },
+      {
+        path: 'project/:id',
+        title: 'Project',
+        loadComponent: () => import('./features/project/project').then((m) => m.Project),
+        children: [
+          { path: '', redirectTo: 'overview', pathMatch: 'full' },
+          {
+            path: 'overview',
+            title: 'Overview',
+            loadComponent: () =>
+              import('./features/project/overview/overview').then((m) => m.Overview),
+          },
+          {
+            path: 'board',
+            title: 'Board',
+            loadComponent: () => import('./features/project/board/board').then((m) => m.Board),
+          },
+        ],
       },
     ],
   },

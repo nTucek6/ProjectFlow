@@ -20,6 +20,7 @@ public class Project {
     private String name;
     private LocalDateTime createdAt;
     private LocalDateTime deadline;
+    private LocalDateTime updatedAt;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

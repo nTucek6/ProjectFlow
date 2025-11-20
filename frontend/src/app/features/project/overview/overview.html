@@ -1,0 +1,112 @@
+@if (project()) {
+
+<section id="project-info-1" class="display">
+  <div>
+    <h3>Overall progress</h3>
+    <h2>50%</h2>
+  </div>
+  <div>
+    <h3>Deadline</h3>
+    <h2>{{ project()?.deadline | date }}</h2>
+  </div>
+  <div>
+    <h3>Total tasks</h3>
+    <h2>20</h2>
+  </div>
+  <div>
+    <h3>Members</h3>
+    <h2>5</h2>
+  </div>
+</section>
+
+<section id="project-info-2" class="display">
+  <div>
+    <h3 class="info-title">My tasks</h3>
+    <!-- @for (t of tasks; track $index) {
+    <div class="task-item">
+      <span>{{t.task}}</span>
+      <div>
+        <span>{{t.status}}</span>
+        <span>Deadline: {{t.deadline}}</span>
+      </div>
+    </div> -->
+
+    <div class="task-item">
+      <span>Task 1</span>
+      <div>
+        <span>In progress</span>
+        <span>Deadline: 4.12.2025.</span>
+      </div>
+    </div>
+
+    <div class="task-item">
+      <span>Task 1</span>
+      <div>
+        <span>In progress</span>
+        <span>Deadline: 4.12.2025.</span>
+      </div>
+    </div>
+
+    <div class="task-item">
+      <span>Task 1</span>
+      <div>
+        <span>In progress</span>
+        <span>Deadline: 4.12.2025.</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3 class="info-title">Milestones</h3>
+
+    <!-- @for (m of milestones; track $index) {
+    <div class="task-item">
+      <span>{{m.name}}</span>
+      <div class="milestone-progress">
+        <mat-progress-bar mode="determinate" [value]="m.progress"></mat-progress-bar>
+      </div>
+      <span>{{m.progress}}%</span>
+    </div>} 
+      -->
+
+    <div class="task-item">
+      <span>Milestone 1</span>
+      <div class="milestone-progress">
+        <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+      </div>
+      <span>100%</span>
+    </div>
+
+    <div class="task-item">
+      <span>Milestone 1</span>
+      <div class="milestone-progress">
+        <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+      </div>
+      <span>100%</span>
+    </div>
+
+    <div class="task-item">
+      <span>Milestone 1</span>
+      <div class="milestone-progress">
+        <mat-progress-bar mode="determinate" value="100"></mat-progress-bar>
+      </div>
+      <span>100%</span>
+    </div>
+  </div>
+</section>
+
+<section id="project-info-3" class="display">
+  <div>
+    <h3 class="info-title">Milestones</h3>
+    <div class="task-item">
+      <ul>
+        <li>Filip marked task "Task" as completed</li>
+         <li>Pero marked task "Task" as in progress</li>
+         <li>Josip marked task "Task" as in progress</li>
+      </ul>
+    </div>
+  </div>
+  <div></div>
+</section>
+
+}

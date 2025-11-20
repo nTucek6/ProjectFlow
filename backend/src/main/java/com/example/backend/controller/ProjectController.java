@@ -1,8 +1,10 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
 import com.example.backend.filterParams.ProjectFilterParams;
 import com.example.backend.service.ProjectService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,16 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProjectDto> findById(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(projectService.findById(id));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     @GetMapping
     public ResponseEntity<List<SearchProjectDto>> getAllEvents(

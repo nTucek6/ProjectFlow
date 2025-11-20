@@ -1,5 +1,7 @@
 export type ProjectDto = {
+    id: number;
     name: string;
-    creatorName: string;
-    deadline: Date
+    createdAt: Date;
+    updatedAt: Date;
+    deadline: Date;
 }
