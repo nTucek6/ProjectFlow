@@ -39,4 +39,9 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> assignees;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "project_milestone_id")
+    private ProjectMilestones projectMilestones;
+
 }
