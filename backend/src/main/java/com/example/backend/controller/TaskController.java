@@ -1,10 +1,9 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
-import com.example.backend.filterParams.ProjectFilterParams;
+import com.example.backend.dto.TaskDto;
 import com.example.backend.model.Task;
-import com.example.backend.service.ProjectService;
+import com.example.backend.service.TaskService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -16,39 +15,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/project")
+@RequestMapping("/api/task")
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
-public class ProjectController {
+public class TaskController {
 
-    private final ProjectService projectService;
+    private final TaskService taskService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProjectDto> findById(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(projectService.findById(id));
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-
-    @GetMapping
-    public ResponseEntity<List<SearchProjectDto>> getAllEvents(
+    @GetMapping("/project/{project_id}")
+    public ResponseEntity<List<TaskDto>> getProjectTasks(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "deadline") String sortBy,
+            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "true") boolean ascending,
-            @ModelAttribute ProjectFilterParams filterParams) {
+            @PathVariable Long project_id) {
 
         try {
             Sort.Direction direction = ascending ? Sort.Direction.ASC : Sort.Direction.DESC;
             Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
-            List<SearchProjectDto> projects = projectService.findAllPagedAndFiltered(pageable, filterParams);
-            return ResponseEntity.ok(projects);
+            List<TaskDto> tasks = taskService.findAllPagedAndFiltered(pageable, project_id);
+
+            return ResponseEntity.ok(tasks);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/project/{user_id}")
+    public ResponseEntity<List<TaskDto>> getUserTasks(){
+        try{
+
+            return ResponseEntity.ok(null);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

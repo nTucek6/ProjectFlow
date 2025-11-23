@@ -2,10 +2,12 @@ package com.example.backend.service.implementation;
 
 import com.example.backend.dto.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
+import com.example.backend.enums.TaskStatus;
 import com.example.backend.filterParams.ProjectFilterParams;
 import com.example.backend.mapper.ProjectMapper;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.Project;
+import com.example.backend.model.Task;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -37,9 +38,6 @@ public class ProjectServiceImpl implements ProjectService {
                         pageable
                 );
 
-
-        log.info(p.toString());
-
         return new ArrayList<>(p.getContent().
                 stream()
                 .map(project ->ProjectMapper.mapProjectToSearchProjectDto(project, project.getOwner())).toList());
@@ -47,7 +45,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDto findById(Long id) {
-        return ProjectMapper.mapProjectToProjectDto(projectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Project not found")));
+        Project project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        long done = project.getTasks().stream().filter(Task::isDone).count();
+        int progress = (project.getTasks().isEmpty()) ? 0 : (int) Math.round((done * 100.0) / project.getTasks().size());
+        int totalTasks = project.getTasks().size();
+        int membersCount = project.getMembers().size();
+        return ProjectMapper.mapProjectToProjectDto(project, progress, totalTasks, membersCount);
     }
 }

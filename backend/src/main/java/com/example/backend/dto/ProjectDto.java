@@ -16,7 +16,7 @@ public class ProjectDto {
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
     public LocalDateTime deadline;
-
-
-
+    public int progress;
+    public int totalTasks;
+    public int membersCount;
 }

@@ -3,6 +3,7 @@ package com.example.backend.model;
 import com.example.backend.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Table(name = "tasks")
 public class Task {
 
@@ -44,4 +46,7 @@ public class Task {
     @JoinColumn(name = "project_milestone_id")
     private ProjectMilestones projectMilestones;
 
+    public boolean isDone(){
+        return status == TaskStatus.DONE;
+    }
 }

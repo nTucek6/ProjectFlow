@@ -3,7 +3,7 @@
 <section id="project-info-1" class="display">
   <div>
     <h3>Overall progress</h3>
-    <h2>50%</h2>
+    <h2>{{project()?.progress}}%</h2>
   </div>
   <div>
     <h3>Deadline</h3>
@@ -11,50 +11,53 @@
   </div>
   <div>
     <h3>Total tasks</h3>
-    <h2>20</h2>
+    <h2>{{project()?.totalTasks}}</h2>
   </div>
   <div>
     <h3>Members</h3>
-    <h2>5</h2>
+    <h2>{{project()?.membersCount}}</h2>
   </div>
 </section>
 
 <section id="project-info-2" class="display">
   <div>
     <h3 class="info-title">My tasks</h3>
-    <!-- @for (t of tasks; track $index) {
+    @for (t of tasks; track $index) {
     <div class="task-item">
-      <span>{{t.task}}</span>
+      <span>{{t.title}}</span>
       <div>
         <span>{{t.status}}</span>
-        <span>Deadline: {{t.deadline}}</span>
+        <span>Deadline: {{t.createdAt}}</span>
       </div>
-    </div> -->
-
-    <div class="task-item">
-      <span>Task 1</span>
-      <div>
-        <span>In progress</span>
-        <span>Deadline: 4.12.2025.</span>
-      </div>
-    </div>
-
-    <div class="task-item">
-      <span>Task 1</span>
-      <div>
-        <span>In progress</span>
-        <span>Deadline: 4.12.2025.</span>
-      </div>
-    </div>
-
-    <div class="task-item">
-      <span>Task 1</span>
-      <div>
-        <span>In progress</span>
-        <span>Deadline: 4.12.2025.</span>
-      </div>
-    </div>
+    </div> 
+  }
   </div>
+
+
+  <!-- <div class="task-item">
+      <span>Task 1</span>
+      <div>
+        <span>In progress</span>
+        <span>Deadline: 4.12.2025.</span>
+      </div>
+    </div>
+
+    <div class="task-item">
+      <span>Task 1</span>
+      <div>
+        <span>In progress</span>
+        <span>Deadline: 4.12.2025.</span>
+      </div>
+    </div>
+
+    <div class="task-item">
+      <span>Task 1</span>
+      <div>
+        <span>In progress</span>
+        <span>Deadline: 4.12.2025.</span>
+      </div>
+    </div>--> 
+
 
   <div>
     <h3 class="info-title">Milestones</h3>

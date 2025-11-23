@@ -30,4 +30,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProjectMember> projects;
 
+
+    public String getFullName() {
+        return this.name + " " + this.surname;
+    }
+
 }

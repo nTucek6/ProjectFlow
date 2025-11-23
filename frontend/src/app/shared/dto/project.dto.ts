@@ -4,4 +4,7 @@ export type ProjectDto = {
     createdAt: Date;
     updatedAt: Date;
     deadline: Date;
+    progress: number;
+    totalTasks: number;
+    membersCount: number;
 }
