@@ -4,4 +4,5 @@ export type TaskDto = {
   description: string;
   createdAt: Date;
   status: string;
+  statusText:string;
 };

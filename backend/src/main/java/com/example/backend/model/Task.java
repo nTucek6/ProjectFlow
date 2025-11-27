@@ -42,8 +42,8 @@ public class Task {
     )
     private Set<User> assignees;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "project_milestone_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "project_milestone_id", referencedColumnName = "id")
     private ProjectMilestones projectMilestones;
 
     public boolean isDone(){

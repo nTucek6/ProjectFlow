@@ -17,4 +17,10 @@ export class TaskService {
 
     return this.http.get<TaskDto[]>(`${this.apiUrl}/project/${projectId}`, { params });
   }
+
+  fetchUserTop3Tasks(projectId:number, userId:number): Observable<TaskDto[]> {
+    
+    return this.http.get<TaskDto[]>(`${this.apiUrl}/project/${projectId}/${userId}`);
+  }
+
 }

@@ -8,6 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { TaskService } from '../../../shared/services/task.service';
 import { TaskDto } from '../../../shared/dto/task.dto';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-overview',
@@ -16,13 +17,14 @@ import { TaskDto } from '../../../shared/dto/task.dto';
   styleUrl: './overview.scss',
 })
 export class Overview {
+  private authService = inject(AuthService);
   private projectService = inject(ProjectService);
   private taskService = inject(TaskService);
   private tabTitle = inject(Title);
 
   project = toSignal<ProjectDto | null>(this.projectService.project$);
 
-  tasks : TaskDto[] = []
+  tasks: TaskDto[] = [];
 
   logProjectNameEffect = effect(() => {
     const p = this.project();
@@ -31,15 +33,27 @@ export class Overview {
     }
   });
 
-lastFetchedProjectId = 0
+  lastFetchedProjectId = 0;
 
-tasksEffect = effect(() => {
-  const currentProject = this.project();
+  tasksEffect = effect(() => {
+    const currentProject = this.project();
+    const userId = this.authService.getUserId();
 
-  if (currentProject && currentProject.id !== this.lastFetchedProjectId) {
-    this.lastFetchedProjectId = currentProject.id; // prevent duplicate calls
+    if (currentProject && currentProject.id !== this.lastFetchedProjectId && userId != undefined) {
+      this.lastFetchedProjectId = currentProject.id; // prevent duplicate calls
 
-    this.taskService.fetchProjectTasks(currentProject.id,0,3).subscribe({
+      this.taskService.fetchUserTop3Tasks(currentProject.id, userId).subscribe({
+        next: (data) => {
+          console.log('API data:', data);
+          this.tasks = data;
+          // handle the data as needed
+        },
+        error: (err) => {
+          console.error('API error:', err);
+        },
+      });
+
+      /*this.taskService.fetchProjectTasks(currentProject.id,0,3).subscribe({
       next: data => {
         console.log('API data:', data);
         this.tasks = data
@@ -48,8 +62,7 @@ tasksEffect = effect(() => {
       error: err => {
         console.error('API error:', err);
       }
-    });
-  }
-});
-
+    }); */
+    }
+  });
 }

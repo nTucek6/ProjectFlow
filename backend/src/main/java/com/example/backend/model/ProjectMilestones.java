@@ -33,8 +33,7 @@ public class ProjectMilestones {
     private String color;
     private int sequence;
 
-
-
-
+    @OneToOne(mappedBy = "projectMilestones")
+    private Task task;
 
 }
