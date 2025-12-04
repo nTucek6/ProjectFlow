@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>New project</h2>
+<mat-dialog-content>
+  <div id="form_data">
+  <mat-form-field class="form-group">
+    <input type="text" matInput name="name" required [(ngModel)]="name" placeholder="Project name..." />
+  </mat-form-field>
+
+  <!--[placeholder]="'auth.email' | translate" -->
+
+  <mat-form-field class="example-full-width">
+
+    <input
+      type="text"
+      placeholder="Search memebers"
+      matInput
+      [formControl]="myControl"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete #auto="matAutocomplete">
+      @for (option of (options | async); track option.value ) {
+      <mat-option [value]="option.label">{{ option.label }}</mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+
+  </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close>Cancel</button>
+  <button matButton (click)="submit()" cdkFocusInitial>Submit</button>
+</mat-dialog-actions>

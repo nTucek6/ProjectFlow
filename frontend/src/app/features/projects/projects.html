@@ -14,6 +14,8 @@
   }
 </mat-form-field>
 
+<button mat-button (click)="openDialog()">New project</button>
+
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <!-- Index Column -->
   <ng-container matColumnDef="index">

@@ -12,7 +12,10 @@ import { ProjectFilterParams } from '../../shared/model/project-filter-params';
 import { SearchProjectDto } from '../../shared/dto/search-project.dto';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton, MatAnchor } from '@angular/material/button';
-import { RouterLink } from "@angular/router";
+import { RouterLink } from '@angular/router';
+
+import { MatDialog } from '@angular/material/dialog';
+import { NewProjectModal } from '../../shared/modals/new-project-modal/new-project-modal';
 
 @Component({
   selector: 'app-projects',
@@ -25,13 +28,15 @@ import { RouterLink } from "@angular/router";
     MatIcon,
     MatIconButton,
     MatAnchor,
-    RouterLink
-],
+    RouterLink,
+  ],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
 })
 export class Projects {
   private projectService = inject(ProjectService);
+
+  readonly dialog = inject(MatDialog);
 
   displayedColumns: string[] = ['index', 'name', 'owner', 'deadline'];
   dataSource = new MatTableDataSource<SearchProjectDto>([]);
@@ -76,5 +81,13 @@ export class Projects {
   clearSearch() {
     this.searchData = '';
     this.searchProjects();
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(NewProjectModal);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }

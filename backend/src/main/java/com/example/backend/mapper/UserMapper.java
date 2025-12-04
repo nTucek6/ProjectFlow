@@ -1,5 +1,6 @@
 package com.example.backend.mapper;
 
+import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.model.User;
 import lombok.AccessLevel;
@@ -15,6 +16,13 @@ public class UserMapper {
         userDto.setSurname(user.getSurname());
         userDto.setEmail(user.getEmail());
         return userDto;
+    }
+
+    public static SelectDto mapUserToSelectDto(User user) {
+        SelectDto selectDto = new SelectDto();
+        selectDto.setValue(user.getId());
+        selectDto.setLabel(user.getFullName());
+        return selectDto;
     }
 
 }
