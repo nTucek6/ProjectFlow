@@ -84,10 +84,9 @@ export class Projects {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(NewProjectModal);
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
+    const dialogRef = this.dialog.open(NewProjectModal, { panelClass: 'custom-dialog-container' });
+    /*dialogRef.afterClosed().subscribe((result) => {
+      //console.log(`Dialog result: ${result}`);
+    }); */
   }
 }

@@ -11,8 +11,7 @@ import java.util.List;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Query("SELECT e FROM Task e " +
-            "WHERE (:project_id IS NULL OR e.project.id = :project_id)")
+    @Query("SELECT e FROM Task e WHERE (:project_id IS NULL OR e.project.id = :project_id)")
     Page<Task> findFilteredAndPaged(
             @Param("project_id") Long project_id,
             Pageable pageable);

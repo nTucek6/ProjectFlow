@@ -1,33 +1,96 @@
-<h2 mat-dialog-title>New project</h2>
-<mat-dialog-content>
-  <div id="form_data">
-  <mat-form-field class="form-group">
-    <input type="text" matInput name="name" required [(ngModel)]="name" placeholder="Project name..." />
-  </mat-form-field>
+<section>
+  <h2 mat-dialog-title>New project</h2>
+  <mat-dialog-content>
+    <div id="form_data">
+      <mat-form-field class="form-group">
+        <input
+          type="text"
+          matInput
+          name="name"
+          required
+          [(ngModel)]="name"
+          placeholder="Project name..."
+        />
+      </mat-form-field>
 
-  <!--[placeholder]="'auth.email' | translate" -->
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="deadline" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
 
-  <mat-form-field class="example-full-width">
+      <span>{{deadline}}</span>
 
-    <input
-      type="text"
-      placeholder="Search memebers"
-      matInput
-      [formControl]="myControl"
-      [matAutocomplete]="auto"
-    />
-    <mat-autocomplete #auto="matAutocomplete">
-      @for (option of (options | async); track option.value ) {
-      <mat-option [value]="option.label">{{ option.label }}</mat-option>
-      }
-    </mat-autocomplete>
-  </mat-form-field>
+      <!--[placeholder]="'auth.email' | translate" -->
 
-  </div>
+      <div>
+        <mat-form-field class="example-full-width">
+          <input
+            type="text"
+            placeholder="Search memebers"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="addMember($event.option.value)"
+          >
+            @for (option of (options | async); track option.value ) {
+            <mat-option [value]="option">{{ option.label }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
 
+        <div class="selected-chip">
+          @for (user of selectedUsers; track $index) {
+          <mat-chip (removed)="this.selectedUsers.splice($index, 1)"
+            >{{ user.label }}
+            <mat-icon matChipRemove>X</mat-icon>
+          </mat-chip>
+          }
+        </div>
+      </div>
 
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button matButton mat-dialog-close>Cancel</button>
-  <button matButton (click)="submit()" cdkFocusInitial>Submit</button>
-</mat-dialog-actions>
+      <div id="milestones">
+        <mat-checkbox class="example-margin" [(ngModel)]="showCustomMilestones"
+          >Custom milestones?</mat-checkbox
+        >
+        @if (showCustomMilestones) {
+        <mat-form-field class="form-group">
+          <input
+            type="text"
+            matInput
+            name="milestone"
+            required
+            placeholder="Milestone name..."
+            [(ngModel)]="milestoneName"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput [(ngModel)]="milestoneDescription"></textarea>
+        </mat-form-field>
+
+        <button mat-button (click)="addCustomMilestone()">Add milestone</button>
+
+        <div class="selected-chip">
+          @for (cm of customMilestone; track $index) {
+          <mat-chip (removed)="customMilestone.splice($index, 1)"
+            >{{ cm.name }}
+            <mat-icon matChipRemove>X</mat-icon>
+          </mat-chip>
+          }
+        </div>
+        }
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button matButton mat-dialog-close>Cancel</button>
+    <button matButton (click)="submit()" cdkFocusInitial>Submit</button>
+  </mat-dialog-actions>
+</section>

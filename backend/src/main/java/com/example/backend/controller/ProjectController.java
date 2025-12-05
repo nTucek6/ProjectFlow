@@ -1,7 +1,9 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.NewProjectDto;
 import com.example.backend.dto.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
+import com.example.backend.dto.TaskDto;
 import com.example.backend.filterParams.ProjectFilterParams;
 import com.example.backend.model.Task;
 import com.example.backend.service.ProjectService;
@@ -10,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,4 +54,27 @@ public class ProjectController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping
+    public ResponseEntity<ProjectDto> createProject(@RequestBody NewProjectDto newProjectDto) {
+        try {
+            ProjectDto project = projectService.save(newProjectDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(project);
+
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProjectDto> deleteProject(@PathVariable Long id) {
+        try {
+            projectService.delete(id);
+            return ResponseEntity.noContent().build();
+
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

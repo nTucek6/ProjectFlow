@@ -36,4 +36,13 @@ public class ProjectMilestones {
     @OneToOne(mappedBy = "projectMilestones")
     private Task task;
 
+    public ProjectMilestones(String name, String description, Project project, MilestoneTemplates template, String color, int sequence) {
+        this.name = name;
+        this.description = description;
+        this.project = project;
+        this.template = template;
+        this.color = color;
+        this.sequence = sequence;
+    }
+
 }

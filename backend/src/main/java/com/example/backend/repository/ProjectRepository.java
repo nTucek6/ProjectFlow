@@ -11,10 +11,12 @@ import java.time.LocalDateTime;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    @Query("SELECT e FROM Project e " +
-            "WHERE (:title IS NULL OR e.name LIKE %:title%) " +
-            "AND (:startDateTimeFrom IS NULL OR e.deadline >= :startDateTimeFrom) " +
-            "AND (:startDateTimeTo IS NULL OR e.deadline <= :startDateTimeTo) ")
+    @Query("""
+            SELECT e FROM Project e
+            WHERE (:title IS NULL OR e.name LIKE %:title%)
+            AND (:startDateTimeFrom IS NULL OR e.deadline >= :startDateTimeFrom)
+            AND (:startDateTimeTo IS NULL OR e.deadline <= :startDateTimeTo)
+            """)
     Page<Project> findFilteredAndPaged(
             @Param("title") String title,
             @Param("startDateTimeFrom") LocalDateTime startDateTimeFrom,

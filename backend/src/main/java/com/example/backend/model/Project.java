@@ -24,10 +24,13 @@ public class Project {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ProjectMember> members;
+    private List<ProjectMember> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProjectMilestones> milestones = new ArrayList<>();
 
     public User getOwner() {
         List<ProjectMember> memberList = new ArrayList<>(members); // safe copy

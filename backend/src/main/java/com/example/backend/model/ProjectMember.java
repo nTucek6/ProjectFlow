@@ -34,4 +34,13 @@ public class ProjectMember {
 
     @Column(nullable = false)
     private LocalDateTime joinedAt;
+
+
+    public ProjectMember(Project project, User user) {
+        this.project = project;
+        this.user = user;
+        this.role = ProjectRole.MEMBER;
+        this.joinedAt = LocalDateTime.now();
+    }
+
 }

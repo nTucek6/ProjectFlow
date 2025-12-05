@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ProjectFilterParams } from '../model/project-filter-params';
 import { SearchProjectDto } from '../dto/search-project.dto';
+import { NewProjectDto } from '../dto/new-project.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -57,6 +58,10 @@ export class ProjectService {
 
   getProjectById(id: number): Observable<ProjectDto> {
     return this.http.get<ProjectDto>(`${this.apiUrl}/${id}`);
+  }
+
+  createNewProject(newProject: NewProjectDto): Observable<ProjectDto> {
+    return this.http.post<ProjectDto>(`${this.apiUrl}`, newProject)
   }
 
   setProject(project: ProjectDto | null): void {
