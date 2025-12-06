@@ -71,17 +71,20 @@ export class Board {
 
     if (fromList !== toList) {
       draggedItem.status = toList;
+      draggedItem.order = currentIndex;
+
       this.taskService.updateTask(draggedItem).subscribe((response) => {
-        const oldListSize = this.findNewList(fromList);
-        console.log(oldListSize);
-        this.changeOrder(fromList, prevIndex, oldListSize);
+        const oldLastIndex = this.findKanbanList(fromList);
 
-        prevIndex = currentIndex;
-        currentIndex = this.findNewList(toList);
+        this.changeOrder(fromList, prevIndex, oldLastIndex);
 
-        console.log()
+        const lastIndex = this.findKanbanList(toList);
 
-        this.changeOrder(toList, prevIndex, currentIndex);
+        if (lastIndex != currentIndex) {
+          this.changeOrder(toList, lastIndex + 1, currentIndex);
+        } else {
+          this.changeOrder(toList, lastIndex, currentIndex);
+        }
       });
     } else {
       this.changeOrder(toList, prevIndex, currentIndex);
@@ -91,16 +94,19 @@ export class Board {
   changeOrder(toList: string, prevIndex: number, currentIndex: number) {
     switch (toList) {
       case TaskStatus.TODO.toString():
-        this.calculateOrder(prevIndex, currentIndex, this.todo);
         console.log('Todo');
+        this.calculateOrder(prevIndex, currentIndex, this.todo);
+        console.log(this.todo);
         break;
       case TaskStatus.IN_PROGRESS.toString():
-        this.calculateOrder(prevIndex, currentIndex, this.progress);
         console.log('In progress');
+        this.calculateOrder(prevIndex, currentIndex, this.progress);
+        console.log(this.progress);
         break;
       case TaskStatus.DONE.toString():
-        this.calculateOrder(prevIndex, currentIndex, this.done);
         console.log('Done');
+        this.calculateOrder(prevIndex, currentIndex, this.done);
+        console.log(this.done);
         break;
     }
   }
@@ -109,39 +115,48 @@ export class Board {
     let start = Math.min(prevIndex, currentIndex);
     const end = Math.max(prevIndex, currentIndex);
 
+    console.log('Start: ' + start + ' End: ' + end);
+
     const list = filterList.filter((f) => f.order >= start && f.order <= end);
+    console.log(list);
     for (let i = 0; i < list.length; i++) {
-      if (i == 0) {
-        list[i].order = start;
-      } /*else if (i == list.length - 1) {
-        list[i].order = end;
-      }*/ else {
-        list[i].order = start;
-      }
+      list[i].order = start;
       start++;
     }
-
-    this.taskService.reorderTask(list).subscribe((response) => {
-      //console.log(response);
-    });
+    if (list.length > 0) {
+      this.taskService.reorderTask(list).subscribe((response) => {
+        //console.log(response);
+      });
+    }
   }
 
-  findNewList(toList: String): number {
+  findKanbanList(toList: String): number {
+    let lastIndex = 0;
     let size = 0;
     switch (toList) {
       case TaskStatus.TODO.toString():
         size = this.todo.length;
-        console.log('TO do');
+        if (size > 0) {
+          size = size > 0 ? size - 1 : 0;
+          lastIndex = this.todo[size].order;
+        }
         break;
       case TaskStatus.IN_PROGRESS.toString():
         size = this.progress.length;
-        console.log('In progress');
+        if (size > 0) {
+          size = size > 0 ? size - 1 : 0;
+          lastIndex = this.progress[size].order;
+        }
         break;
       case TaskStatus.DONE.toString():
         size = this.done.length;
-        console.log('Done');
+        if (size > 0) {
+          size = size > 0 ? size - 1 : 0;
+          lastIndex = this.done[size].order;
+        }
         break;
     }
-    return size;
+    console.log('Index: ' + lastIndex);
+    return lastIndex;
   }
 }
