@@ -18,9 +18,20 @@ export class TaskService {
     return this.http.get<TaskDto[]>(`${this.apiUrl}/project/${projectId}`, { params });
   }
 
-  fetchUserTop3Tasks(projectId:number, userId:number): Observable<TaskDto[]> {
-    
+  fetchUserTop3Tasks(projectId: number, userId: number): Observable<TaskDto[]> {
     return this.http.get<TaskDto[]>(`${this.apiUrl}/project/${projectId}/${userId}`);
+  }
+
+  getAllProjectTasks(projectId: number): Observable<TaskDto[]> {
+    return this.http.get<TaskDto[]>(`${this.apiUrl}/all/${projectId}`);
+  }
+
+  updateTask(task: TaskDto): Observable<TaskDto> {
+    return this.http.put<TaskDto>(`${this.apiUrl}/${task.id}`, task);
+  }
+
+  reorderTask(reorderTask: TaskDto[]): Observable<any> {
+    return this.http.put(`${this.apiUrl}/reorder`, reorderTask);
   }
 
 }

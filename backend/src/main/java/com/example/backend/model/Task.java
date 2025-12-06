@@ -30,6 +30,9 @@ public class Task {
     @Column(nullable = false)
     private TaskStatus status;
 
+    @Column(name = "order_index")
+    private Integer order;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;

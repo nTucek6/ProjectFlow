@@ -20,4 +20,5 @@ public class TaskDto {
     private TaskStatus status;
     private String statusText;
     private List<Long> assigneesId;
+    private Integer order;
 }

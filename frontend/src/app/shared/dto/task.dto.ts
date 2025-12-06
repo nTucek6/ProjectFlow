@@ -5,4 +5,5 @@ export type TaskDto = {
   createdAt: Date;
   status: string;
   statusText:string;
+  order:number;
 };

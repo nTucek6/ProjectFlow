@@ -52,17 +52,6 @@ export class Overview {
           console.error('API error:', err);
         },
       });
-
-      /*this.taskService.fetchProjectTasks(currentProject.id,0,3).subscribe({
-      next: data => {
-        console.log('API data:', data);
-        this.tasks = data
-        // handle the data as needed
-      },
-      error: err => {
-        console.error('API error:', err);
-      }
-    }); */
     }
   });
 }

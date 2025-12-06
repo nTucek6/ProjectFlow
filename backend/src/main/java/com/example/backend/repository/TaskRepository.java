@@ -18,6 +18,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findTop3ByProjectIdAndAssignees_IdOrderByCreatedAtDesc(Long projectId,Long userId);
 
+    List<Task> findAllByProject_IdOrderByOrderAsc(Long projectId);
+
     //List<Task> findByProject(Long project_id);
 
 }

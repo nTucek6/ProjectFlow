@@ -14,6 +14,7 @@ public class TaskMapper {
         taskDto.setCreatedAt(task.getCreatedAt());
         taskDto.setStatus(task.getStatus());
         taskDto.setStatusText(convertStatus(task.getStatus()));
+        taskDto.setOrder(task.getOrder());
         return taskDto;
     }
 

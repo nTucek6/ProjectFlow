@@ -35,10 +35,20 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody CreateTaskDto newTaskDto) {
+    public ResponseEntity<TaskDto> updateTask(@PathVariable Long id, @RequestBody TaskDto updateTaskDto) {
         try {
-            TaskDto task = taskService.save(newTaskDto);
+            TaskDto task = taskService.update(id, updateTaskDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping("/reorder")
+    public ResponseEntity<Void> reorderTasks(@RequestBody List<TaskDto> tasks) {
+        try {
+            taskService.reorder(tasks);
+            return ResponseEntity.ok().build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.internalServerError().build();
         }
@@ -74,10 +84,20 @@ public class TaskController {
         }
     }
 
-    @GetMapping("/project/{projectId}/{userId}")
-    public ResponseEntity<List<TaskDto>> getUserTasks(@PathVariable Long projectId ,@PathVariable Long userId) {
+    @GetMapping("/all/{projectId}")
+    public ResponseEntity<List<TaskDto>> getAllTasks(@PathVariable Long projectId) {
         try {
-            List<TaskDto> userTasks = taskService.findUserTasks(projectId,userId);
+            List<TaskDto> tasks = taskService.getAllTasks(projectId);
+            return ResponseEntity.ok(tasks);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/project/{projectId}/{userId}")
+    public ResponseEntity<List<TaskDto>> getUserTasks(@PathVariable Long projectId, @PathVariable Long userId) {
+        try {
+            List<TaskDto> userTasks = taskService.findUserTasks(projectId, userId);
             return ResponseEntity.ok(userTasks);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();

@@ -1,1 +1,54 @@
-<p>board works!</p>
+<section>
+  <div class="example-container">
+    <h2>To do</h2>
+    <div
+      cdkDropList
+      #todoList="cdkDropList"
+      [id]="taskStatus.TODO.toString()"
+      [cdkDropListData]="todo"
+      [cdkDropListConnectedTo]="[doneList, progressList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (item of todo; track item) {
+      <div class="example-box" cdkDrag [cdkDragData]="item">{{ item.title }}</div>
+      }
+    </div>
+    <div class="example-box"><button mat-button>Add new item</button></div>
+  </div>
+
+ <div class="example-container">
+    <h2>In progress</h2>
+    <div
+      cdkDropList
+      [id]="taskStatus.IN_PROGRESS.toString()"
+      #progressList="cdkDropList"
+      [cdkDropListData]="progress"
+      [cdkDropListConnectedTo]="[todoList, doneList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (item of progress; track item) {
+      <div class="example-box" cdkDrag [cdkDragData]="item">{{ item.title }}</div>
+      }
+    </div>
+  </div>
+
+
+  <div class="example-container">
+    <h2>Done</h2>
+    <div
+      cdkDropList
+      [id]="taskStatus.DONE.toString()"
+      #doneList="cdkDropList"
+      [cdkDropListData]="done"
+      [cdkDropListConnectedTo]="[todoList, progressList]"
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+    >
+      @for (item of done; track item) {
+      <div class="example-box" cdkDrag [cdkDragData]="item">{{ item.title }}</div>
+      }
+    </div>
+  </div>
+</section>
