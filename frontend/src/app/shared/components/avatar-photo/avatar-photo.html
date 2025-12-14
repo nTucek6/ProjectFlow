@@ -1,0 +1,9 @@
+<div class="circle" [ngStyle]="{ 'background-color': circleColor }">
+  @if (!showInitials) {
+  <img src="{{ photoUrl }}" />
+  } @else {
+  <div class="initials">
+    {{ initials }}
+  </div>
+  }
+</div>

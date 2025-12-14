@@ -37,7 +37,11 @@ export class AuthService {
   }
   getUserFirstName() {
     return this.userSubject.getValue()?.name;
-  }
+  } 
+
+  getUserFullName() {
+    return this.userSubject.getValue()?.name + " " + this.userSubject.getValue()?.surname;
+  } 
 
   isLoggedIn(): Observable<boolean> {
     return this.http.get<UserDto>(`${this.apiUrl}/me`).pipe(

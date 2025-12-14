@@ -1,17 +1,19 @@
 <div id="sidebar">
   <div class="nav-items">
-    <!-- <h5 class="nav-items-title">{{ "sidebar.discover" | translate }}</h5> -->
-    <a routerLink="/"
-      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="home"></mat-icon
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="dashboard"></mat-icon
       >{{ 'sidebar.dashboard' | translate }}</a
     >
-    <a routerLink="/projects"
-      ><mat-icon aria-hidden="false" aria-label="Folder Open icon" fontIcon="folder_open"></mat-icon
-      >{{ 'sidebar.projects' | translate }}</a
+    <a
+      routerLink="/projects"
+      [class.active]="isProjectsActive()"
+      [class.secondaryActive]="isProjectActive()"
     >
-    <a routerLink="/"
-      ><mat-icon aria-hidden="false" aria-label="Access Time icon" fontIcon="access_time"></mat-icon
-      >{{ 'sidebar.recent' | translate }}</a
+      @if (isProjectsActive() || isProjectActive()) {
+      <mat-icon aria-hidden="false" aria-label="Folder Open icon" fontIcon="folder_open"></mat-icon>
+      } @else {
+      <mat-icon aria-hidden="false" aria-label="Folder Open icon" fontIcon="folder"></mat-icon>
+      }{{ 'sidebar.projects' | translate }}</a
     >
   </div>
 </div>

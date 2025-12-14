@@ -1,14 +1,48 @@
-<h1>Welcome, {{user_name}}!</h1>
+<h1 id="welcome-title">Welcome back, {{ user_name }}!</h1>
 
 <section class="basic_data">
-    <app-two-line-info-card class="basic_data_child" first_line="Ongoing projects" second_line="2"></app-two-line-info-card>
-    <app-two-line-info-card class="basic_data_child" first_line="Completed projects" second_line="5"></app-two-line-info-card>
-    <app-two-line-info-card class="basic_data_child" first_line="Upcoming deadline" second_line="1"></app-two-line-info-card>
+  <app-two-line-info-card
+    class="basic_data_child"
+    first_line="Active projects"
+    second_line="2"
+    icon="folder_open"
+    iconColor="#2563EB"
+  ></app-two-line-info-card>
+  <app-two-line-info-card
+    class="basic_data_child"
+    first_line="Pending projects"
+    second_line="34"
+    icon="check_box"
+    iconColor="#F59E0B"
+  ></app-two-line-info-card>
+  <app-two-line-info-card
+    class="basic_data_child"
+    first_line="Completed projects"
+    second_line="5"
+    icon="check_circle_outline"
+    iconColor="#10B981"
+  ></app-two-line-info-card>
+  <app-two-line-info-card
+    class="basic_data_child"
+    first_line="Team members"
+    second_line="1"
+    icon="supervised_user_circle"
+    iconColor="#64748B"
+  ></app-two-line-info-card>
 </section>
 
 <h2 id="overview">Recent projects</h2>
 <section class="basic_data_overview">
-    <app-project-overview-card class="basic_data_child_overview" project_name="ProjectFlow"></app-project-overview-card>
-    <app-project-overview-card class="basic_data_child_overview" project_name="Pets App"></app-project-overview-card>
-    <app-project-overview-card class="basic_data_child_overview" project_name="Doctor who trivia"></app-project-overview-card>
+  <app-project-overview-card
+    class="basic_data_child_overview"
+    project_name="ProjectFlow"
+  ></app-project-overview-card>
+  <app-project-overview-card
+    class="basic_data_child_overview"
+    project_name="Pets App"
+  ></app-project-overview-card>
+  <app-project-overview-card
+    class="basic_data_child_overview"
+    project_name="Doctor who trivia"
+  ></app-project-overview-card>
 </section>

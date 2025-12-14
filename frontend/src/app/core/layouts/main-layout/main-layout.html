@@ -2,7 +2,7 @@
   <app-top-navigation (sidebarToggle)="onSidebarToggle($event)"></app-top-navigation>
   <mat-drawer-container>
     <mat-drawer mode="side" [opened]="isSidebarOpen">
-      <app-sidebar></app-sidebar>
+      <app-sidebar id="sidebar"></app-sidebar>
     </mat-drawer>
     <mat-drawer-content id="site-content"><router-outlet></router-outlet></mat-drawer-content>
   </mat-drawer-container>

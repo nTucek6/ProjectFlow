@@ -1,16 +1,30 @@
+#welcome-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
 .basic_data {
-  display: flex;
+  /*display: flex;
   flex-direction: row;
   justify-content: space-around;
   flex-wrap: wrap;
-  gap: 20px 200px;
+  gap: 1.5rem;
+  align-items: stretch; */
+
+   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
 }
+
 
 .basic_data_child {
   flex: 1 1 200px;
-  max-width: 400px;
+  // max-width: 400px;
   text-align: center;
 }
+  
 
 #overview {
   margin-top: 50px;
@@ -22,7 +36,6 @@
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 20px 100px;
-
   margin-bottom: 100px;
 }
 

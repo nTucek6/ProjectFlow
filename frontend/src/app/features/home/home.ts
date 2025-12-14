@@ -16,6 +16,6 @@ export class Home {
 
   ngOnInit(): void {
     const name = this.authService.getUserFirstName();
-    if (name != null) this.user_name = name;
+    if (name != undefined) this.user_name = name;
   }
 }

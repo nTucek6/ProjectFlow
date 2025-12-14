@@ -1,10 +1,58 @@
 <div id="top-navigation">
-  <div>
-    <mat-icon aria-hidden="false" aria-label="Menu icon" fontIcon="menu" (click)="toggleSidebar()"></mat-icon>
+  <section id="page-title">
+    <div>
+      <mat-icon class="menu-icon" (click)="toggleSidebar()" [class.sidebarOpen]="isSidebarOpen">menu</mat-icon>
+    </div>
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="text-primary"
+    >
+      <rect width="32" height="32" rx="6" fill="currentColor" />
+      <path d="M16 8L8 12V18C8 22 16 26 16 26C16 26 24 22 24 18V12L16 8Z" fill="white" />
+      <path
+        d="M16 12L12 14V18C12 19.5 16 22 16 22C16 22 20 19.5 20 18V14L16 12Z"
+        fill="currentColor"
+      />
+    </svg>
     <h1>{{ 'title' | translate }}</h1>
-  </div>
-  <div>
-    <mat-icon aria-hidden="false" aria-label="Person icon" fontIcon="person"></mat-icon>
-    <mat-icon aria-hidden="false" aria-label="Logout icon" fontIcon="exit_to_app" (click)="logout()"></mat-icon>
-  </div>
+  </section>
+  <section>
+    <div
+      id="profile"
+      [matMenuTriggerFor]="beforeMenu"
+      (menuOpened)="isProfileOpen = true"
+      (menuClosed)="isProfileOpen = false"
+    >
+      <app-avatar-photo class="profile-image" [name]="userFullname"></app-avatar-photo>
+      <div>
+        <span>{{ userFullname }}</span>
+        <span class="user-role">Student</span>
+      </div>
+      <mat-icon [class.rotate]="isProfileOpen" class="arrow-icon">keyboard_arrow_down</mat-icon>
+    </div>
+    <mat-menu #beforeMenu="matMenu">
+      <div class="profile-menu">
+        <div class="profile-menu-info">
+          <span>{{ userFullname }}</span>
+          <span class="user-role">Student</span>
+        </div>
+        <div class="profile-item">
+          <mat-icon aria-hidden="false" aria-label="Settings icon" fontIcon="settings"></mat-icon>
+          <span>Profile Settings</span>
+        </div>
+        <div id="logout" class="profile-item" (click)="logout()">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Logout icon"
+            fontIcon="exit_to_app"
+          ></mat-icon>
+          <span>Logout</span>
+        </div>
+      </div>
+    </mat-menu>
+  </section>
 </div>
