@@ -5,37 +5,26 @@
 }
 
 .basic_data {
-  /*display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  align-items: stretch; */
-
-   display: grid;
+  display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
   align-items: stretch;
 }
 
-
 .basic_data_child {
   flex: 1 1 200px;
-  // max-width: 400px;
   text-align: center;
 }
-  
 
 #overview {
   margin-top: 50px;
 }
 
 .basic_data_overview {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 20px 100px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
   margin-bottom: 100px;
 }
 

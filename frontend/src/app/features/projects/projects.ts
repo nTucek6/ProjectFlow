@@ -39,9 +39,14 @@ export class Projects {
   readonly dialog = inject(MatDialog);
 
   displayedColumns: string[] = ['index', 'name', 'owner', 'deadline'];
+  //displayedColumns: string[] = ['#', 'Project', 'Owner', 'Deadline'];
   dataSource = new MatTableDataSource<SearchProjectDto>([]);
 
+  //projects:SearchProjectDto[] = []
+
   searchData = '';
+
+  showFilter = false;
 
   page: number = 0;
   size: number = 5;
@@ -73,6 +78,7 @@ export class Projects {
   ngOnInit() {
     this.projectPosts$.subscribe((projects) => {
       this.dataSource.data = projects;
+      //this.projects = projects;
     });
 
     this.searchProjects();
@@ -88,5 +94,9 @@ export class Projects {
     /*dialogRef.afterClosed().subscribe((result) => {
       //console.log(`Dialog result: ${result}`);
     }); */
+  }
+
+  toggleFilter() {
+    this.showFilter = !this.showFilter;
   }
 }

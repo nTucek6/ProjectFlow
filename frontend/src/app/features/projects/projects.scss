@@ -1,3 +1,125 @@
+#header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.table-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
 table {
   width: 100%;
+  border-collapse: collapse;
+}
+
+td,
+th {
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+input {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+$input_border_radius: 5px;
+
+#search-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 50px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+#search-container > div:first-of-type{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: $input_border_radius;
+  padding-right: 30px;
+  background-color: #ffffff;
+}
+
+.input-wrapper input {
+  width: 100%;
+  height: 100%;
+  border-radius: $input_border_radius;
+  padding: 0 0 0 10px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  display: none;
+  color: #888;
+  height: 100%;
+
+  align-items: center;
+}
+
+.clear-btn:hover {
+  color: #000;
+}
+
+.show-button {
+  display: flex;
+}
+
+#filter-btn{
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px 15px;
+}
+
+#filter-btn > mat-icon{
+  transition: transform 0.5s;
+}
+
+.filter-btn-active{
+  background-color: #2563eb !important;
+  color: #ffffff;
+}
+
+.filter-btn-icon-active {
+  transform: rotate(180deg);
+}
+
+#filter-form{
+  border-top: 1px solid #ddd;
+  margin-top: 10px;
+  padding-top: 10px;
 }

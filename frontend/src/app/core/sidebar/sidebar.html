@@ -1,4 +1,5 @@
-<div id="sidebar">
+<div id="sidebar" [class.sidebar-closed]="!isSidebarOpen">
+  @if (isSidebarOpen) {
   <div class="nav-items">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
       ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="dashboard"></mat-icon
@@ -16,4 +17,22 @@
       }{{ 'sidebar.projects' | translate }}</a
     >
   </div>
+  } @else {
+  <div class="nav-items">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="dashboard"></mat-icon
+    ></a>
+    <a
+      routerLink="/projects"
+      [class.active]="isProjectsActive()"
+      [class.secondaryActive]="isProjectActive()"
+    >
+      @if (isProjectsActive() || isProjectActive()) {
+      <mat-icon aria-hidden="false" aria-label="Folder Open icon" fontIcon="folder_open"></mat-icon>
+      } @else {
+      <mat-icon aria-hidden="false" aria-label="Folder Open icon" fontIcon="folder"></mat-icon>
+      }</a
+    >
+  </div>
+  }
 </div>

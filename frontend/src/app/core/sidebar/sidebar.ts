@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -10,7 +10,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
-  userId = 1;
+  @Input() isSidebarOpen:boolean = true;
 
   private router = inject(Router);
 
