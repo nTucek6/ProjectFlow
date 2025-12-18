@@ -2,10 +2,17 @@ section {
   border: 2px solid #e0e0e0;
   border-radius: 5px;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #ffffff;
+  cursor: pointer;
 }
 
-h2,
+h3 {
+  font-weight: 600;
+  font-size: 0.975rem;
+  line-height: 1.25rem;
+}
+
+h3,
 p {
   white-space: normal;
   word-wrap: break-word;
@@ -14,4 +21,26 @@ p {
 
 button {
   border: 1px solid #e0e0e0;
+}
+
+.info-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-text:first-of-type {
+  margin-bottom: 5px;
+}
+
+.info-text:last-of-type {
+  margin-top: 10px;
+}
+
+.info-text:last-of-type > span:first-of-type {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.2rem;
 }

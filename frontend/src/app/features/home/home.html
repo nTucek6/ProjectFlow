@@ -31,18 +31,30 @@
   ></app-two-line-info-card>
 </section>
 
-<h2 id="overview">Recent projects</h2>
-<section class="basic_data_overview">
-  <app-project-overview-card
-    class="basic_data_child_overview"
-    project_name="ProjectFlow"
-  ></app-project-overview-card>
-  <app-project-overview-card
-    class="basic_data_child_overview"
-    project_name="Pets App"
-  ></app-project-overview-card>
-  <app-project-overview-card
-    class="basic_data_child_overview"
-    project_name="Doctor who trivia"
-  ></app-project-overview-card>
+<section class="recent-projects">
+  <h2>Recent projects</h2>
+  <div class="basic_data_overview basic_data">
+    <app-project-overview-card
+      class="basic_data_child_overview"
+      project_name="ProjectFlow"
+      [progress]="65"
+    ></app-project-overview-card>
+    <app-project-overview-card
+      class="basic_data_child_overview"
+      project_name="Pets App"
+    ></app-project-overview-card>
+    <app-project-overview-card
+      class="basic_data_child_overview"
+      project_name="Doctor who trivia"
+    ></app-project-overview-card>
+  </div>
+</section>
+
+<section class="recent-activities">
+ <h2>Recent activities</h2>
+ <div class="recent-activities-data">
+  <app-activity-card></app-activity-card>
+  <app-activity-card></app-activity-card>
+  <app-activity-card></app-activity-card>
+ </div>
 </section>

@@ -3,10 +3,11 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { MatAnchor } from "@angular/material/button";
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-project-overview-card',
-  imports: [MatProgressBarModule, MatAnchor, CommonModule],
+  imports: [MatProgressBarModule, MatAnchor, CommonModule, MatIcon],
   templateUrl: './project-overview-card.html',
   styleUrl: './project-overview-card.scss',
 })
