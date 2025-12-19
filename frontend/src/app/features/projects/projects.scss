@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 #header {
   display: flex;
   flex-direction: row;
@@ -45,7 +47,7 @@ $input_border_radius: 5px;
   padding: 20px;
 }
 
-#search-container > div:first-of-type{
+#search-container > div:first-of-type {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -94,32 +96,41 @@ $input_border_radius: 5px;
   display: flex;
 }
 
-#filter-btn{
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 10px;
+#filter-btn {
   display: flex;
-  flex-direction: row;
+  gap: 0.25rem;
   align-items: center;
+  border: 1px solid #ddd;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
   cursor: pointer;
-  padding: 5px 15px;
+
 }
 
-#filter-btn > mat-icon{
+#filter-btn:hover {
+  background-color: #f59e0b;
+}
+
+#filter-btn > mat-icon {
   transition: transform 0.5s;
-}
-
-.filter-btn-active{
-  background-color: #2563eb !important;
-  color: #ffffff;
 }
 
 .filter-btn-icon-active {
   transform: rotate(180deg);
 }
 
-#filter-form{
+#filter-form {
   border-top: 1px solid #ddd;
   margin-top: 10px;
   padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }

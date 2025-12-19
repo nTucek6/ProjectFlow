@@ -1,5 +1,5 @@
 export type ProjectFilterParams = {
   title?: string;
-  startDateTimeFrom?: Date;
-  startDateTimeTo?: Date;
+  startDateTimeFrom?: string;
+  startDateTimeTo?: string;
 };

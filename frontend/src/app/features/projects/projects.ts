@@ -7,12 +7,14 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ProjectService } from '../../shared/services/project.service';
-import { debounceTime, distinctUntilChanged, map, Subject, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 import { ProjectFilterParams } from '../../shared/model/project-filter-params';
 import { SearchProjectDto } from '../../shared/dto/search-project.dto';
 import { MatIcon } from '@angular/material/icon';
-import { MatIconButton, MatAnchor } from '@angular/material/button';
+import { MatAnchor } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { NewProjectModal } from '../../shared/modals/new-project-modal/new-project-modal';
@@ -26,11 +28,12 @@ import { NewProjectModal } from '../../shared/modals/new-project-modal/new-proje
     FormsModule,
     DatePipe,
     MatIcon,
-    MatIconButton,
     MatAnchor,
     RouterLink,
+    MatDatepickerModule,
   ],
   templateUrl: './projects.html',
+  providers: [provideNativeDateAdapter()],
   styleUrl: './projects.scss',
 })
 export class Projects {
@@ -39,12 +42,12 @@ export class Projects {
   readonly dialog = inject(MatDialog);
 
   displayedColumns: string[] = ['index', 'name', 'owner', 'deadline'];
-  //displayedColumns: string[] = ['#', 'Project', 'Owner', 'Deadline'];
   dataSource = new MatTableDataSource<SearchProjectDto>([]);
 
-  //projects:SearchProjectDto[] = []
-
   searchData = '';
+
+  startDate = '';
+  endDate = '';
 
   showFilter = false;
 
@@ -53,8 +56,8 @@ export class Projects {
   length: number = 0;
   ascending: boolean = false;
 
-  selectedDateFrom?: Date;
-  selectedDateTo?: Date;
+  // selectedDateFrom?: Date;
+  // selectedDateTo?: Date;
 
   private searchSubject = new Subject<ProjectFilterParams>();
 
@@ -68,9 +71,13 @@ export class Projects {
   searchProjects() {
     const projectFilterParams: ProjectFilterParams = {
       title: this.searchData,
-      startDateTimeFrom: this.selectedDateFrom,
-      startDateTimeTo: this.selectedDateTo,
+      startDateTimeFrom: this.startDate,
+      startDateTimeTo: this.endDate,
     };
+
+    if (this.showFilter) {
+      this.page = 0;
+    }
 
     this.searchSubject.next(projectFilterParams);
   }
@@ -78,7 +85,6 @@ export class Projects {
   ngOnInit() {
     this.projectPosts$.subscribe((projects) => {
       this.dataSource.data = projects;
-      //this.projects = projects;
     });
 
     this.searchProjects();
@@ -98,5 +104,10 @@ export class Projects {
 
   toggleFilter() {
     this.showFilter = !this.showFilter;
+    if (!this.showFilter) {
+      this.startDate = '';
+      this.endDate = '';
+      this.searchProjects();
+    }
   }
 }

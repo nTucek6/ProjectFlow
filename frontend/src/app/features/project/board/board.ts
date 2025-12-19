@@ -97,19 +97,13 @@ export class Board {
   changeOrder(toList: string, prevIndex: number, currentIndex: number) {
     switch (toList) {
       case TaskStatus.TODO.toString():
-        console.log('Todo');
         this.calculateOrder(prevIndex, currentIndex, this.todo);
-        console.log(this.todo);
         break;
       case TaskStatus.IN_PROGRESS.toString():
-        console.log('In progress');
         this.calculateOrder(prevIndex, currentIndex, this.progress);
-        console.log(this.progress);
         break;
       case TaskStatus.DONE.toString():
-        console.log('Done');
         this.calculateOrder(prevIndex, currentIndex, this.done);
-        console.log(this.done);
         break;
     }
   }
@@ -118,10 +112,8 @@ export class Board {
     let start = Math.min(prevIndex, currentIndex);
     const end = Math.max(prevIndex, currentIndex);
 
-    console.log('Start: ' + start + ' End: ' + end);
-
     const list = filterList.filter((f) => f.order >= start && f.order <= end);
-    console.log(list);
+
     for (let i = 0; i < list.length; i++) {
       list[i].order = start;
       start++;
@@ -159,7 +151,6 @@ export class Board {
         }
         break;
     }
-    console.log('Index: ' + lastIndex);
     return lastIndex;
   }
 

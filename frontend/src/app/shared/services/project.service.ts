@@ -40,9 +40,11 @@ export class ProjectService {
       params = params.set('ascending', ascending.toString());
     }
 
+    
     if (eventFilterParams != undefined) {
       Object.entries(eventFilterParams).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
+        value = value.toString()
+        if (value !== undefined && value !== null && value.length > 0) {
           if (key === 'startDateTimeFrom' || key === 'startDateTimeTo') {
             const dateObj = new Date(value);
             params = params.set(key, formatLocalDateTime(dateObj));
@@ -61,7 +63,7 @@ export class ProjectService {
   }
 
   createNewProject(newProject: NewProjectDto): Observable<ProjectDto> {
-    return this.http.post<ProjectDto>(`${this.apiUrl}`, newProject)
+    return this.http.post<ProjectDto>(`${this.apiUrl}`, newProject);
   }
 
   setProject(project: ProjectDto | null): void {

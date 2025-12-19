@@ -1,7 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  firstValueFrom,
+  map,
+  Observable,
+  of,
+  tap,
+  throwError,
+} from 'rxjs';
 import { UserCredentials } from '../model/user-credentials';
 import { UserDto } from '../dto/user.dto';
 
@@ -37,11 +46,11 @@ export class AuthService {
   }
   getUserFirstName() {
     return this.userSubject.getValue()?.name;
-  } 
+  }
 
   getUserFullName() {
-    return this.userSubject.getValue()?.name + " " + this.userSubject.getValue()?.surname;
-  } 
+    return this.userSubject.getValue()?.name + ' ' + this.userSubject.getValue()?.surname;
+  }
 
   isLoggedIn(): Observable<boolean> {
     return this.http.get<UserDto>(`${this.apiUrl}/me`).pipe(
@@ -57,14 +66,32 @@ export class AuthService {
   }
 
   refreshToken(): Observable<UserDto> {
-    return this.http
-      .post<UserDto>(`${this.apiUrl}/refreshToken`, null)
-      .pipe(tap(() => this.authorizedSubject.next(true)));
+    return this.http.post<UserDto>(`${this.apiUrl}/refreshToken`, null).pipe(
+      tap((user) => {
+        this.userSubject.next(user);
+        this.authorizedSubject.next(true);
+      })
+    );
   }
 
   logout(): Observable<void> {
-    return this.http
-      .post<void>(`${this.apiUrl}/logout`, null)
-      .pipe(tap(() => this.authorizedSubject.next(false)));
+    return this.http.post<void>(`${this.apiUrl}/logout`, null).pipe(
+      tap(() => {
+        this.userSubject.next(null);
+        this.authorizedSubject.next(false);
+      })
+    );
+  }
+
+  initializeAuth(): Promise<void> {
+    return firstValueFrom(
+      this.refreshToken().pipe(
+        catchError(() => {
+          this.userSubject.next(null);
+          this.authorizedSubject.next(false);
+          return of(null);
+        })
+      )
+    ).then(() => void 0);
   }
 }

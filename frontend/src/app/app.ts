@@ -11,13 +11,4 @@ import { AuthService } from './shared/services/auth.service';
 export class App {
   protected readonly title = signal('ProjectFlow');
 
-  private authService = inject(AuthService);
-
-  ngOnInit() {
-    this.authService.refreshToken().subscribe((response) => {
-      if (response) {
-        this.authService.setUser(response);
-      }
-    });
-  }
 }
