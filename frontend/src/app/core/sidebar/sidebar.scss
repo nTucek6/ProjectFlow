@@ -22,6 +22,10 @@
   margin-bottom: 5px;
 }
 
+.nav-items > a:not(.active):hover{
+  background-color: #ffffff;
+}
+
 .nav-items:first-of-type {
   margin-top: 15px;
 }

@@ -1,6 +1,10 @@
 <section>
   <div class="example-container">
-    <h2>To do</h2>
+    <div>
+      <h2>To do</h2>
+      <mat-icon>add</mat-icon>
+    </div>
+
     <div
       cdkDropList
       #todoList="cdkDropList"
@@ -11,14 +15,27 @@
       (cdkDropListDropped)="drop($event)"
     >
       @for (item of todo; track item) {
-      <div class="example-box" cdkDrag [cdkDragData]="item">{{ item.title }}</div>
+      <div
+        class="example-box"
+        cdkDrag
+        [cdkDragData]="item"
+        (cdkDragStarted)="isDragging = true"
+        (cdkDragEnded)="isDragging = false"
+        (click)="!isDragging && editItem(item)"
+      >
+        {{ item.title }}
+      </div>
       }
     </div>
-    <div class="example-box"><button mat-button>Add new item</button></div>
   </div>
 
- <div class="example-container">
-    <h2>In progress</h2>
+  <!-- <div class="example-box"><button mat-button>Add new item</button></div> -->
+
+  <div class="example-container">
+    <div>
+      <h2>In progress</h2>
+    </div>
+
     <div
       cdkDropList
       [id]="taskStatus.IN_PROGRESS.toString()"
@@ -29,14 +46,25 @@
       (cdkDropListDropped)="drop($event)"
     >
       @for (item of progress; track item) {
-      <div class="example-box" cdkDrag [cdkDragData]="item">{{ item.title }}</div>
+      <div
+        class="example-box"
+        cdkDrag
+        [cdkDragData]="item"
+        (cdkDragStarted)="isDragging = true"
+        (cdkDragEnded)="isDragging = false"
+        (click)="!isDragging && editItem(item)"
+      >
+        {{ item.title }}
+      </div>
       }
     </div>
   </div>
 
-
   <div class="example-container">
-    <h2>Done</h2>
+    <div>
+      <h2>Done</h2>
+    </div>
+
     <div
       cdkDropList
       [id]="taskStatus.DONE.toString()"
@@ -47,7 +75,16 @@
       (cdkDropListDropped)="drop($event)"
     >
       @for (item of done; track item) {
-      <div class="example-box" cdkDrag [cdkDragData]="item">{{ item.title }}</div>
+      <div
+        class="example-box"
+        cdkDrag
+        [cdkDragData]="item"
+        (cdkDragStarted)="isDragging = true"
+        (cdkDragEnded)="isDragging = false"
+        (click)="!isDragging && editItem(item)"
+      >
+        {{ item.title }}
+      </div>
       }
     </div>
   </div>

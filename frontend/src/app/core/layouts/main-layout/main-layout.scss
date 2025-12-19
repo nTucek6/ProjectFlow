@@ -9,7 +9,6 @@
 }
 
 mat-drawer-container {
-  //height: calc(100vh - 50px);
   height: calc(100vh - 4rem);
 }
 
@@ -18,17 +17,22 @@ mat-drawer {
   border-right: 2px solid #e0e0e0;
   border-radius: 0;
   background-color: #f0f0f0;
+  transition: width 300ms ease !important;
+  
 }
+
+
 
 .sidebar-open {
   width: 75px;
+  transition: width 300ms ease !important;
 }
 
 .mat-drawer-container_sidebar_closed {
   margin-left: 75px !important;
 }
 
-.mat-drawer-container_sidebar_open{
+.mat-drawer-container_sidebar_open {
   margin-left: 250px !important;
 }
 
@@ -36,7 +40,7 @@ mat-drawer {
   display: flex;
 }
 
-#site-content {
+.site-content {
   margin: 20px 0 50px 0;
   padding: 0 15px;
   overflow-y: auto;

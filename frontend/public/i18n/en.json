@@ -36,6 +36,7 @@
 
   "project": {
     "overview": "Overview",
-    "board": "Board"
+    "board": "Board",
+    "chat": "Chat"
   }
 }

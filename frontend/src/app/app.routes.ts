@@ -37,6 +37,11 @@ export const routes: Routes = [
             title: 'Board',
             loadComponent: () => import('./features/project/board/board').then((m) => m.Board),
           },
+          {
+            path: 'chat',
+            title: 'Chat',
+            loadComponent: () => import('./features/project/group-chat/group-chat').then((m) => m.GroupChat),
+          },
         ],
       },
     ],

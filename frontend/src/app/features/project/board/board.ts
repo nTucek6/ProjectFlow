@@ -14,10 +14,11 @@ import { Title } from '@angular/platform-browser';
 import { TaskDto } from '../../../shared/dto/task.dto';
 import { MatButtonModule } from '@angular/material/button';
 import { TaskStatus } from '../../../shared/enums/task-status.enum';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-board',
-  imports: [CdkDrag, CdkDropList, MatButtonModule],
+  imports: [CdkDrag, CdkDropList, MatButtonModule, MatIconModule],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
@@ -27,6 +28,8 @@ export class Board {
   private tabTitle = inject(Title);
 
   taskStatus = TaskStatus;
+
+  isDragging = false;
 
   todo: TaskDto[] = [];
   progress: TaskDto[] = [];
@@ -158,5 +161,9 @@ export class Board {
     }
     console.log('Index: ' + lastIndex);
     return lastIndex;
+  }
+
+  editItem(task: TaskDto) {
+    console.log(task);
   }
 }

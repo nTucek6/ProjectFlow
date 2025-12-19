@@ -1,30 +1,124 @@
+#project-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 1.5rem;
+}
+
+#project-container > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#project-info > h1 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-size: 600;
+  margin: 0;
+}
+
+#project-info span, #project-info mat-icon{
+  color: #64748B;
+}
+
+#project-info > div {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+#project-info > div > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#project-info > div > div > span{
+ font-size: .875rem;
+ line-height: normal;
+}
+
+#project-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+#project-options > button {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+#project-options > button:hover {
+  background-color: #f59e0b;
+}
+
+.overall-container {
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+  align-items: flex-start !important;
+}
+
+.overall-container > div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.overall-container > div > span {
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
 nav {
   border-bottom: 2px solid #e0e0e0;
+  border-top: 2px solid #e0e0e0;
   margin-bottom: 20px;
 }
 
 .nav-items {
   display: flex;
   flex-direction: row;
-  font-size: 15px;
-  margin-right: 5px;
+  gap: 0.25rem;
 }
 
 .nav-items > a {
   text-decoration: none;
-  color: black;
+  color: #64748b;
   align-items: center;
-  margin-right: 10px;
   display: flex;
-  font-size: 15px;
+  gap: 0.25rem;
+
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-.nav-items:last-of-type {
-  margin-bottom: 0px;
+.nav-items > a:hover {
+  color: #1e293b;
 }
 
 .active {
-  font-weight: bold;
-  color: #1976d2;
-  border-bottom: 2px solid #1976d2;
+  color: #2563eb !important;
+  border-bottom: 2px solid #2563eb;
 }

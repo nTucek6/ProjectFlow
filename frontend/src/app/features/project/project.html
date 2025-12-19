@@ -1,16 +1,61 @@
-<h3>Project: {{ project?.name }}</h3>
+@if (project) {
+<section id="project-container">
+  <div>
+    <div id="project-info">
+      <h1>{{ project.name }}</h1>
+      <div>
+        <div>
+          <mat-icon>calendar_today</mat-icon>
+          <span>{{ project.createdAt | date }} - {{ project.deadline | date }}</span>
+        </div>
+        <div>
+          <mat-icon>people_outline</mat-icon>
+          <span>{{ project.membersCount }} Members</span>
+        </div>
+      </div>
+    </div>
 
-<nav>
+    <div id="project-options">
+      <button><mat-icon>edit</mat-icon><span>Edit</span></button>
+      <button><mat-icon>people_outline</mat-icon><span>Members</span></button>
+      <button><mat-icon>receipt</mat-icon><span>Report</span></button>
+    </div>
+  </div>
+
+  <div class="overall-container">
+    <div>
+      <span>Overall progress</span>
+      <span>{{ project.progress }}%</span>
+    </div>
+
+    <mat-progress-bar mode="determinate" [value]="project.progress"></mat-progress-bar>
+  </div>
+</section>
+
+<nav class="full-width-page">
   <div class="nav-items">
     <a routerLink="overview" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="home"></mat-icon
+      ><mat-icon aria-hidden="false" aria-label="Note icon" fontIcon="note"></mat-icon
       >{{ 'project.overview' | translate }}</a
     >
     <a routerLink="board" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="home"></mat-icon
+      ><mat-icon
+        aria-hidden="false"
+        aria-label="Developer board icon"
+        fontIcon="developer_board"
+      ></mat-icon
       >{{ 'project.board' | translate }}</a
+    >
+    <a routerLink="chat" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="chat"></mat-icon
+      >{{ 'project.chat' | translate }}</a
     >
   </div>
 </nav>
 
 <router-outlet></router-outlet>
+} @else {
+<section class="loading-content-spinner">
+  <mat-spinner></mat-spinner>
+</section>
+}

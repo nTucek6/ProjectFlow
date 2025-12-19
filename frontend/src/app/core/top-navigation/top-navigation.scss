@@ -36,6 +36,12 @@
 
 .menu-icon{
   transition: transform 0.5s;
+  cursor: pointer;
+}
+
+.menu-icon:hover{
+  background-color: #ffffff;
+ 
 }
 
 .sidebarOpen{
