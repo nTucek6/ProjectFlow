@@ -1,5 +1,8 @@
 export type ChatMessageDto = {
-  userId: number;
-  message: string;
-  timeSent?: string;
+  fullName: string;
+  sender: number;
+  content: string;
+  type: string;
+  projectId: number;
+  sent?: Date;
 };

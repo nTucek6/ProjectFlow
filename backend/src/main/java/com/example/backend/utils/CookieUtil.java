@@ -17,7 +17,7 @@ public class CookieUtil {
         return ResponseCookie.from(accessTokenName, accessToken)
                 .httpOnly(true)
                 .secure(true)
-                .path("/api")
+                .path("/")
                 .maxAge(Duration.ofMinutes(accessTokenExpire))
                 .sameSite("Strict")
                 .build();

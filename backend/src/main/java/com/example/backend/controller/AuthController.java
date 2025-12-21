@@ -129,7 +129,7 @@ public class AuthController {
         refreshTokenService.deleteRefreshToken(refreshToken);
 
         CookieUtil.clearCookie(response, jwtProperties.getRefreshTokenId(), "/auth/api/v1");
-        CookieUtil.clearCookie(response, jwtProperties.getAccessToken(), "/api");
+        CookieUtil.clearCookie(response, jwtProperties.getAccessToken(), "/");
 
         return ResponseEntity.noContent().build();
     }

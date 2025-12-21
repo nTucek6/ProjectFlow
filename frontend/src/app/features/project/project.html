@@ -68,10 +68,10 @@
           @for (chat of chatData; track $index) {
           <div
             class="chat-message-row"
-            [class.chat-message-row-current-user]="currentUser(chat.userId)"
+            [class.chat-message-row-current-user]="currentUser(chat.sender)"
           >
-          <app-avatar-photo class="profile-image" [name]="'Nikola Tucek'"></app-avatar-photo>
-            <div class="chat-message-body chat-message-current-user">{{ chat.message }}</div>
+          <app-avatar-photo class="profile-image" [name]="chat.fullName"></app-avatar-photo>
+            <div class="chat-message-body chat-message-current-user">{{ chat.content }}</div>
           </div>
 
           }

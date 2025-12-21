@@ -11,7 +11,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { ChatMessageDto } from '../../shared/dto/chat-message.dto';
 import { AuthService } from '../../shared/services/auth.service';
-import { AvatarPhoto } from "../../shared/components/avatar-photo/avatar-photo";
+import { AvatarPhoto } from '../../shared/components/avatar-photo/avatar-photo';
+import { Subscription } from 'rxjs';
+import { WebSocketService } from '../../shared/services/web-socket.service';
 
 @Component({
   selector: 'app-project',
@@ -25,8 +27,8 @@ import { AvatarPhoto } from "../../shared/components/avatar-photo/avatar-photo";
     MatProgressBar,
     MatProgressSpinnerModule,
     FormsModule,
-    AvatarPhoto
-],
+    AvatarPhoto,
+  ],
   templateUrl: './project.html',
   styleUrl: './project.scss',
 })
@@ -37,12 +39,18 @@ export class Project {
 
   private activatedRoute = inject(ActivatedRoute);
 
+  private webSocketService = inject(WebSocketService);
+
+  private subscription!: Subscription;
+
   @ViewChild('chatBox') private chatBox!: ElementRef;
   @ViewChild('chatTextArea') private chatTextArea!: ElementRef;
 
   SCROLL_THRESHOLD = 100;
 
   userId = 0;
+  userFullName = '';
+  projectId = 0;
 
   hideChat: boolean = true;
 
@@ -61,6 +69,19 @@ export class Project {
       this.projectService.getProjectById(parseInt(id)).subscribe((response) => {
         this.project = response;
         this.projectService.setProject(response);
+        this.projectId = this.project.id;
+
+        this.webSocketService.connect(this.project.id);
+
+        this.projectService.getChatMessages(this.project.id, 0, 20).subscribe((response) => {
+          this.chatData = response;
+          this.projectService.setMessages(response);
+          console.log(response);
+
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 0);
+        });
       });
     }
 
@@ -68,7 +89,19 @@ export class Project {
     if (userId != undefined) {
       this.userId = userId;
     }
+    const fullname = this.authService.getUserFullName();
+    if (fullname != null && fullname.length > 0) {
+      this.userFullName = fullname;
+    }
+
+    this.subscription = this.projectService.chat$.subscribe((messages) => {
+      //console.log('Chat updated:', messages);
+      if (messages != null && messages.length > 0) {
+        this.chatData = messages;
+      }
+    });
   }
+
 
   toggleChat() {
     this.hideChat = !this.hideChat;
@@ -82,17 +115,19 @@ export class Project {
     this.message = this.message.trim();
 
     const chat: ChatMessageDto = {
-      userId: this.userId,
-      message: this.message,
+      sender: this.userId,
+      content: this.message,
+      type: 'SEND',
+      fullName: this.userFullName,
+      projectId: this.projectId,
     };
-    this.chatData.push(chat);
     this.message = '';
+
+    this.webSocketService.send(chat);
 
     this.resetAutoGrow();
 
-    if (this.autoScrollEnabled) {
-      this.scrollToBottom();
-    }
+    requestAnimationFrame(() => this.scrollToBottom());
   }
 
   currentUser(userId: number): boolean {
@@ -141,5 +176,10 @@ export class Project {
       el.style.height = 'auto';
       el.scrollTop = 0;
     }, 0);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.webSocketService.unsubscribeFromProject(this.projectId);
   }
 }

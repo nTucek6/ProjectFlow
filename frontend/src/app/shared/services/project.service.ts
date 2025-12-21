@@ -6,17 +6,22 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { ProjectFilterParams } from '../model/project-filter-params';
 import { SearchProjectDto } from '../dto/search-project.dto';
 import { NewProjectDto } from '../dto/new-project.dto';
+import { ChatMessageDto } from '../dto/chat-message.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
   private apiUrl = `${environment.apiUrl}/project`;
+  private apiChatUrl = `${environment.apiUrl}/chat`;
 
   private http: HttpClient = inject(HttpClient);
 
   private projectSubject = new BehaviorSubject<ProjectDto | null>(null);
   project$ = this.projectSubject.asObservable();
+
+  private chatSubject = new BehaviorSubject<ChatMessageDto[] | null>([]);
+  chat$ = this.chatSubject.asObservable();
 
   fetchProjects(
     page: number,
@@ -40,10 +45,9 @@ export class ProjectService {
       params = params.set('ascending', ascending.toString());
     }
 
-    
     if (eventFilterParams != undefined) {
       Object.entries(eventFilterParams).forEach(([key, value]) => {
-        value = value.toString()
+        value = value.toString();
         if (value !== undefined && value !== null && value.length > 0) {
           if (key === 'startDateTimeFrom' || key === 'startDateTimeTo') {
             const dateObj = new Date(value);
@@ -68,5 +72,26 @@ export class ProjectService {
 
   setProject(project: ProjectDto | null): void {
     this.projectSubject.next(project);
+  }
+
+  getProjectId(): number | undefined {
+    return this.projectSubject.value?.id;
+  }
+
+  setMessages(messages: ChatMessageDto[]){
+    this.chatSubject.next(messages);
+  }
+
+  recivedMessage(message: ChatMessageDto) {
+    const currentChats = this.chatSubject.value ?? [];
+    this.chatSubject.next([...currentChats, message]);
+  }
+
+  getChatMessages(projectId: number, page: number, size: number): Observable<ChatMessageDto[]> {
+    const params = {
+      page: page ,
+      size: size,
+    };
+    return this.http.get<ChatMessageDto[]>(`${this.apiChatUrl}/project/${projectId}`, { params });
   }
 }

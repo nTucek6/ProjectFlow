@@ -44,7 +44,7 @@ export class Overview {
 
       this.taskService.fetchUserTop3Tasks(currentProject.id, userId).subscribe({
         next: (data) => {
-          console.log('API data:', data);
+          //console.log('API data:', data);
           this.tasks = data;
           // handle the data as needed
         },

@@ -33,7 +33,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (request.getRequestURI().startsWith("/api/")) {
+        if (request.getRequestURI().startsWith("/api/") || request.getRequestURI().startsWith("/chat/")) {
             String token = null;
             String email = null;
             Cookie[] cookies = request.getCookies();
