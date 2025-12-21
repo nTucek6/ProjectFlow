@@ -64,13 +64,14 @@
           </div>
         </div>
         <div class="chat-content-list" #chatBox (scroll)="onScroll()">
+          @if (!hasOverflow) {
           <div class="spacer"></div>
-          @for (chat of chatData; track $index) {
+          } @for (chat of chatData; track $index) {
           <div
             class="chat-message-row"
             [class.chat-message-row-current-user]="currentUser(chat.sender)"
           >
-          <app-avatar-photo class="profile-image" [name]="chat.fullName"></app-avatar-photo>
+            <app-avatar-photo class="profile-image" [name]="chat.fullName"></app-avatar-photo>
             <div class="chat-message-body chat-message-current-user">{{ chat.content }}</div>
           </div>
 

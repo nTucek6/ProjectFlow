@@ -43,10 +43,12 @@ export class Project {
 
   private subscription!: Subscription;
 
-  @ViewChild('chatBox') private chatBox!: ElementRef;
+  @ViewChild('chatBox') private chatBox!: ElementRef<HTMLDivElement>;
   @ViewChild('chatTextArea') private chatTextArea!: ElementRef;
 
-  SCROLL_THRESHOLD = 100;
+  SCROLL_THRESHOLD = 50;
+
+  lastMessageCount = 0;
 
   userId = 0;
   userFullName = '';
@@ -59,6 +61,8 @@ export class Project {
   chatData: ChatMessageDto[] = [];
 
   autoScrollEnabled: boolean = true;
+
+  hasOverflow : boolean = false;
 
   project: ProjectDto | null = null;
   progress: any;
@@ -77,10 +81,6 @@ export class Project {
           this.chatData = response;
           this.projectService.setMessages(response);
           console.log(response);
-
-          setTimeout(() => {
-            this.scrollToBottom();
-          }, 0);
         });
       });
     }
@@ -98,13 +98,23 @@ export class Project {
       //console.log('Chat updated:', messages);
       if (messages != null && messages.length > 0) {
         this.chatData = messages;
+
+        const hasNewMessage = messages.length > this.lastMessageCount;
+        this.lastMessageCount = messages.length;
+
+        if (hasNewMessage && this.autoScrollEnabled) {
+          this.scrollToBottom();
+        }
       }
     });
   }
 
-
   toggleChat() {
     this.hideChat = !this.hideChat;
+
+    if (!this.hideChat) {
+      setTimeout(() => this.scrollToBottom());
+    }
   }
 
   sendMessage() {
@@ -126,8 +136,6 @@ export class Project {
     this.webSocketService.send(chat);
 
     this.resetAutoGrow();
-
-    requestAnimationFrame(() => this.scrollToBottom());
   }
 
   currentUser(userId: number): boolean {
@@ -140,17 +148,20 @@ export class Project {
   onScroll() {
     const el = this.chatBox.nativeElement;
     const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+
     this.autoScrollEnabled = distanceFromBottom < this.SCROLL_THRESHOLD;
   }
 
   scrollToBottom() {
-    setTimeout(() => {
-      const el = this.chatBox.nativeElement;
-      el.scrollTo({
-        top: el.scrollHeight,
-        behavior: 'smooth',
-      });
-    }, 0);
+    requestAnimationFrame(() => {
+      const el = this.chatBox?.nativeElement;
+      if (!el) return;
+
+      el.scrollTop = el.scrollHeight;
+      this.hasOverflow = el.scrollHeight > el.clientHeight;
+
+      this.autoScrollEnabled = true;
+    });
   }
 
   onEnter(event: any) {
