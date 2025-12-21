@@ -53,6 +53,58 @@
   </div>
 </nav>
 
+<div class="chatbox-container">
+  <div class="live-chat-inner-container" [class.liveChat-hidden]="hideChat">
+    <div class="live-chat-container">
+      <div class="live-chat-content">
+        <div class="chat-header">
+          <div class="chat-header-content">
+            <div></div>
+            <span>Team {{ project.name }}</span>
+          </div>
+        </div>
+        <div class="chat-content-list" #chatBox (scroll)="onScroll()">
+          <div class="spacer"></div>
+          @for (chat of chatData; track $index) {
+          <div
+            class="chat-message-row"
+            [class.chat-message-row-current-user]="currentUser(chat.userId)"
+          >
+          <app-avatar-photo class="profile-image" [name]="'Nikola Tucek'"></app-avatar-photo>
+            <div class="chat-message-body chat-message-current-user">{{ chat.message }}</div>
+          </div>
+
+          }
+        </div>
+        <div class="chat-message-field-container">
+          <div class="chat-message-field">
+            <div class="chat-message-form">
+              <div class="chat-message-textarea">
+                <textarea
+                  #chatTextArea
+                  type="text"
+                  name="message"
+                  rows="1"
+                  placeholder="Say something..."
+                  [(ngModel)]="message"
+                  (keydown.enter)="onEnter($event)"
+                  (input)="autoGrow($event.target)"
+                ></textarea>
+              </div>
+              <button (click)="sendMessage()"><mat-icon>send</mat-icon></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  @if (hideChat) {
+  <button (click)="toggleChat()"><mat-icon>chat</mat-icon></button>
+  } @else {
+  <button (click)="toggleChat()"><mat-icon>close</mat-icon></button>
+  }
+</div>
+
 <router-outlet></router-outlet>
 } @else {
 <section class="loading-content-spinner">
