@@ -1,6 +1,6 @@
 package com.example.backend.repository;
 
-import com.example.backend.model.RefreshToken;
+import com.example.backend.model.table.RefreshToken;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

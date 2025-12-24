@@ -1,7 +1,7 @@
 package com.example.backend.service.auth;
 
 import com.example.backend.configuration.JwtProperties;
-import com.example.backend.model.RefreshToken;
+import com.example.backend.model.table.RefreshToken;
 import com.example.backend.repository.RefreshTokenRepository;
 import com.example.backend.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,8 +31,6 @@ public class RefreshTokenService {
                     refreshTokenRepository.flush();
                 }
         );
-
-        log.info(String.valueOf(jwtProperties.getRefreshTokenExpire()));
 
         RefreshToken refreshToken = RefreshToken.builder()
                 .userInfo(userService.findByEmail(email))

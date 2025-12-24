@@ -2,15 +2,13 @@ package com.example.backend.service.implementation;
 
 import com.example.backend.dto.ChatMessageDto;
 import com.example.backend.mapper.ChatMapper;
-import com.example.backend.mapper.TaskMapper;
-import com.example.backend.model.ChatRoom;
-import com.example.backend.model.Project;
-import com.example.backend.model.User;
+import com.example.backend.model.table.ChatRoom;
+import com.example.backend.model.table.Project;
+import com.example.backend.model.table.User;
 import com.example.backend.repository.ChatRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.ChatService;
-import com.example.backend.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,6 +1,5 @@
-package com.example.backend.model;
+package com.example.backend.model.table;
 
-import com.example.backend.enums.MessageType;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

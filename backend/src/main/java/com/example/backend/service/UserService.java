@@ -3,7 +3,7 @@ package com.example.backend.service;
 import com.example.backend.dto.RegisterRequestDto;
 import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.UserDto;
-import com.example.backend.model.User;
+import com.example.backend.model.table.User;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface UserService {
 
     List<SelectDto> findBySearch(String search);
 
-    UserDto registerUser(RegisterRequestDto registerRequest);
+    User registerUser(RegisterRequestDto registerRequest);
 
     UserDto save (User user);
 

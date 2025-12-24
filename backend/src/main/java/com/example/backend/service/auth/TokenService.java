@@ -1,6 +1,7 @@
 package com.example.backend.service.auth;
 
-import com.example.backend.model.VerificationToken;
+import com.example.backend.model.table.User;
+import com.example.backend.model.table.VerificationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface TokenService {
@@ -8,5 +9,6 @@ public interface TokenService {
     String extractEmail(String token);
     boolean validateToken(String token, UserDetails userDetails);
     VerificationToken findVerificationToken(String token);
-    void sendVerificationEmail(String email);
+    String setVerificationToken(User user);
+    void deleteVerifyToken(VerificationToken token);
 }

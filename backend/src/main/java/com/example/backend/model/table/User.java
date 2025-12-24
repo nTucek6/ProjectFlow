@@ -1,4 +1,4 @@
-package com.example.backend.model;
+package com.example.backend.model.table;
 
 import com.example.backend.enums.UserRole;
 import jakarta.persistence.*;
@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity

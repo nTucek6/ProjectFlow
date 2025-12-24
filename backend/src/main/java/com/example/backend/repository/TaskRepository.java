@@ -1,6 +1,6 @@
 package com.example.backend.repository;
 
-import com.example.backend.model.Task;
+import com.example.backend.model.table.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

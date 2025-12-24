@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import {
   BehaviorSubject,
   catchError,
@@ -81,6 +81,13 @@ export class AuthService {
         this.authorizedSubject.next(false);
       })
     );
+  }
+
+  verifyUser(token: String): Observable<boolean> {
+    const params = {
+      verifyToken: token.toString(),
+    };
+    return this.http.get<boolean>(`${this.apiUrl}/verify`, { params });
   }
 
   initializeAuth(): Promise<void> {

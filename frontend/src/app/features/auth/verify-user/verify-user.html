@@ -1,0 +1,11 @@
+<section>
+  <div>
+    @if (userVerified) {
+         <button mat-button (click)="navigateToLogin()">Naigate to login</button>
+    }
+    @else {
+         <button mat-button (click)="verifyUser()">Verify user</button>
+    }
+   
+  </div>
+</section>

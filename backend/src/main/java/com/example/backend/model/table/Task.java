@@ -1,4 +1,4 @@
-package com.example.backend.model;
+package com.example.backend.model.table;
 
 import com.example.backend.enums.TaskStatus;
 import jakarta.persistence.*;
@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity

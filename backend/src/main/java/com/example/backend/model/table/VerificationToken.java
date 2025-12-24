@@ -1,4 +1,4 @@
-package com.example.backend.model;
+package com.example.backend.model.table;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

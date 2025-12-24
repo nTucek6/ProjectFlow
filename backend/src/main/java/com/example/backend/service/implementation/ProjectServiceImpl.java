@@ -5,7 +5,7 @@ import com.example.backend.dto.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
 import com.example.backend.filterParams.ProjectFilterParams;
 import com.example.backend.mapper.ProjectMapper;
-import com.example.backend.model.*;
+import com.example.backend.model.table.*;
 import com.example.backend.repository.MilestoneTemplatesRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.UserRepository;

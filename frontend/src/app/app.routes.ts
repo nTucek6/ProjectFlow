@@ -56,6 +56,12 @@ export const routes: Routes = [
         canActivate: [authGuard],
         loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
       },
+      {
+        path: 'verify/:token',
+        title: 'Verify',
+        canActivate: [authGuard],
+        loadComponent: () => import('./features/auth/verify-user/verify-user').then((m) => m.VerifyUser),
+      },
     ],
   },
 ];

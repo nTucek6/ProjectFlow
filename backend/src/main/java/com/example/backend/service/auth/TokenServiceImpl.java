@@ -1,7 +1,9 @@
 package com.example.backend.service.auth;
 
-import com.example.backend.model.RefreshToken;
-import com.example.backend.model.VerificationToken;
+import com.example.backend.configuration.JwtProperties;
+import com.example.backend.model.table.RefreshToken;
+import com.example.backend.model.table.User;
+import com.example.backend.model.table.VerificationToken;
 import com.example.backend.repository.VerificationTokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,6 +17,9 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 
 import java.security.Key;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,12 +30,14 @@ public class TokenServiceImpl implements TokenService {
     private final RefreshTokenService refreshTokenService;
     private final VerificationTokenRepository verificationTokenRepository;
 
+    private final JwtProperties jwtProperties;
+
     public static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677398A2443164621";
 
     @Override
     public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, email);
+        return createToken(claims, email, jwtProperties.getAccessTokenExpire());
     }
 
     @Override
@@ -55,7 +62,24 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public void sendVerificationEmail(String email) {
+    public String setVerificationToken(User user) {
+
+        Map<String, Object> claims = new HashMap<>();
+
+        String t1 = createToken(claims, user.getEmail(), 24 * 60);
+
+
+        VerificationToken token = new VerificationToken();
+        token.setToken(t1);
+        token.setUser(user);
+        token.setExpiresAt(LocalDateTime.now().plusHours(24));
+
+        return verificationTokenRepository.save(token).getToken();
+    }
+
+    @Override
+    public void deleteVerifyToken(VerificationToken token) {
+        verificationTokenRepository.delete(token);
 
     }
 
@@ -82,12 +106,15 @@ public class TokenServiceImpl implements TokenService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private String createToken(Map<String, Object> claims, String email) {
+    private String createToken(Map<String, Object> claims, String email, int expire) {
+        Date expiresAt = Date.from(
+                Instant.now().plus(Duration.ofMinutes(expire))
+        );
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 6000 * 1))
+                .setExpiration(expiresAt)
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

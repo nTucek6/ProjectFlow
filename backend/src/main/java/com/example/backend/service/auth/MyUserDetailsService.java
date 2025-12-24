@@ -1,6 +1,6 @@
 package com.example.backend.service.auth;
 
-import com.example.backend.model.User;
+import com.example.backend.model.table.User;
 import com.example.backend.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

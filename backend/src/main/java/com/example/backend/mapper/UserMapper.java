@@ -2,7 +2,7 @@ package com.example.backend.mapper;
 
 import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.UserDto;
-import com.example.backend.model.User;
+import com.example.backend.model.table.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

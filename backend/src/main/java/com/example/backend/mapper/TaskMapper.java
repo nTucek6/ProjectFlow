@@ -2,7 +2,7 @@ package com.example.backend.mapper;
 
 import com.example.backend.dto.TaskDto;
 import com.example.backend.enums.TaskStatus;
-import com.example.backend.model.Task;
+import com.example.backend.model.table.Task;
 
 public class TaskMapper {
 

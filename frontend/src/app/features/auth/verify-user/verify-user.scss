@@ -1,0 +1,12 @@
+section {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section > div {
+  border: 2px solid #ddd;
+  padding: 1.5rem 20rem;
+  background-color: beige;
+}

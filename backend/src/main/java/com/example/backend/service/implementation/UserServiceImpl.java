@@ -3,17 +3,15 @@ package com.example.backend.service.implementation;
 import com.example.backend.dto.RegisterRequestDto;
 import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.UserDto;
-import com.example.backend.mapper.ProjectMapper;
+import com.example.backend.enums.UserRole;
 import com.example.backend.mapper.UserMapper;
-import com.example.backend.model.User;
+import com.example.backend.model.table.User;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -44,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto registerUser(RegisterRequestDto registerRequest) {
+    public User registerUser(RegisterRequestDto registerRequest) {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new RuntimeException("Email already in use!");
         }
@@ -55,8 +53,9 @@ public class UserServiceImpl implements UserService {
         user.setName(registerRequest.getName());
         user.setSurname(registerRequest.getSurname());
         user.setEnabled(Boolean.FALSE);
+        user.setRole(UserRole.USER);
 
-        return UserMapper.mapUserToUserDto(userRepository.save(user));
+        return userRepository.save(user);
     }
 
     @Override

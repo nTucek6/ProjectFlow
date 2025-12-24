@@ -2,7 +2,7 @@ package com.example.backend.mapper;
 
 import com.example.backend.dto.ChatMessageDto;
 import com.example.backend.enums.MessageType;
-import com.example.backend.model.ChatRoom;
+import com.example.backend.model.table.ChatRoom;
 
 public class ChatMapper {
 
