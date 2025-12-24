@@ -75,8 +75,4 @@ public class RefreshTokenService {
         Instant now = Instant.now();
         refreshTokenRepository.deleteAllByExpiryDateBefore(now);
     }
-
-    public void deleteByEmail(String email) {
-        refreshTokenRepository.deleteByUserInfo_Email(email);
-    }
 }

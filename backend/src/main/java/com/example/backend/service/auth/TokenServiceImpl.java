@@ -1,11 +1,14 @@
 package com.example.backend.service.auth;
 
 import com.example.backend.model.RefreshToken;
+import com.example.backend.model.VerificationToken;
+import com.example.backend.repository.VerificationTokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.lang.Function;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -18,13 +21,14 @@ import java.util.Map;
 
 @Component
 @AllArgsConstructor
-public class JwtService implements TokenService {
+public class TokenServiceImpl implements TokenService {
     private final RefreshTokenService refreshTokenService;
+    private final VerificationTokenRepository verificationTokenRepository;
 
     public static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677398A2443164621";
 
     @Override
-    public String generateToken(String email){
+    public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, email);
     }
@@ -43,6 +47,18 @@ public class JwtService implements TokenService {
             return false;
         }
     }
+
+    @Override
+    public VerificationToken findVerificationToken(String token) {
+        return verificationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new EntityNotFoundException("Verify token not found"));
+    }
+
+    @Override
+    public void sendVerificationEmail(String email) {
+
+    }
+
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);

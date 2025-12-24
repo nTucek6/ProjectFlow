@@ -2,12 +2,14 @@ package com.example.backend.controller;
 
 import com.example.backend.configuration.JwtProperties;
 import com.example.backend.dto.LoginRequestDTO;
+import com.example.backend.dto.RegisterRequestDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.RefreshToken;
 import com.example.backend.model.User;
+import com.example.backend.model.VerificationToken;
 import com.example.backend.service.UserService;
-import com.example.backend.service.auth.JwtService;
+import com.example.backend.service.auth.TokenService;
 import com.example.backend.service.auth.RefreshTokenService;
 import com.example.backend.utils.CookieUtil;
 import jakarta.servlet.http.Cookie;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -36,9 +39,10 @@ import java.util.Optional;
 public class AuthController {
 
     private final UserService userService;
+    private final TokenService tokenService;
     private AuthenticationManager authenticationManager;
 
-    private JwtService jwtService;
+    private TokenService tokenServiceImpl;
 
     private RefreshTokenService refreshTokenService;
 
@@ -52,7 +56,7 @@ public class AuthController {
             String email = ((UserDetails) authentication.getPrincipal()).getUsername();
 
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(email);
-            String accessToken = jwtService.generateToken(email);
+            String accessToken = tokenServiceImpl.generateToken(email);
 
             CookieUtil.addRefreshTokenIdCookieToResponse(response, String.valueOf(refreshToken.getId()), jwtProperties.getRefreshTokenId(), jwtProperties.getRefreshTokenExpire());
             CookieUtil.addAccessTokenCookieToResponse(response, accessToken, jwtProperties.getAccessToken(), jwtProperties.getAccessTokenExpire());
@@ -65,6 +69,41 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequestDto registerRequest) {
+        try {
+            UserDto newUser = userService.registerUser(registerRequest);
+            tokenService.sendVerificationEmail(newUser.getEmail());
+
+            return ResponseEntity.ok("Check your email to verify your account");
+        } catch (AuthenticationException e) {
+            log.info("RegisterException", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<?> verify(@RequestParam String token) {
+        try {
+
+            VerificationToken vt = tokenService.findVerificationToken(token);
+
+            if (vt.getExpiresAt().isBefore(LocalDateTime.now())) {
+                return ResponseEntity.badRequest().body("Token expired");
+            }
+
+            User user = vt.getUser();
+            user.setEnabled(true);
+            userService.save(user);
+            return ResponseEntity.ok("Account verified");
+
+        } catch (AuthenticationException e) {
+            log.info("VerifyException", e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+
 
     @PostMapping("/refreshToken")
     public ResponseEntity<UserDto> refreshToken(HttpServletRequest request, HttpServletResponse response) {
@@ -86,7 +125,7 @@ public class AuthController {
 
         User user = userService.findByEmail(refreshToken.getUserInfo().getEmail());
 
-        String accessToken = jwtService.generateToken(user.getEmail());
+        String accessToken = tokenServiceImpl.generateToken(user.getEmail());
 
         CookieUtil.addAccessTokenCookieToResponse(response, accessToken, jwtProperties.getAccessToken(), jwtProperties.getAccessTokenExpire());
 

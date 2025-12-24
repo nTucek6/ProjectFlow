@@ -25,6 +25,7 @@ public class User {
     private String email;
     private String password;
     private UserRole role;
+    private boolean enabled;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
