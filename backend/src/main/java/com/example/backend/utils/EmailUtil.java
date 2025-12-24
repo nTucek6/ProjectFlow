@@ -1,6 +1,18 @@
 package com.example.backend.utils;
 
-public class EmailMessageUtil {
+import com.example.backend.model.EmailDetails;
+
+public class EmailUtil {
+
+    public static EmailDetails emailStructure(String recipient, String subject, String message)
+    {
+        EmailDetails email = new EmailDetails();
+        email.setSubject(subject);
+        email.setMsgBody(message);
+        email.setRecipient(recipient);
+        return email;
+    }
+
 
     public static String verifyEmailMessage(String token) {
         String verifyUrl = String.format(

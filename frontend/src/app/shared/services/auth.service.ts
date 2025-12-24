@@ -90,6 +90,13 @@ export class AuthService {
     return this.http.get<boolean>(`${this.apiUrl}/verify`, { params });
   }
 
+  resendVerifyToken(token: String): Observable<boolean> {
+    const params = {
+      verifyToken: token.toString(),
+    };
+    return this.http.get<boolean>(`${this.apiUrl}/resendtoken`, { params });
+  }
+
   initializeAuth(): Promise<void> {
     return firstValueFrom(
       this.refreshToken().pipe(

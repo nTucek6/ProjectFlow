@@ -37,7 +37,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/auth/api/v1/login","/auth/api/v1/register", "/auth/api/v1/verify").anonymous()
+                                .requestMatchers("/auth/api/v1/login","/auth/api/v1/register", "/auth/api/v1/verify", "/auth/api/v1/resendtoken").anonymous()
                                 .requestMatchers("/auth/api/v1/login", "/auth/api/v1/refreshToken", "/auth/api/v1/logout", "/auth/api/v1/me").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/project/**").permitAll()
                                 //testiranje delete makni kasnije

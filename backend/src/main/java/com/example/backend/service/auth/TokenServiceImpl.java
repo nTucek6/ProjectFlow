@@ -20,6 +20,7 @@ import java.security.Key;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,12 +68,15 @@ public class TokenServiceImpl implements TokenService {
         Map<String, Object> claims = new HashMap<>();
 
         String t1 = createToken(claims, user.getEmail(), 24 * 60);
-
+        //String t1 = createToken(claims, user.getEmail(), 10);
+        LocalDateTime expire = extractExpiration(t1).toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();;
 
         VerificationToken token = new VerificationToken();
         token.setToken(t1);
         token.setUser(user);
-        token.setExpiresAt(LocalDateTime.now().plusHours(24));
+        token.setExpiresAt(expire);
 
         return verificationTokenRepository.save(token).getToken();
     }
@@ -80,7 +84,6 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public void deleteVerifyToken(VerificationToken token) {
         verificationTokenRepository.delete(token);
-
     }
 
 
@@ -106,10 +109,11 @@ public class TokenServiceImpl implements TokenService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    //private String extractUserEmail(String token) {return extractClaim(token, Claims::getSubject);}
+
     private String createToken(Map<String, Object> claims, String email, int expire) {
-        Date expiresAt = Date.from(
-                Instant.now().plus(Duration.ofMinutes(expire))
-        );
+        Date expiresAt = Date.from(Instant.now().plus(Duration.ofMinutes(expire)));
+        //Date expiresAt = Date.from(Instant.now().plus(Duration.ofSeconds(expire)));
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(email)

@@ -1,11 +1,15 @@
 <section>
   <div>
-    @if (userVerified) {
-         <button mat-button (click)="navigateToLogin()">Naigate to login</button>
-    }
-    @else {
-         <button mat-button (click)="verifyUser()">Verify user</button>
-    }
-   
+    @if (errorHasOccured) {
+    <p>{{ errorMessage }}</p>
+    @if (sendNewToken) {
+    <button mat-button (click)="resendVerifyToken()">Resend token</button>
+    } } @else { @if (userVerified) {
+    <p>Verified, navigating to login page...</p>
+    } @else {
+    <p>Verifying your email</p>
+    <mat-spinner></mat-spinner>
+    <p>Please wait while we confirm your account. This usually takes a few seconds.</p>
+    } }
   </div>
 </section>

@@ -14,8 +14,7 @@ import com.example.backend.service.UserService;
 import com.example.backend.service.auth.TokenService;
 import com.example.backend.service.auth.RefreshTokenService;
 import com.example.backend.utils.CookieUtil;
-import com.example.backend.utils.EmailMessageUtil;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.backend.utils.EmailUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -93,16 +92,16 @@ public class AuthController {
 
             String token = tokenService.setVerificationToken(newUser);
 
-            EmailDetails email = new EmailDetails();
-            email.setSubject("ProjectFlow - Verify you email!");
-            email.setMsgBody(EmailMessageUtil.verifyEmailMessage(token));
-            email.setRecipient(newUser.getEmail());
+            EmailDetails email = EmailUtil.emailStructure(
+                    newUser.getEmail(),
+                    "ProjectFlow - Verify you email!",
+                    EmailUtil.verifyEmailMessage(token));
 
             String status = emailService.sendSimpleMail(email);
             log.info(status);
 
             return ResponseEntity.ok("Check your email to verify your account");
-        } catch (AuthenticationException e) {
+        } catch (Exception e) {
             log.info("RegisterException", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
@@ -111,11 +110,10 @@ public class AuthController {
     @GetMapping("/verify")
     public ResponseEntity<?> verify(@RequestParam String verifyToken) {
         try {
-
             VerificationToken vt = tokenService.findVerificationToken(verifyToken);
 
             if (vt.getExpiresAt().isBefore(LocalDateTime.now())) {
-                return ResponseEntity.badRequest().body("Token expired");
+                throw new RuntimeException("Token expired!");
             }
 
             User user = vt.getUser();
@@ -126,9 +124,37 @@ public class AuthController {
 
             return ResponseEntity.ok(Boolean.TRUE);
 
-        } catch (EntityNotFoundException e) {
+        } catch (Exception e) {
             log.info(e.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/resendtoken")
+    public ResponseEntity<?> resendToken(@RequestParam String verifyToken){
+        try{
+
+            VerificationToken oldToken = tokenService.findVerificationToken(verifyToken);
+
+            User user = oldToken.getUser();
+
+            tokenService.deleteVerifyToken(oldToken);
+
+            String token = tokenService.setVerificationToken(user);
+
+            EmailDetails email = EmailUtil.emailStructure(
+                    user.getEmail(),
+                    "ProjectFlow - Verify you email!",
+                    EmailUtil.verifyEmailMessage(token));
+
+            String status = emailService.sendSimpleMail(email);
+            log.info(status);
+
+            return ResponseEntity.ok(Boolean.TRUE);
+
+        }catch (Exception e) {
+            log.info(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
