@@ -5,4 +5,5 @@ export type NewProjectDto = {
   membersId: number[];
   customMilestones: NewProjectMilestoneDto[];
   deadline:string;
+  ownerId:number;
 };

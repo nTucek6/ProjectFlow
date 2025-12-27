@@ -40,10 +40,16 @@ public class SecurityConfiguration {
                                 .requestMatchers("/auth/api/v1/login","/auth/api/v1/register", "/auth/api/v1/verify", "/auth/api/v1/resendtoken").anonymous()
                                 .requestMatchers("/auth/api/v1/login", "/auth/api/v1/refreshToken", "/auth/api/v1/logout", "/auth/api/v1/me").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/project/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/api/project/**").authenticated()
+
                                 //testiranje delete makni kasnije
                                 .requestMatchers(HttpMethod.DELETE, "/api/project/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/user/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/api/project/**").permitAll()
+                                //User permissions
+                                .requestMatchers(HttpMethod.GET, "/api/user/**").authenticated()
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                                 .requestMatchers("/chat/**").authenticated()
                                 .anyRequest().authenticated()

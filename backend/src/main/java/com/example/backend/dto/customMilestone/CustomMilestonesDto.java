@@ -1,4 +1,4 @@
-package com.example.backend.dto;
+package com.example.backend.dto.customMilestone;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class CustomMilestonesDto {
-    public String name;
-    public String description;
-    public String color;
-
+    private String name;
+    private String description;
+    private String color;
 }

@@ -1,6 +1,7 @@
 package com.example.backend.model.table;
 
 import com.example.backend.enums.ProjectRole;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,11 +37,20 @@ public class ProjectMember {
     private LocalDateTime joinedAt;
 
 
-    public ProjectMember(Project project, User user) {
+    public ProjectMember(Project project, User user, ProjectRole role) {
         this.project = project;
         this.user = user;
-        this.role = ProjectRole.MEMBER;
+        //this.role = ProjectRole.MEMBER;
+        this.role = role != null ? role : ProjectRole.MEMBER;
         this.joinedAt = LocalDateTime.now();
+    }
+
+    public static ProjectMember createMember(Project project, User user) {
+        return new ProjectMember(project, user, ProjectRole.MEMBER);
+    }
+
+    public static ProjectMember createOwner(Project project, User user) {
+        return new ProjectMember(project, user, ProjectRole.OWNER);
     }
 
 }

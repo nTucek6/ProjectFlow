@@ -1,6 +1,6 @@
 package com.example.backend.mapper;
 
-import com.example.backend.dto.TaskDto;
+import com.example.backend.dto.task.TaskDto;
 import com.example.backend.enums.TaskStatus;
 import com.example.backend.model.table.Task;
 

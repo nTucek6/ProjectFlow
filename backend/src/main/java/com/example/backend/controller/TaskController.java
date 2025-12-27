@@ -1,7 +1,7 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.CreateTaskDto;
-import com.example.backend.dto.TaskDto;
+import com.example.backend.dto.task.CreateTaskDto;
+import com.example.backend.dto.task.TaskDto;
 import com.example.backend.service.TaskService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;

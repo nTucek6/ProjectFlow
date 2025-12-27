@@ -1,8 +1,8 @@
 package com.example.backend.controller;
 
 import com.example.backend.configuration.JwtProperties;
-import com.example.backend.dto.LoginRequestDTO;
-import com.example.backend.dto.RegisterRequestDto;
+import com.example.backend.dto.auth.LoginRequestDTO;
+import com.example.backend.dto.auth.RegisterRequestDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.EmailDetails;
@@ -25,7 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

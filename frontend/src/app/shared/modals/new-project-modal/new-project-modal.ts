@@ -11,7 +11,15 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AsyncPipe } from '@angular/common';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { debounceTime, distinctUntilChanged, map, Observable, startWith, switchMap } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  startWith,
+  switchMap,
+} from 'rxjs';
 import { UserService } from '../../services/user-service';
 import { Select } from '../../model/select';
 
@@ -76,6 +84,7 @@ export class NewProjectModal {
     this.options = this.myControl.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
+      filter((value: any) => value && value.length > 0),
       switchMap((value) =>
         this.userService
           .searchUsers(value || '')
@@ -83,9 +92,8 @@ export class NewProjectModal {
             map((users) =>
               users.filter(
                 (u) =>
-                  !this.selectedUsers.some(
-                    (m) => m.value === u.value && m.value === this.authService.getUserId()
-                  )
+                  u.value !== this.authService.getUserId() &&
+                  !this.selectedUsers.some((m) => m.value === u.value)
               )
             )
           )
@@ -95,8 +103,10 @@ export class NewProjectModal {
 
   addMember(user: any) {
     console.log(user);
-    this.selectedUsers.push(user);
-    this.myControl.setValue('');
+    if (!this.selectedUsers.some((m) => m.value === user.value)) {
+      this.selectedUsers.push(user);
+      this.myControl.setValue('');
+    }
   }
 
   addCustomMilestone() {
@@ -124,23 +134,22 @@ export class NewProjectModal {
 
     let owner = this.authService.getUserId();
     if (owner != undefined) {
-      console.log(owner);
-      membersId.push(owner);
+
+      const newProject: NewProjectDto = {
+        name: this.name,
+        membersId: membersId,
+        customMilestones: milesones,
+        deadline: this.deadline,
+        ownerId: owner,
+      };
+
+      console.log(newProject);
+
+      this.projectService.createNewProject(newProject).subscribe((response) => {
+        console.log(response);
+        this.dialogRef.close('done');
+        alert('Project added, ' + response.name);
+      });
     }
-
-    const newProject: NewProjectDto = {
-      name: this.name,
-      membersId: membersId,
-      customMilestones: milesones,
-      deadline: this.deadline,
-    };
-
-    console.log(newProject);
-
-    this.projectService.createNewProject(newProject).subscribe((response) => {
-      console.log(response);
-      this.dialogRef.close('done');
-      alert('Project added, ' + response.name);
-    });
   }
 }

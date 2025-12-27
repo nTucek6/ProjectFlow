@@ -1,6 +1,6 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.RegisterRequestDto;
+import com.example.backend.dto.auth.RegisterRequestDto;
 import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.model.table.User;

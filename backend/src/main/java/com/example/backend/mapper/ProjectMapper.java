@@ -1,6 +1,6 @@
 package com.example.backend.mapper;
 
-import com.example.backend.dto.ProjectDto;
+import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
 import com.example.backend.model.table.Project;
 import com.example.backend.model.table.User;

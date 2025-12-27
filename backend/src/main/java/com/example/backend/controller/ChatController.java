@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.ChatMessageDto;
-import com.example.backend.dto.TaskDto;
 import com.example.backend.service.ChatService;
 import com.example.backend.service.auth.CustomUserDetails;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,10 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

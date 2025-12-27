@@ -1,8 +1,8 @@
 package com.example.backend.service;
 
 
-import com.example.backend.dto.CreateTaskDto;
-import com.example.backend.dto.TaskDto;
+import com.example.backend.dto.task.CreateTaskDto;
+import com.example.backend.dto.task.TaskDto;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

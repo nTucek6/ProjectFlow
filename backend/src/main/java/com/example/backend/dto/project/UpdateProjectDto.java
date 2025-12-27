@@ -1,5 +1,6 @@
-package com.example.backend.dto;
+package com.example.backend.dto.project;
 
+import com.example.backend.dto.customMilestone.UpdateCustomMilestoneDto;
 import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,13 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class NewProjectDto {
+public class UpdateProjectDto {
 
     private String name;
-    private List<Long> membersId;
-    @Nullable
-    private List<CustomMilestonesDto> customMilestones;
+    private List<ProjectMemberDto> members;
+    private List<UpdateCustomMilestoneDto> customMilestones;
     private LocalDateTime deadline;
+
 }
-
-

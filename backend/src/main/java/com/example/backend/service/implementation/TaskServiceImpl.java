@@ -1,7 +1,7 @@
 package com.example.backend.service.implementation;
 
-import com.example.backend.dto.CreateTaskDto;
-import com.example.backend.dto.TaskDto;
+import com.example.backend.dto.task.CreateTaskDto;
+import com.example.backend.dto.task.TaskDto;
 import com.example.backend.enums.TaskStatus;
 import com.example.backend.mapper.TaskMapper;
 import com.example.backend.model.table.Project;

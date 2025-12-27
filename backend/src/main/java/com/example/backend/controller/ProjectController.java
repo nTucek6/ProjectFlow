@@ -1,12 +1,15 @@
 package com.example.backend.controller;
 
-import com.example.backend.dto.NewProjectDto;
-import com.example.backend.dto.ProjectDto;
+import com.example.backend.dto.project.NewProjectDto;
+import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
+import com.example.backend.dto.project.UpdateProjectDto;
+import com.example.backend.dto.task.TaskDto;
 import com.example.backend.filterParams.ProjectFilterParams;
 import com.example.backend.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/project")
 @AllArgsConstructor
@@ -72,6 +76,17 @@ public class ProjectController {
 
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectDto> updateProject(@PathVariable Long id, @RequestBody UpdateProjectDto updateProjectDto) {
+        try {
+            ProjectDto project = projectService.update(id, updateProjectDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(project);
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
         }
     }
 

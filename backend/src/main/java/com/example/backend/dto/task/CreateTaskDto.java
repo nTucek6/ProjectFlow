@@ -1,6 +1,5 @@
-package com.example.backend.dto;
+package com.example.backend.dto.task;
 
-import com.example.backend.enums.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

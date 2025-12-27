@@ -41,4 +41,19 @@ public class Project {
                 .orElse(null);
     }
 
+
+    public int getProgress() {
+        long done = tasks.stream().filter(Task::isDone).count();
+        return tasks.isEmpty() ? 0 : (int) Math.round((done * 100.0) / tasks.size());
+    }
+
+    public int getTotalTasks() {
+        return tasks.size();
+    }
+
+    public int getMembersCount() {
+        return members.size();
+    }
+
+
 }
