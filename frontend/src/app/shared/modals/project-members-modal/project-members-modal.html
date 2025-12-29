@@ -1,0 +1,43 @@
+<section>
+  <div id="header">
+    <h2>Team members</h2>
+    <button matButton mat-dialog-close><mat-icon>close</mat-icon></button>
+  </div>
+  <div class="members-content">
+    <div class="search-members">
+      <mat-form-field class="form-group" appearance="outline">
+        <input
+          type="text"
+          matInput
+          name="search"
+          [(ngModel)]="search"
+          placeholder="Search members..."
+        />
+      </mat-form-field>
+      <button mat-button (click)="toggleAddNewMembers()">Add members</button>
+    </div>
+    @if (addNewMembers) {
+    <div></div>
+    }
+    <div class="members-list">
+      @for (m of projectMembers; track $index) {
+      <div class="member-item">
+        <div class="info">
+          <app-avatar-photo class="image" [name]="m.fullName"></app-avatar-photo>
+          <div class="user-info">
+            <span class="name">{{m.fullName}}</span>
+            <span class="email">{{m.email}}</span>
+          </div>
+        </div>
+        <div class="role">
+          <select [(ngModel)]="m.role" (ngModelChange)="onRoleChange($event, m.id)">
+            @for (item of roles; track $index) {
+            <option [value]="item.value">{{ item.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>

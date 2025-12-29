@@ -2,6 +2,8 @@ package com.example.backend.model.table;
 
 
 import com.example.backend.enums.ProjectRole;
+import com.example.backend.enums.ProjectStatus;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +21,13 @@ public class Project {
     private Long id;
     private String name;
     private LocalDateTime createdAt;
+    private LocalDateTime startDate;
     private LocalDateTime deadline;
     private LocalDateTime updatedAt;
+    @Nullable
+    private LocalDateTime completedAt;
+    private ProjectStatus status;
+
 
     @ToString.Exclude
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

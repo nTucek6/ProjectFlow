@@ -4,7 +4,6 @@ import com.example.backend.dto.project.NewProjectDto;
 import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
 import com.example.backend.dto.project.UpdateProjectDto;
-import com.example.backend.dto.task.TaskDto;
 import com.example.backend.filterParams.ProjectFilterParams;
 import com.example.backend.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/project")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class ProjectController {
 
     private final ProjectService projectService;

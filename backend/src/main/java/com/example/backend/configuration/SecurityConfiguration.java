@@ -49,6 +49,11 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/api/user/**").authenticated()
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
+                                //ProjectMembers permissions
+                                .requestMatchers(HttpMethod.GET,"/api/project-members/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/project-members/**").authenticated()
+                                .requestMatchers(HttpMethod.PUT,"/api/project-members/**").authenticated()
+
 
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                                 .requestMatchers("/chat/**").authenticated()

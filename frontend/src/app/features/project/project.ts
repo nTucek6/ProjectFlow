@@ -9,11 +9,15 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { FormsModule } from '@angular/forms';
-import { ChatMessageDto } from '../../shared/dto/chat-message.dto';
+//import { ChatMessageDto } from '../../shared/dto/chat-message.dto';
 import { AuthService } from '../../shared/services/auth.service';
-import { AvatarPhoto } from '../../shared/components/avatar-photo/avatar-photo';
-import { Subscription } from 'rxjs';
-import { WebSocketService } from '../../shared/services/web-socket.service';
+//import { AvatarPhoto } from '../../shared/components/avatar-photo/avatar-photo';
+//import { Subscription } from 'rxjs';
+//import { WebSocketService } from '../../shared/services/web-socket.service';
+import { ChatBox } from '../../shared/components/chat-box/chat-box';
+import { MatDialog } from '@angular/material/dialog';
+import { ProjectEditModal } from '../../shared/modals/project-edit-modal/project-edit-modal';
+import { ProjectMembersModal } from '../../shared/modals/project-members-modal/project-members-modal';
 
 @Component({
   selector: 'app-project',
@@ -27,7 +31,8 @@ import { WebSocketService } from '../../shared/services/web-socket.service';
     MatProgressBar,
     MatProgressSpinnerModule,
     FormsModule,
-    AvatarPhoto,
+    // AvatarPhoto,
+    ChatBox,
   ],
   templateUrl: './project.html',
   styleUrl: './project.scss',
@@ -39,30 +44,12 @@ export class Project {
 
   private activatedRoute = inject(ActivatedRoute);
 
-  private webSocketService = inject(WebSocketService);
-
-  private subscription!: Subscription;
-
-  @ViewChild('chatBox') private chatBox!: ElementRef<HTMLDivElement>;
-  @ViewChild('chatTextArea') private chatTextArea!: ElementRef;
-
-  SCROLL_THRESHOLD = 50;
-
-  lastMessageCount = 0;
+  readonly dialog = inject(MatDialog);
 
   userId = 0;
   userFullName = '';
   projectId = 0;
-
-  hideChat: boolean = true;
-
-  message: string = '';
-
-  chatData: ChatMessageDto[] = [];
-
-  autoScrollEnabled: boolean = true;
-
-  hasOverflow : boolean = false;
+  projectName = '';
 
   project: ProjectDto | null = null;
   progress: any;
@@ -74,17 +61,9 @@ export class Project {
         this.project = response;
         this.projectService.setProject(response);
         this.projectId = this.project.id;
-
-        this.webSocketService.connect(this.project.id);
-
-        this.projectService.getChatMessages(this.project.id, 0, 20).subscribe((response) => {
-          this.chatData = response;
-          this.projectService.setMessages(response);
-          console.log(response);
-        });
+        this.projectName = this.project.name;
       });
     }
-
     const userId = this.authService.getUserId();
     if (userId != undefined) {
       this.userId = userId;
@@ -93,104 +72,22 @@ export class Project {
     if (fullname != null && fullname.length > 0) {
       this.userFullName = fullname;
     }
+  }
 
-    this.subscription = this.projectService.chat$.subscribe((messages) => {
-      //console.log('Chat updated:', messages);
-      if (messages != null && messages.length > 0) {
-        this.chatData = messages;
+  openEditDialog() {
+    const dialogRef = this.dialog.open(ProjectEditModal, { panelClass: 'custom-dialog-container' });
+    /*dialogRef.afterClosed().subscribe((result) => {
+        //console.log(`Dialog result: ${result}`);
+      }); */
+  }
 
-        const hasNewMessage = messages.length > this.lastMessageCount;
-        this.lastMessageCount = messages.length;
-
-        if (hasNewMessage && this.autoScrollEnabled) {
-          this.scrollToBottom();
-        }
-      }
+  openMembersDialog() {
+    const dialogRef = this.dialog.open(ProjectMembersModal, {
+      panelClass: 'custom-dialog-container',
+      data: { projectId: this.projectId },
     });
-  }
-
-  toggleChat() {
-    this.hideChat = !this.hideChat;
-
-    if (!this.hideChat) {
-      setTimeout(() => this.scrollToBottom());
-    }
-  }
-
-  sendMessage() {
-    if (this.message.trim().length == 0) {
-      return;
-    }
-
-    this.message = this.message.trim();
-
-    const chat: ChatMessageDto = {
-      sender: this.userId,
-      content: this.message,
-      type: 'SEND',
-      fullName: this.userFullName,
-      projectId: this.projectId,
-    };
-    this.message = '';
-
-    this.webSocketService.send(chat);
-
-    this.resetAutoGrow();
-  }
-
-  currentUser(userId: number): boolean {
-    if (userId == this.userId) {
-      return true;
-    }
-    return false;
-  }
-
-  onScroll() {
-    const el = this.chatBox.nativeElement;
-    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
-
-    this.autoScrollEnabled = distanceFromBottom < this.SCROLL_THRESHOLD;
-  }
-
-  scrollToBottom() {
-    requestAnimationFrame(() => {
-      const el = this.chatBox?.nativeElement;
-      if (!el) return;
-
-      el.scrollTop = el.scrollHeight;
-      this.hasOverflow = el.scrollHeight > el.clientHeight;
-
-      this.autoScrollEnabled = true;
-    });
-  }
-
-  onEnter(event: any) {
-    if (event.shiftKey) {
-      return;
-    }
-
-    event.preventDefault();
-
-    if (!this.message?.trim()) return;
-
-    this.sendMessage();
-  }
-
-  autoGrow(el: any) {
-    el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
-  }
-
-  resetAutoGrow() {
-    setTimeout(() => {
-      const el = this.chatTextArea.nativeElement;
-      el.style.height = 'auto';
-      el.scrollTop = 0;
-    }, 0);
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.webSocketService.unsubscribeFromProject(this.projectId);
+    /*dialogRef.afterClosed().subscribe((result) => {
+        //console.log(`Dialog result: ${result}`);
+      }); */
   }
 }

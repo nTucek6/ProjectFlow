@@ -1,0 +1,69 @@
+import { Component, inject } from '@angular/core';
+import { MatFormField } from '@angular/material/input';
+import { FormsModule, FormControl } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatAnchor } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AvatarPhoto } from '../../components/avatar-photo/avatar-photo';
+import { MatSelectModule } from '@angular/material/select';
+
+import { Select } from '../../model/select';
+import { ProjectMemberService } from '../../services/project-member.service';
+import { ProjectMemberDto } from '../../dto/project-member.dto';
+import { ProjectRole } from '../../enums/project-role.enum';
+
+@Component({
+  selector: 'app-project-members-modal',
+  imports: [
+    MatFormField,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAnchor,
+    MatIcon,
+    MatButtonModule,
+    MatDialogModule,
+    AvatarPhoto,
+    MatSelectModule,
+  ],
+  templateUrl: './project-members-modal.html',
+  styleUrl: './project-members-modal.scss',
+})
+export class ProjectMembersModal {
+  private dialogRef = inject(MatDialogRef<ProjectMembersModal>);
+  public data = inject(MAT_DIALOG_DATA);
+
+  private projectMemberService = inject(ProjectMemberService);
+
+  projectMembers: ProjectMemberDto[] = [];
+
+  search: string = '';
+
+  addNewMembers: boolean = false;
+
+  roles = [
+    { value: 'MEMBER', label: 'MEMEBER' },
+    { value: 'VIEWER', label: 'VIEWER' },
+  ];
+
+ 
+  ngOnInit() {
+    this.projectMemberService.fetchProjectMembers(this.data.projectId).subscribe((response) => {
+      this.projectMembers = response;
+    });
+  }
+
+  toggleAddNewMembers() {
+    this.addNewMembers = !this.addNewMembers;
+  }
+
+  onRoleChange(role: ProjectRole, id: number) {
+    this.projectMemberService
+      .updateUserRole(id, role)
+      .subscribe((response) => console.log(response));
+  }
+}

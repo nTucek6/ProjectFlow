@@ -56,9 +56,6 @@ export class Projects {
   length: number = 0;
   ascending: boolean = false;
 
-  // selectedDateFrom?: Date;
-  // selectedDateTo?: Date;
-
   private searchSubject = new Subject<ProjectFilterParams>();
 
   readonly projectPosts$ = this.searchSubject.pipe(

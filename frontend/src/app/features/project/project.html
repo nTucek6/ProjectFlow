@@ -16,8 +16,8 @@
     </div>
 
     <div id="project-options">
-      <button><mat-icon>edit</mat-icon><span>Edit</span></button>
-      <button><mat-icon>people_outline</mat-icon><span>Members</span></button>
+      <button (click)="openEditDialog()"><mat-icon>edit</mat-icon><span>Edit</span></button>
+      <button (click)="openMembersDialog()"><mat-icon>people_outline</mat-icon><span>Members</span></button>
       <button><mat-icon>receipt</mat-icon><span>Report</span></button>
     </div>
   </div>
@@ -46,66 +46,17 @@
       ></mat-icon
       >{{ 'project.board' | translate }}</a
     >
-    <a routerLink="chat" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-      ><mat-icon aria-hidden="false" aria-label="Home icon" fontIcon="chat"></mat-icon
-      >{{ 'project.chat' | translate }}</a
-    >
   </div>
 </nav>
 
-<div class="chatbox-container">
-  <div class="live-chat-inner-container" [class.liveChat-hidden]="hideChat">
-    <div class="live-chat-container">
-      <div class="live-chat-content">
-        <div class="chat-header">
-          <div class="chat-header-content">
-            <div></div>
-            <span>Team {{ project.name }}</span>
-          </div>
-        </div>
-        <div class="chat-content-list" #chatBox (scroll)="onScroll()">
-          @if (!hasOverflow) {
-          <div class="spacer"></div>
-          } @for (chat of chatData; track $index) {
-          <div
-            class="chat-message-row"
-            [class.chat-message-row-current-user]="currentUser(chat.sender)"
-          >
-            <app-avatar-photo class="profile-image" [name]="chat.fullName"></app-avatar-photo>
-            <div class="chat-message-body chat-message-current-user">{{ chat.content }}</div>
-          </div>
-
-          }
-        </div>
-        <div class="chat-message-field-container">
-          <div class="chat-message-field">
-            <div class="chat-message-form">
-              <div class="chat-message-textarea">
-                <textarea
-                  #chatTextArea
-                  type="text"
-                  name="message"
-                  rows="1"
-                  placeholder="Say something..."
-                  [(ngModel)]="message"
-                  (keydown.enter)="onEnter($event)"
-                  (input)="autoGrow($event.target)"
-                ></textarea>
-              </div>
-              <button (click)="sendMessage()"><mat-icon>send</mat-icon></button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  @if (hideChat) {
-  <button (click)="toggleChat()"><mat-icon>chat</mat-icon></button>
-  } @else {
-  <button (click)="toggleChat()"><mat-icon>close</mat-icon></button>
-  }
-</div>
-
+@if (projectId > 0 && userId > 0) {
+<app-chat-box
+  [projectId]="projectId"
+  [projectName]="projectName"
+  [userId]="userId"
+  [userFullName]="userFullName"
+></app-chat-box>
+}
 <router-outlet></router-outlet>
 } @else {
 <section class="loading-content-spinner">

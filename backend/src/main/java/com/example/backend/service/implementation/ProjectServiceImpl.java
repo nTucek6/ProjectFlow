@@ -8,6 +8,7 @@ import com.example.backend.dto.SearchProjectDto;
 import com.example.backend.dto.project.ProjectMemberDto;
 import com.example.backend.dto.project.UpdateProjectDto;
 import com.example.backend.enums.ProjectRole;
+import com.example.backend.enums.ProjectStatus;
 import com.example.backend.filterParams.ProjectFilterParams;
 import com.example.backend.mapper.ProjectMapper;
 import com.example.backend.model.table.*;
@@ -74,6 +75,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setDeadline(newProjectDto.getDeadline());
         project.setCreatedAt(LocalDateTime.now());
         project.setUpdatedAt(LocalDateTime.now());
+        project.setStatus(ProjectStatus.BACKLOG);
 
         List<ProjectMember> members = new ArrayList<>();
 

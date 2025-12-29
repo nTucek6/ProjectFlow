@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GroupChat } from './group-chat';
+import { ChatBox } from './chat-box';
 
-describe('GroupChat', () => {
-  let component: GroupChat;
-  let fixture: ComponentFixture<GroupChat>;
+describe('ChatBox', () => {
+  let component: ChatBox;
+  let fixture: ComponentFixture<ChatBox>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GroupChat]
+      imports: [ChatBox]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(GroupChat);
+    fixture = TestBed.createComponent(ChatBox);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
