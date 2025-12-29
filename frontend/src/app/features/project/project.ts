@@ -18,6 +18,7 @@ import { ChatBox } from '../../shared/components/chat-box/chat-box';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectEditModal } from '../../shared/modals/project-edit-modal/project-edit-modal';
 import { ProjectMembersModal } from '../../shared/modals/project-members-modal/project-members-modal';
+import { ProjectMemberService } from '../../shared/services/project-member.service';
 
 @Component({
   selector: 'app-project',
@@ -39,6 +40,8 @@ import { ProjectMembersModal } from '../../shared/modals/project-members-modal/p
 })
 export class Project {
   private projectService = inject(ProjectService);
+
+  private projectMemberService = inject(ProjectMemberService);
 
   private authService = inject(AuthService);
 
@@ -71,6 +74,10 @@ export class Project {
     const fullname = this.authService.getUserFullName();
     if (fullname != null && fullname.length > 0) {
       this.userFullName = fullname;
+    }
+
+    if (id != null && this.userId > 0) {
+      this.projectMemberService.updateUserLastAccessed(this.userId, parseInt(id)).subscribe();
     }
   }
 

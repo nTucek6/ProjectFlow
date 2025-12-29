@@ -1,7 +1,9 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.projectMember.NewProjectMemberDto;
 import com.example.backend.dto.projectMember.ProjectMemberDto;
+import com.example.backend.dto.projectMember.UpdateLastAccessedDto;
 import com.example.backend.dto.projectMember.UpdateUserRoleDto;
 import com.example.backend.service.ProjectMemberService;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,9 +25,9 @@ public class ProjectMemberController {
 
 
     @GetMapping("/project/{projectId}")
-    public ResponseEntity<List<ProjectMemberDto>> getProjectMembers(@PathVariable Long projectId){
+    public ResponseEntity<List<ProjectMemberDto>> getProjectMembers(@PathVariable Long projectId, @RequestParam String search){
         try {
-            return ResponseEntity.ok(projectMemberService.getProjectMembers(projectId));
+            return ResponseEntity.ok(projectMemberService.getProjectMembers(projectId, search));
         } catch (EntityNotFoundException e) {
             log.error(e.getMessage());
             return ResponseEntity.internalServerError().build();
@@ -64,5 +66,28 @@ public class ProjectMemberController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PutMapping("/lastAccessed")
+    public ResponseEntity<?> updateUserLastAccessed(@RequestBody UpdateLastAccessedDto update) {
+        try {
+            projectMemberService.updateLastAccessed(update);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ProjectDto>> getRecentUserProjects(@PathVariable Long userId){
+        try {
+            List<ProjectDto> projects = projectMemberService.recentUserProjects(userId);
+            return ResponseEntity.ok(projects);
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 
 }

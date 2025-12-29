@@ -5,15 +5,10 @@
   </div>
   <div class="members-content">
     <div class="search-members">
-      <mat-form-field class="form-group" appearance="outline">
-        <input
-          type="text"
-          matInput
-          name="search"
-          [(ngModel)]="search"
-          placeholder="Search members..."
-        />
-      </mat-form-field>
+      <app-custom-search-input
+        (searchEmitter)="setSearch($event)"
+        (clearEmitter)="clearSearch()"
+      ></app-custom-search-input>
       <button mat-button (click)="toggleAddNewMembers()">Add members</button>
     </div>
     @if (addNewMembers) {
@@ -25,8 +20,8 @@
         <div class="info">
           <app-avatar-photo class="image" [name]="m.fullName"></app-avatar-photo>
           <div class="user-info">
-            <span class="name">{{m.fullName}}</span>
-            <span class="email">{{m.email}}</span>
+            <span class="name">{{ m.fullName }}</span>
+            <span class="email">{{ m.email }}</span>
           </div>
         </div>
         <div class="role">

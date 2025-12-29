@@ -7,6 +7,7 @@ import { ProjectFilterParams } from '../model/project-filter-params';
 import { SearchProjectDto } from '../dto/search-project.dto';
 import { NewProjectDto } from '../dto/new-project.dto';
 import { ChatMessageDto } from '../dto/chat-message.dto';
+import { DashboardSummaryDto } from '../dto/dashboard-summary.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -94,4 +95,9 @@ export class ProjectService {
     };
     return this.http.get<ChatMessageDto[]>(`${this.apiChatUrl}/project/${projectId}`, { params });
   }
+
+  getUserSummary(userId: number) : Observable<DashboardSummaryDto>{
+     return this.http.get<DashboardSummaryDto>(`${this.apiUrl}/user/${userId}`);
+  }
+
 }

@@ -48,7 +48,6 @@ export class ChatBox {
     this.projectService.getChatMessages(this.projectId, 0, 20).subscribe((response) => {
       this.chatData = response;
       this.projectService.setMessages(response);
-      console.log(response);
     });
 
     this.subscription = this.projectService.chat$.subscribe((messages) => {

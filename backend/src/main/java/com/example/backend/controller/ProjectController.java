@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.project.DashboardSummaryDto;
 import com.example.backend.dto.project.NewProjectDto;
 import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
@@ -38,7 +39,7 @@ public class ProjectController {
 
 
     @GetMapping
-    public ResponseEntity<List<SearchProjectDto>> getAllEvents(
+    public ResponseEntity<List<SearchProjectDto>> getAllProjects(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "deadline") String sortBy,
@@ -83,6 +84,17 @@ public class ProjectController {
         try {
             ProjectDto project = projectService.update(id, updateProjectDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(project);
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<DashboardSummaryDto> getUserSummary(@PathVariable Long userId){
+        try {
+            DashboardSummaryDto dto = projectService.getUserSummary(userId);
+            return ResponseEntity.ok(dto);
         } catch (EntityNotFoundException e) {
             log.error(e.getMessage());
             return ResponseEntity.internalServerError().build();

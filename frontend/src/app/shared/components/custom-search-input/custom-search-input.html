@@ -1,0 +1,19 @@
+    <div class="input-wrapper">
+      <input
+        type="text"
+        placeholder="Type something..."
+        autocomplete="off"
+        name="search"
+        [(ngModel)]="searchData"
+        (input)="search()"
+      />
+      <button
+        type="button"
+        class="clear-btn"
+        aria-label="Clear input"
+        [class.show-button]="searchData.length > 0"
+        (click)="clear()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>

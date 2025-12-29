@@ -20,9 +20,10 @@ export class ProjectOverviewCard {
   @Input() deadline : Date = new Date();
   @Input() status : string = '';
   @Input() progress : Number = 0;
+  @Input() members : Number = 0;
 
   navigateToProject(){
-    this.router.navigate(['/']);
+    this.router.navigate(['/project/'+ this.project_id]);
   }
 
 }

@@ -35,6 +35,8 @@ public class ProjectMember {
 
     @Column(nullable = false)
     private LocalDateTime joinedAt;
+    @Nullable
+    private LocalDateTime lastAccessed;
 
 
     public ProjectMember(Project project, User user, ProjectRole role) {

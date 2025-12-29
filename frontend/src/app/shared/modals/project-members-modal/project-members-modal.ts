@@ -15,11 +15,13 @@ import { Select } from '../../model/select';
 import { ProjectMemberService } from '../../services/project-member.service';
 import { ProjectMemberDto } from '../../dto/project-member.dto';
 import { ProjectRole } from '../../enums/project-role.enum';
+import { CustomSearchInput } from '../../components/custom-search-input/custom-search-input';
+import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-project-members-modal',
   imports: [
-    MatFormField,
+    // MatFormField,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -29,6 +31,7 @@ import { ProjectRole } from '../../enums/project-role.enum';
     MatDialogModule,
     AvatarPhoto,
     MatSelectModule,
+    CustomSearchInput,
   ],
   templateUrl: './project-members-modal.html',
   styleUrl: './project-members-modal.scss',
@@ -50,11 +53,22 @@ export class ProjectMembersModal {
     { value: 'VIEWER', label: 'VIEWER' },
   ];
 
- 
+  private searchSubject = new Subject<string>();
+
+  readonly membersPosts$ = this.searchSubject.pipe(
+    debounceTime(250),
+    distinctUntilChanged(),
+    switchMap((search) =>
+      this.projectMemberService.fetchProjectMembers(this.data.projectId, search)
+    )
+  );
+
   ngOnInit() {
-    this.projectMemberService.fetchProjectMembers(this.data.projectId).subscribe((response) => {
-      this.projectMembers = response;
+    this.membersPosts$.subscribe((members) => {
+      this.projectMembers = members;
     });
+
+    this.searchMembers();
   }
 
   toggleAddNewMembers() {
@@ -65,5 +79,18 @@ export class ProjectMembersModal {
     this.projectMemberService
       .updateUserRole(id, role)
       .subscribe((response) => console.log(response));
+  }
+
+  searchMembers() {
+    this.searchSubject.next(this.search);
+  }
+
+  setSearch(search: string) {
+    this.search = search;
+    this.searchMembers();
+  }
+  clearSearch() {
+    this.search = '';
+    this.searchMembers();
   }
 }

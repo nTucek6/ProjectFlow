@@ -18,6 +18,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { NewProjectModal } from '../../shared/modals/new-project-modal/new-project-modal';
+import { CustomSearchInput } from "../../shared/components/custom-search-input/custom-search-input";
 
 @Component({
   selector: 'app-projects',
@@ -31,7 +32,8 @@ import { NewProjectModal } from '../../shared/modals/new-project-modal/new-proje
     MatAnchor,
     RouterLink,
     MatDatepickerModule,
-  ],
+    CustomSearchInput
+],
   templateUrl: './projects.html',
   providers: [provideNativeDateAdapter()],
   styleUrl: './projects.scss',
@@ -65,6 +67,12 @@ export class Projects {
       this.projectService.fetchProjects(this.page, this.size, filterParams, this.ascending)
     )
   );
+
+  setSearch(search: string){
+     this.searchData = search;
+     this.searchProjects();
+  }
+
   searchProjects() {
     const projectFilterParams: ProjectFilterParams = {
       title: this.searchData,

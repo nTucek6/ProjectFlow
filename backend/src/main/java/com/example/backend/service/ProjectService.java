@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.project.DashboardSummaryDto;
 import com.example.backend.dto.project.NewProjectDto;
 import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
@@ -16,6 +17,7 @@ public interface ProjectService {
     ProjectDto save(NewProjectDto newProjectDto);
     ProjectDto update(Long projectId, UpdateProjectDto updateProject);
     void delete(Long id);
+    DashboardSummaryDto getUserSummary(Long userId);
 
 
 }

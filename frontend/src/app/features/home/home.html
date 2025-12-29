@@ -1,60 +1,61 @@
 <h1 id="welcome-title">Welcome back, {{ user_name }}!</h1>
 
 <section class="basic_data">
+  @if (userSummary) {
   <app-two-line-info-card
     class="basic_data_child"
     first_line="Active projects"
-    second_line="2"
+    [second_line]="userSummary.activeProjects.toString()"
     icon="folder_open"
     iconColor="#2563EB"
   ></app-two-line-info-card>
   <app-two-line-info-card
     class="basic_data_child"
     first_line="Pending projects"
-    second_line="34"
+    [second_line]="userSummary.pendingProjects.toString()"
     icon="check_box"
     iconColor="#F59E0B"
   ></app-two-line-info-card>
   <app-two-line-info-card
     class="basic_data_child"
     first_line="Completed projects"
-    second_line="5"
+    [second_line]="userSummary.completedProjects.toString()"
     icon="check_circle_outline"
     iconColor="#10B981"
   ></app-two-line-info-card>
   <app-two-line-info-card
     class="basic_data_child"
     first_line="Team members"
-    second_line="1"
+    [second_line]="userSummary.teamMembers.toString()"
     icon="supervised_user_circle"
     iconColor="#64748B"
   ></app-two-line-info-card>
+  }
 </section>
 
 <section class="recent-projects">
   <h2>Recent projects</h2>
   <div class="basic_data_overview basic_data">
+    @if (recentProjects.length > 0) { @for (p of recentProjects; track $index) {
     <app-project-overview-card
       class="basic_data_child_overview"
-      project_name="ProjectFlow"
-      [progress]="65"
+      [project_id]="p.id"
+      [project_name]="p.name"
+      [progress]="p.progress"
+      [deadline]="p.deadline"
+      [members]="p.membersCount"
     ></app-project-overview-card>
-    <app-project-overview-card
-      class="basic_data_child_overview"
-      project_name="Pets App"
-    ></app-project-overview-card>
-    <app-project-overview-card
-      class="basic_data_child_overview"
-      project_name="Doctor who trivia"
-    ></app-project-overview-card>
+    } }
   </div>
 </section>
 
 <section class="recent-activities">
- <h2>Recent activities</h2>
- <div class="recent-activities-data">
-  <app-activity-card></app-activity-card>
-  <app-activity-card></app-activity-card>
-  <app-activity-card></app-activity-card>
- </div>
+  <h2>Recent activities</h2>
+  <div class="recent-activities-data">
+    @if (recentActivities.length > 0) { @for (a of recentActivities; track $index) {
+    <app-activity-card [action]="a.action" [description]="a.description"></app-activity-card>
+    } } @else {
+    <p>No recent activities.</p>
+    }
+  </div>
 </section>

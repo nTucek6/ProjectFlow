@@ -2,10 +2,16 @@
   <div>
     <app-avatar-photo class="avatar-size" name="Nikola Tuček"></app-avatar-photo>
     <div class="activity-info">
-      <span class="title">New project created</span>
-      <span>E-commerence has been created</span>
-      <span>E-commerence platform - 5m ago</span>
+      <span class="title">{{action}}</span>
+      <span>{{description}}</span>
+      <span>{{projectName}} - {{createdAt | date}}</span>
     </div>
   </div>
     <mat-icon>create_new_folder</mat-icon>
 </section>
+
+<!--
+New project created
+E-commerence has been created
+E-commerence platform - 5m ago
+-->

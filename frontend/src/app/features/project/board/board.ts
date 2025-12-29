@@ -15,6 +15,10 @@ import { TaskDto } from '../../../shared/dto/task.dto';
 import { MatButtonModule } from '@angular/material/button';
 import { TaskStatus } from '../../../shared/enums/task-status.enum';
 import { MatIconModule } from '@angular/material/icon';
+import { UserActivityService } from '../../../shared/services/user-activity.service';
+import { UserActivityDto } from '../../../shared/dto/user-activity.dto';
+import { AuthService } from '../../../shared/services/auth.service';
+import { TaskStatusLabel } from '../../../shared/enums/labels/task-status-label';
 
 @Component({
   selector: 'app-board',
@@ -26,6 +30,8 @@ export class Board {
   private taskService = inject(TaskService);
   private projectService = inject(ProjectService);
   private tabTitle = inject(Title);
+  private userActivityService = inject(UserActivityService);
+  private authService = inject(AuthService);
 
   taskStatus = TaskStatus;
 
@@ -56,7 +62,7 @@ export class Board {
     const fromList = event.previousContainer.id;
     const toList = event.container.id;
 
-    //console.log(draggedItem);
+    const previousStatus = draggedItem.statusText;
 
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -74,7 +80,10 @@ export class Board {
 
     if (fromList !== toList) {
       draggedItem.status = toList;
+      draggedItem.statusText = this.getStatusLabel(parseInt(toList));
       draggedItem.order = currentIndex;
+
+      console.log(toList)
 
       this.taskService.updateTask(draggedItem).subscribe((response) => {
         const oldLastIndex = this.findKanbanList(fromList);
@@ -88,6 +97,10 @@ export class Board {
         } else {
           this.changeOrder(toList, lastIndex, currentIndex);
         }
+
+        this.logBoardChangeTask(draggedItem, previousStatus);
+        
+
       });
     } else {
       this.changeOrder(toList, prevIndex, currentIndex);
@@ -157,4 +170,39 @@ export class Board {
   editItem(task: TaskDto) {
     console.log(task);
   }
+
+  logBoardChangeTask(task: TaskDto, previousStatus: string){
+
+    console.log(task.statusText, previousStatus)
+
+    const userId = this.authService.getUserId();
+    const userFullName = this.authService.getUserFullName();
+
+    const projectId = this.project()?.id;
+
+    if(userId != undefined && projectId != undefined){
+    const log: UserActivityDto = {
+      userId: userId,
+      projectId: projectId,
+      action: userFullName + " updated task status " + task.title,
+      description: userFullName + " changed task status: " + previousStatus + " to: " + task.statusText,
+      userFullName:'',
+      id:0,
+      projectName:'',
+      createdAt: new Date()
+    }
+
+    this.userActivityService.logUserActivity(log).subscribe((response) =>{
+      console.log(response);
+    });
+    }
+
+
+  }
+
+    getStatusLabel(status: TaskStatus): string {
+    return TaskStatusLabel[status];
+  }
+
+
 }

@@ -1,9 +1,12 @@
 package com.example.backend.service.implementation;
 
+import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.projectMember.NewProjectMemberDto;
 import com.example.backend.dto.projectMember.ProjectMemberDto;
+import com.example.backend.dto.projectMember.UpdateLastAccessedDto;
 import com.example.backend.dto.projectMember.UpdateUserRoleDto;
 import com.example.backend.enums.ProjectRole;
+import com.example.backend.mapper.ProjectMapper;
 import com.example.backend.mapper.ProjectMemberMapper;
 import com.example.backend.mapper.TaskMapper;
 import com.example.backend.model.table.Project;
@@ -17,6 +20,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,9 +33,9 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     private final UserRepository userRepository;
 
     @Override
-    public List<ProjectMemberDto> getProjectMembers(Long projectId) {
+    public List<ProjectMemberDto> getProjectMembers(Long projectId, String search) {
         List<ProjectRole> excludedRoles = List.of(ProjectRole.OWNER, ProjectRole.MENTOR);
-        return projectMemberRepository.findAllByProject_IdAndRoleNotIn(projectId, excludedRoles).stream().map(ProjectMemberMapper::mapProjectMemberToProjectMemberDto).toList();
+        return projectMemberRepository.findAllByProject_IdAndRoleNotIn(projectId, excludedRoles, search).stream().map(ProjectMemberMapper::mapProjectMemberToProjectMemberDto).toList();
     }
 
     @Override
@@ -56,6 +61,32 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public void delete(Long id) {
-      projectMemberRepository.deleteById(id);
+        projectMemberRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateLastAccessed(UpdateLastAccessedDto lastAccessedDto) {
+        ProjectMember pm = projectMemberRepository.findByProject_IdAndUser_Id(lastAccessedDto.getProjectId(), lastAccessedDto.getUserId());
+        pm.setLastAccessed(LocalDateTime.now());
+        projectMemberRepository.save(pm);
+    }
+
+    @Override
+    public List<ProjectDto> recentUserProjects(Long userId) {
+
+        List<ProjectMember> pm = projectMemberRepository.findTop3ByUser_IdOrderByLastAccessedDesc(userId);
+
+        List<ProjectDto> projectsDto = new ArrayList<>();
+
+        if (!pm.isEmpty()) {
+            for (ProjectMember m : pm) {
+                Project p = m.getProject();
+                int progress = p.getProgress();
+                int totalTasks = p.getTotalTasks();
+                int members = p.getMembersCount();
+                projectsDto.add(ProjectMapper.mapProjectToProjectDto(m.getProject(), progress, totalTasks, members));
+            }
+        }
+        return projectsDto;
     }
 }

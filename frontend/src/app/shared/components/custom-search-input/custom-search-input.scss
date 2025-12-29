@@ -1,0 +1,53 @@
+@use '@angular/material' as mat;
+
+$input_border_radius: 5px;
+
+input {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+
+.input-wrapper {
+  position: relative;
+  width: 250px;
+  height: 100%;
+  border: 1px solid #ddd;
+  border-radius: $input_border_radius;
+  padding-right: 30px;
+  background-color: #ffffff;
+}
+
+.input-wrapper input {
+  width: 100%;
+  height: 100%;
+  border-radius: $input_border_radius;
+  padding: 0 0 0 10px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  display: none;
+  color: #888;
+  height: 100%;
+
+  align-items: center;
+}
+
+.clear-btn:hover {
+  color: #000;
+}
+
+.show-button {
+  display: flex;
+}

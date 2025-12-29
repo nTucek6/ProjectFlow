@@ -2,11 +2,8 @@ package com.example.backend.service.implementation;
 
 import com.example.backend.dto.customMilestone.CustomMilestonesDto;
 import com.example.backend.dto.customMilestone.UpdateCustomMilestoneDto;
-import com.example.backend.dto.project.NewProjectDto;
-import com.example.backend.dto.project.ProjectDto;
+import com.example.backend.dto.project.*;
 import com.example.backend.dto.SearchProjectDto;
-import com.example.backend.dto.project.ProjectMemberDto;
-import com.example.backend.dto.project.UpdateProjectDto;
 import com.example.backend.enums.ProjectRole;
 import com.example.backend.enums.ProjectStatus;
 import com.example.backend.filterParams.ProjectFilterParams;
@@ -39,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final MilestoneTemplatesRepository milestoneTemplatesRepository;
-    //private final ProjectMemberRepository projectMemberRepository;
+    private final ProjectMemberRepository projectMemberRepository;
 
     @Override
     @Transactional
@@ -131,6 +128,30 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void delete(Long id) {
         projectRepository.deleteById(id);
+    }
+
+    @Override
+    public DashboardSummaryDto getUserSummary(Long userId) {
+
+        List<ProjectMember> projects = projectMemberRepository.findAllByUser_Id(userId);
+
+        int activeProjects = 0;
+        int pendingProjects = 0;
+        int completedProjects = 0;
+        int teamMembers = 0;
+
+        for (ProjectMember m : projects) {
+            ProjectStatus ps = m.getProject().getStatus();
+            teamMembers += (int) projectMemberRepository.countByProject_IdAndUser_IdNot(m.getProject().getId(), userId);
+            if (ps == ProjectStatus.IN_PROGRESS || ps == ProjectStatus.IN_REVIEW) {
+                activeProjects++;
+            } else if (ps == ProjectStatus.BACKLOG || ps == ProjectStatus.PLANNED) {
+                pendingProjects++;
+            } else if (ps == ProjectStatus.DONE)
+                completedProjects++;
+        }
+
+        return new DashboardSummaryDto(activeProjects, pendingProjects, completedProjects, teamMembers);
     }
 
 
