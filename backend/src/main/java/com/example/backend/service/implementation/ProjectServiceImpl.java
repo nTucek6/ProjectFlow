@@ -14,13 +14,17 @@ import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.ProjectService;
+import com.example.backend.service.auth.CustomUserDetails;
 import com.example.backend.utils.ProjectUtil;
+import com.example.backend.utils.SecurityUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -41,11 +45,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public List<SearchProjectDto> findAllPagedAndFiltered(Pageable pageable, ProjectFilterParams filterParams) {
+
+        Long userId = SecurityUtils.getCurrentUserId();
+
         Page<Project> p = projectRepository
                 .findFilteredAndPaged(
                         filterParams.getTitle(),
                         filterParams.getStartDateTimeFrom(),
                         filterParams.getStartDateTimeTo(),
+                        userId,
                         pageable
                 );
 

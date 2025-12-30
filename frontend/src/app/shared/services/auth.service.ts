@@ -13,6 +13,9 @@ import {
 } from 'rxjs';
 import { UserCredentials } from '../model/user-credentials';
 import { UserDto } from '../dto/user.dto';
+import { RegisterRequestDto } from '../dto/register-request.dto';
+
+import { NgToastService } from 'ng-angular-popup';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +28,8 @@ export class AuthService {
   private authorizedSubject = new BehaviorSubject<boolean>(false);
   isAuthorized$ = this.authorizedSubject.asObservable();
 
+  private toast = inject(NgToastService);
+
   private userSubject = new BehaviorSubject<UserDto | null>(null);
   user$ = this.userSubject.asObservable();
 
@@ -32,7 +37,18 @@ export class AuthService {
     return this.http.post<UserDto>(`${this.apiUrl}/login`, userCredentials).pipe(
       tap(() => this.authorizedSubject.next(true)),
       catchError((error: HttpErrorResponse) => {
-        alert(error.error);
+        //alert(error.error);
+        this.toast.danger(error.error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  register(userCredentials: RegisterRequestDto): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/register`, userCredentials).pipe(
+      tap(() => console.log('Successful')),
+      catchError((error: HttpErrorResponse) => {
+        this.toast.danger(error.error);
         return throwError(() => error);
       })
     );
@@ -57,6 +73,20 @@ export class AuthService {
       map(() => true),
       catchError((err) => {
         return of(false);
+      })
+    );
+  }
+
+  isMentorTokenValid(token: string): Observable<boolean> {
+    const params = {
+      verifyToken: token,
+    };
+    return this.http.get<boolean>(`${this.apiUrl}/verifyMentorToken`, { params }).pipe(
+      map(() => false),
+      catchError((err) => {
+        console.log(err);
+        this.toast.danger(err.error);
+        return of(true);
       })
     );
   }

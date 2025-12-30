@@ -7,6 +7,7 @@ import com.example.backend.dto.SearchProjectDto;
 import com.example.backend.dto.project.UpdateProjectDto;
 import com.example.backend.filterParams.ProjectFilterParams;
 import com.example.backend.service.ProjectService;
+import com.example.backend.service.auth.CustomUserDetails;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -45,7 +48,6 @@ public class ProjectController {
             @RequestParam(defaultValue = "deadline") String sortBy,
             @RequestParam(defaultValue = "true") boolean ascending,
             @ModelAttribute ProjectFilterParams filterParams) {
-
         try {
             Sort.Direction direction = ascending ? Sort.Direction.ASC : Sort.Direction.DESC;
             Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));

@@ -4,7 +4,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,7 +17,6 @@ import { UserCredentials } from '../../../shared/model/user-credentials';
     TranslatePipe,
     FormsModule,
     CommonModule,
-    //RouterLink,
     MatInputModule,
     MatFormFieldModule,
   ],

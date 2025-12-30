@@ -1,9 +1,12 @@
 package com.example.backend.service.auth;
 
 import com.example.backend.configuration.JwtProperties;
+import com.example.backend.dto.GenerateMentorTokenDto;
+import com.example.backend.model.table.MentorRegisterToken;
 import com.example.backend.model.table.RefreshToken;
 import com.example.backend.model.table.User;
 import com.example.backend.model.table.VerificationToken;
+import com.example.backend.repository.MentorRegisterTokenRepository;
 import com.example.backend.repository.VerificationTokenRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,6 +14,7 @@ import io.jsonwebtoken.impl.lang.Function;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -30,6 +34,7 @@ import java.util.Map;
 public class TokenServiceImpl implements TokenService {
     private final RefreshTokenService refreshTokenService;
     private final VerificationTokenRepository verificationTokenRepository;
+    private final MentorRegisterTokenRepository mentorRegTokenRepository;
 
     private final JwtProperties jwtProperties;
 
@@ -68,7 +73,6 @@ public class TokenServiceImpl implements TokenService {
         Map<String, Object> claims = new HashMap<>();
 
         String t1 = createToken(claims, user.getEmail(), 24 * 60);
-        //String t1 = createToken(claims, user.getEmail(), 10);
         LocalDateTime expire = extractExpiration(t1).toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();;
@@ -84,6 +88,33 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public void deleteVerifyToken(VerificationToken token) {
         verificationTokenRepository.delete(token);
+    }
+
+    @Override
+    @Transactional
+    public String createMentorRegisterToken(GenerateMentorTokenDto mentor) {
+        Map<String, Object> claims = new HashMap<>();
+
+        String t1 = createToken(claims, mentor.getEmail(), 24 * 60);
+        LocalDateTime expire = extractExpiration(t1).toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();;
+
+        MentorRegisterToken mrt = new MentorRegisterToken();
+        mrt.setEmail(mentor.getEmail());
+        mrt.setToken(t1);
+        mrt.setExpiresAt(expire);
+
+        return mentorRegTokenRepository.save(mrt).getToken();
+    }
+
+    @Override
+    public boolean validateMentorRegisterToken(String token) {
+        MentorRegisterToken mrt = mentorRegTokenRepository.findByToken(token).orElseThrow(()-> new EntityNotFoundException("Token not found"));
+        if (mrt.getExpiresAt().isBefore(LocalDateTime.now())){
+            throw new RuntimeException("Token expired");
+        }
+        return true;
     }
 
 

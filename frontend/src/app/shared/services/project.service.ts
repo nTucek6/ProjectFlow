@@ -27,7 +27,7 @@ export class ProjectService {
   fetchProjects(
     page: number,
     size: number,
-    eventFilterParams?: ProjectFilterParams,
+    projectFilterParams?: ProjectFilterParams,
     ascending?: boolean,
     sortBy?: string
   ): Observable<SearchProjectDto[]> {
@@ -46,8 +46,8 @@ export class ProjectService {
       params = params.set('ascending', ascending.toString());
     }
 
-    if (eventFilterParams != undefined) {
-      Object.entries(eventFilterParams).forEach(([key, value]) => {
+    if (projectFilterParams != undefined) {
+      Object.entries(projectFilterParams).forEach(([key, value]) => {
         value = value.toString();
         if (value !== undefined && value !== null && value.length > 0) {
           if (key === 'startDateTimeFrom' || key === 'startDateTimeTo') {

@@ -1,0 +1,110 @@
+<section>
+  <h2>{{ 'auth.sign_up' | translate }}</h2>
+  <p>{{ 'auth.login_instruction' | translate }}</p>
+
+  <form #loginForm="ngForm" (ngSubmit)="formSubmit()" id="register-form" autocomplete="auto">
+    <mat-form-field class="form-group" appearance="outline">
+      <input
+        type="text"
+        matInput
+        name="firstname"
+        required
+        [(ngModel)]="firstname"
+        #firstnameRef="ngModel"
+        [placeholder]="'auth.firstname' | translate"
+        autocomplete="off"
+      />
+      @if (firstnameRef.invalid && firstnameRef.touched) {
+      <mat-error>
+        {{ 'auth.firstname_required' | translate }}
+      </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-group" appearance="outline">
+      <input
+        type="text"
+        matInput
+        name="surname"
+        required
+        [(ngModel)]="lastname"
+        #surnameRef="ngModel"
+        [placeholder]="'auth.lastname' | translate"
+        autocomplete="off"
+      />
+      @if (surnameRef.invalid && surnameRef.touched) {
+      <mat-error>
+        {{ 'auth.lastname_required' | translate }}
+      </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-group" appearance="outline">
+      <input
+        type="email"
+        matInput
+        name="email"
+        required
+        [(ngModel)]="email"
+        #emailRef="ngModel"
+        [placeholder]="'auth.email' | translate"
+        autocomplete="on"
+      />
+      @if (emailRef.invalid && emailRef.touched) {
+      <mat-error>
+        {{ 'auth.email_required' | translate }}
+      </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-group" appearance="outline">
+      <input
+        type="password"
+        matInput
+        name="password"
+        required
+        [(ngModel)]="password"
+        #passwordRef="ngModel"
+        [placeholder]="'auth.password' | translate"
+        autocomplete="off"
+        (keydown.space)="$event.preventDefault()"
+      />
+      @if (passwordRef.invalid && passwordRef.touched) {
+      <mat-error>
+        {{ 'auth.password_required' | translate }}
+      </mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-group" appearance="outline">
+      <input
+        type="password"
+        matInput
+        name="confirmPassword"
+        required
+        [(ngModel)]="confirmPassword"
+        #confirmPasswordRef="ngModel"
+        [placeholder]="'auth.confirm_password' | translate"
+        autocomplete="off"
+        (keydown.space)="$event.preventDefault()"
+      />
+      @if (confirmPasswordRef.invalid && confirmPasswordRef.touched) {
+      <mat-error>
+        {{ 'auth.password_required' | translate }}
+      </mat-error>
+      }
+    </mat-form-field>
+
+    @if (messageError) {
+    <mat-error>{{ messageError }}</mat-error>
+    } @if (loading) {
+    <div class="loading-container">
+      <mat-spinner class="loading" [diameter]="32"></mat-spinner>
+    </div>
+    } @else {
+    <button type="submit" class="register-btn" mat-button [disabled]="loginForm.invalid">
+      {{ 'auth.register' | translate }}
+    </button>
+    }
+  </form>
+</section>

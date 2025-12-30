@@ -45,6 +45,11 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 /* -------------------------------------Modal size - new project-------------------------------------------------- */
 
 .custom-dialog-container.cdk-overlay-pane.mat-mdc-dialog-panel {
@@ -87,11 +92,9 @@ body {
   width: 32px;
 }
 
-
-
 /* -------------------------------------Card hover animation - new project-------------------------------------------------- */
 
-.loading-content-spinner{
+.loading-content-spinner {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -100,20 +103,19 @@ body {
 
 /* --------------------------------------------------------------------------------------------------------------- */
 
-
-
-
 /* -------------------------------------Global datepicker calendar style-------------------------------------------------- */
 
 :root {
-  @include mat.datepicker-overrides((
-    calendar-body-label-text-color: #000000,
-    calendar-container-background-color: #ffffff,
-  ));
+  @include mat.datepicker-overrides(
+    (
+      calendar-body-label-text-color: #000000,
+      calendar-container-background-color: #ffffff,
+    )
+  );
 }
 
 /* --------------------------------------------------------------------------------------------------------------- */
 
-.vivid-orange-hover:hover{
+.vivid-orange-hover:hover {
   background-color: #f59e0b;
 }

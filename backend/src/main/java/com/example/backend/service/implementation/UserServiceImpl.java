@@ -5,7 +5,9 @@ import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.UserDto;
 import com.example.backend.enums.UserRole;
 import com.example.backend.mapper.UserMapper;
+import com.example.backend.model.table.MentorRegisterToken;
 import com.example.backend.model.table.User;
+import com.example.backend.repository.MentorRegisterTokenRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -13,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,6 +23,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final MentorRegisterTokenRepository mentorRegisterTokenRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -55,6 +59,17 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(Boolean.FALSE);
         user.setRole(UserRole.USER);
 
+        if (registerRequest.getToken() != null) {
+            MentorRegisterToken mrt = mentorRegisterTokenRepository.findByToken(registerRequest.getToken()).orElseThrow(()-> new RuntimeException("Token not found!"));
+            if (mrt.getExpiresAt().isBefore(LocalDateTime.now())) {
+                throw new RuntimeException("Token expired!");
+            }
+            if(!mrt.getEmail().equals(registerRequest.getEmail())){
+                throw new RuntimeException("Email where token was sent must match!");
+            }
+            user.setRole(UserRole.MENTOR);
+            mentorRegisterTokenRepository.delete(mrt);
+        }
         return userRepository.save(user);
     }
 

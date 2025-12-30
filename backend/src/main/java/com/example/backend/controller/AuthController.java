@@ -37,7 +37,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("auth/api/v1")
 @AllArgsConstructor
-//@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @lombok.extern.slf4j.Slf4j
 public class AuthController {
 
@@ -71,8 +70,7 @@ public class AuthController {
                 CookieUtil.addAccessTokenCookieToResponse(response, accessToken, jwtProperties.getAccessToken(), jwtProperties.getAccessTokenExpire());
 
                 return ResponseEntity.ok(userDto);
-            }
-            else {
+            } else {
                 throw new RuntimeException("User is not verified!");
             }
 
@@ -85,7 +83,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @Transactional
-    public ResponseEntity<?> register(@RequestBody RegisterRequestDto registerRequest) {
+    public ResponseEntity<String> register(@RequestBody RegisterRequestDto registerRequest) {
         try {
             User newUser = userService.registerUser(registerRequest);
 
@@ -99,10 +97,22 @@ public class AuthController {
             String status = emailService.sendSimpleMail(email);
             log.info(status);
 
-            return ResponseEntity.ok("Check your email to verify your account");
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
             log.info("RegisterException", e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/verifyMentorToken")
+    public ResponseEntity<?> verifyMentorToken(@RequestParam String verifyToken){
+        try {
+            Boolean valid = tokenService.validateMentorRegisterToken(verifyToken);
+            return ResponseEntity.ok(valid);
+
+        } catch (Exception e) {
+            log.info(e.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -130,8 +140,8 @@ public class AuthController {
     }
 
     @GetMapping("/resendtoken")
-    public ResponseEntity<?> resendToken(@RequestParam String verifyToken){
-        try{
+    public ResponseEntity<?> resendToken(@RequestParam String verifyToken) {
+        try {
 
             VerificationToken oldToken = tokenService.findVerificationToken(verifyToken);
 
@@ -151,7 +161,7 @@ public class AuthController {
 
             return ResponseEntity.ok(Boolean.TRUE);
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             log.info(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }

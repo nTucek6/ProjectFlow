@@ -16,10 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private apiUrl = `${environment.apiUrl}`;
   private authUrl = `${environment.authUrl}`;
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (
       !request ||
       !request.url ||
@@ -39,9 +36,13 @@ export class AuthInterceptor implements HttpInterceptor {
       withCredentials: true,
     });
 
+    if (this.authUrl + '/me' || this.authUrl + '/refreshToken') {
+      return next.handle(request);
+    }
+
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.error("Global HTTP Error:", error);
+        console.error('Global HTTP Error:', error);
         return throwError(() => error);
       })
     );

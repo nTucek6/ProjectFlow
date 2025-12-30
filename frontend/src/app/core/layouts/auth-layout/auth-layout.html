@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+<section id="main-window">
+  <div class="main-container">
+    <img src="" />
+    <h1 class="title">{{ 'title' | translate }}</h1>
+    <p>Student project tracking system</p>
+
+    <div class="auth-link">
+        <a routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Login</a>
+        <a routerLink="/register" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">Register</a>
+    </div>
+
+    <router-outlet></router-outlet>
+  </div>
+</section>

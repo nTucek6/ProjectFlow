@@ -8,4 +8,5 @@ public class RegisterRequestDto {
     private String password;
     private String name;
     private String surname;
+    private String token;
 }

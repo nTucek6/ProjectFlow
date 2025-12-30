@@ -1,21 +1,7 @@
-#main-window{
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: lightgray;
-}
-
-
-.main-container {
+section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -100px;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  padding: 50px;
-  background-color: white;
 }
 
 #login-form,
@@ -30,10 +16,6 @@
   width: 100%;
 }
 
-/*.main-container > .title {
-  margin-bottom: 150px;
-} */
-
 .main-container h2 {
   padding: 0 0 10px;
   font-size: 24px;
@@ -44,15 +26,11 @@
   font-size: 16px;
 }
 
-/*.main-container button,
-a {
-  border-radius: 10px;
-} */
 
 .login-btn {
   width: 100%;
   color: white !important;
-  background-color: #000000;
+  background-color: #2563EB;
 }
 
 .main-container > .divider {

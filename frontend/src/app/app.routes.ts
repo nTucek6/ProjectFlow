@@ -3,6 +3,8 @@ import { MainLayout } from './core/layouts/main-layout/main-layout';
 import { AuthLayout } from './core/layouts/auth-layout/auth-layout';
 import { authGuard } from './core/guard/auth-guard';
 import { mainPageGuard } from './core/guard/main-page-guard';
+import { VerifyLayout } from './core/layouts/verify-layout/verify-layout';
+import { authMentorRegisterGuard } from './core/guard/mentor-token-guard';
 
 export const routes: Routes = [
   {
@@ -52,10 +54,38 @@ export const routes: Routes = [
         loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
       },
       {
+        path: 'register',
+        title: 'Register',
+        canActivate: [authGuard],
+        loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
+      },
+      {
+        path: 'register/:token',
+        title: 'Register',
+        canActivate: [authGuard, authMentorRegisterGuard],
+        loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
+      },
+    ],
+  },
+  {
+    path: '',
+    component: VerifyLayout,
+    children: [
+      {
+        path: 'register-success',
+        title: 'Register Success',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./features/auth/register-success/register-success').then(
+            (m) => m.RegisterSuccess
+          ),
+      },
+      {
         path: 'verify/:token',
         title: 'Verify',
         canActivate: [authGuard],
-        loadComponent: () => import('./features/auth/verify-user/verify-user').then((m) => m.VerifyUser),
+        loadComponent: () =>
+          import('./features/auth/verify-user/verify-user').then((m) => m.VerifyUser),
       },
     ],
   },

@@ -5,6 +5,7 @@ import {
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
@@ -19,6 +20,8 @@ import { AuthExpiredInterceptor } from './core/interceptors/auth-expired.interce
 import { AuthService } from './shared/services/auth.service';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MY_DATE_FORMATS } from './shared/formats/date-formats';
+
+import { provideNgToast } from 'ng-angular-popup';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -52,5 +55,16 @@ export const appConfig: ApplicationConfig = {
     }),
     provideNativeDateAdapter(MY_DATE_FORMATS),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+   // provideZonelessChangeDetection(),
+    provideNgToast({
+      duration: 3000,              // 3 seconds
+      position: 'toaster-top-right', // Default position
+      maxToasts: 3,                // Max 3 toasts at once
+      width: 400,                  // Toast width in pixels
+      showProgress: true,          // Show progress bar
+      dismissible: true,           // Allow manual dismiss
+      showIcon: true,              // Show icons
+      enableAnimations: true       // Enable animations
+    }),
   ],
 };
