@@ -18,5 +18,7 @@ public class UpdateProjectDto {
     private List<ProjectMemberDto> members;
     private List<UpdateCustomMilestoneDto> customMilestones;
     private LocalDateTime deadline;
+    private LocalDateTime startDate;
+    private LocalDateTime updatedAt;
 
 }

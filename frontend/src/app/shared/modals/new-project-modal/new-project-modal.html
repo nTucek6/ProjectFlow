@@ -14,13 +14,11 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline" >
-        <mat-label>Choose a date</mat-label>
+        <mat-label>Choose a deadline date</mat-label>
         <input matInput [matDatepicker]="picker" [(ngModel)]="deadline" />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-
-      <span>{{deadline}}</span>
 
       <!--[placeholder]="'auth.email' | translate" -->
 

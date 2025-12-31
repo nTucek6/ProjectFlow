@@ -8,6 +8,7 @@ import { SearchProjectDto } from '../dto/search-project.dto';
 import { NewProjectDto } from '../dto/new-project.dto';
 import { ChatMessageDto } from '../dto/chat-message.dto';
 import { DashboardSummaryDto } from '../dto/dashboard-summary.dto';
+import { UpdateProjectDto } from '../dto/update-project.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -69,6 +70,10 @@ export class ProjectService {
 
   createNewProject(newProject: NewProjectDto): Observable<ProjectDto> {
     return this.http.post<ProjectDto>(`${this.apiUrl}`, newProject);
+  }
+
+  updateProject(projectId: number,updateProject: UpdateProjectDto) : Observable<ProjectDto>{
+    return this.http.put<ProjectDto>(`${this.apiUrl}/${projectId}`, updateProject);
   }
 
   setProject(project: ProjectDto | null): void {

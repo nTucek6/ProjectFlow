@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProjectEditModal } from '../../shared/modals/project-edit-modal/project-edit-modal';
 import { ProjectMembersModal } from '../../shared/modals/project-members-modal/project-members-modal';
 import { ProjectMemberService } from '../../shared/services/project-member.service';
+import { filter, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-project',
@@ -39,6 +40,7 @@ import { ProjectMemberService } from '../../shared/services/project-member.servi
   styleUrl: './project.scss',
 })
 export class Project {
+  private destroy$ = new Subject<void>();
   private projectService = inject(ProjectService);
 
   private projectMemberService = inject(ProjectMemberService);
@@ -55,16 +57,22 @@ export class Project {
   projectName = '';
 
   project: ProjectDto | null = null;
+  //project = this.projectService.project$;
   progress: any;
 
   ngOnInit(): void {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id != null) {
       this.projectService.getProjectById(parseInt(id)).subscribe((response) => {
-        this.project = response;
+        //this.project = response;
         this.projectService.setProject(response);
-        this.projectId = this.project.id;
-        this.projectName = this.project.name;
+        //this.projectId = this.project.id;
+        //this.projectName = this.project.name;
+      });
+      this.projectService.project$.pipe(filter(Boolean)).subscribe((project) => {
+        this.project = project!;
+        this.projectId = project!.id;
+        this.projectName = project!.name;
       });
     }
     const userId = this.authService.getUserId();
@@ -82,7 +90,10 @@ export class Project {
   }
 
   openEditDialog() {
-    const dialogRef = this.dialog.open(ProjectEditModal, { panelClass: 'custom-dialog-container' });
+    const dialogRef = this.dialog.open(ProjectEditModal, {
+      panelClass: 'edit-project-dialog-container',
+      data: { project: this.project },
+    });
     /*dialogRef.afterClosed().subscribe((result) => {
         //console.log(`Dialog result: ${result}`);
       }); */
@@ -96,5 +107,10 @@ export class Project {
     /*dialogRef.afterClosed().subscribe((result) => {
         //console.log(`Dialog result: ${result}`);
       }); */
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

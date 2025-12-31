@@ -127,9 +127,17 @@ public class ProjectServiceImpl implements ProjectService {
 
         proToUpdate.setName(updateProject.getName());
         proToUpdate.setDeadline(updateProject.getDeadline());
-        syncMembers(proToUpdate, updateProject.getMembers());
-        syncCustomMilestones(proToUpdate, updateProject.getCustomMilestones());
+        proToUpdate.setStartDate(updateProject.getStartDate());
 
+        if (updateProject.getUpdatedAt() != null) {
+            proToUpdate.setUpdatedAt(updateProject.getUpdatedAt());
+        }
+        if (updateProject.getMembers() != null && !updateProject.getMembers().isEmpty()) {
+            syncMembers(proToUpdate, updateProject.getMembers());
+        }
+        if (updateProject.getCustomMilestones() != null && !updateProject.getCustomMilestones().isEmpty()) {
+            syncCustomMilestones(proToUpdate, updateProject.getCustomMilestones());
+        }
         return ProjectMapper.mapProjectToProjectDto(proToUpdate, proToUpdate.getProgress(), proToUpdate.getTotalTasks(), proToUpdate.getMembersCount());
     }
 

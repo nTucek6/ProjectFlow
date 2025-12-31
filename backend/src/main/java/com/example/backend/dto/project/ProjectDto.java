@@ -15,6 +15,7 @@ public class ProjectDto {
     private String name;
     public LocalDateTime createdAt;
     public LocalDateTime updatedAt;
+    public LocalDateTime startDate;
     public LocalDateTime deadline;
     public int progress;
     public int totalTasks;

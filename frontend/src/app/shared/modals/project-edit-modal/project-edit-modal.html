@@ -1,1 +1,37 @@
-<p>project-edit-modal works!</p>
+<section>
+  <mat-dialog-actions class="close-btn">
+    <button matButton mat-dialog-close><mat-icon>close</mat-icon></button>
+  </mat-dialog-actions>
+
+  <div class="tabs">
+    <ul>
+      <li [class.active]="activeTab === 'basic'" (click)="setTab('basic')">
+        <mat-icon>description</mat-icon><span>Basic Info</span>
+      </li>
+      <li [class.active]="activeTab === 'description'" (click)="setTab('description')">
+        <mat-icon>reorder</mat-icon><span>Description</span>
+      </li>
+      <li [class.active]="activeTab === 'settings'" (click)="setTab('settings')">
+        <mat-icon>settings</mat-icon><span>Settings</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="tab-content">
+    @if (activeTab === 'basic') {
+    <app-basic-information [project]="data.project"></app-basic-information>
+    } @if (activeTab === 'description') {
+    <div>
+      <p>Description data</p>
+    </div>
+    } @if (activeTab ==='objectives') {
+    <div>
+      <p>Objectives data</p>
+    </div>
+    } @if (activeTab === 'settings') {
+    <div>
+      <p>Settings data</p>
+    </div>
+    }
+  </div>
+</section>

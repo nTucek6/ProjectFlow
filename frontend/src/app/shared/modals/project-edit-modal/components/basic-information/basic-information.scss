@@ -1,0 +1,17 @@
+.form-group {
+ width: 80%;
+}
+
+
+.filter-form{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+
+    .filter-item{
+        display: flex;
+        flex-direction: column;
+        gap:.5rem;
+    }
+}

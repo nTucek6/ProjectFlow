@@ -53,9 +53,15 @@ a {
 /* -------------------------------------Modal size - new project-------------------------------------------------- */
 
 .custom-dialog-container.cdk-overlay-pane.mat-mdc-dialog-panel {
-  --dialog-width: 600px;
+  --dialog-width: 700px;
   width: var(--dialog-width);
   max-width: 90vw; /* responsive */
+}
+
+.edit-project-dialog-container.cdk-overlay-pane.mat-mdc-dialog-panel{
+  --dialog-width: 1000px;
+  width: var(--dialog-width);
+   max-width: 90vw; /* responsive */
 }
 
 @media (max-width: 768px) {

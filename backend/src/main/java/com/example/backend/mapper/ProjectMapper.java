@@ -23,6 +23,7 @@ public class ProjectMapper {
         projectDto.setName(project.getName());
         projectDto.setCreatedAt(project.getCreatedAt());
         projectDto.setUpdatedAt(project.getUpdatedAt());
+        projectDto.setStartDate(project.getStartDate());
         projectDto.setDeadline(project.getDeadline());
         projectDto.setProgress(progress);
         projectDto.setTotalTasks(totalTasks);
