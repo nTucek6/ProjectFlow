@@ -56,7 +56,7 @@ export class KanbanService {
           this.changeOrder(toList, lastIndex, currentIndex, todo, progress, done);
         }
 
-        this.logBoardChangeTask(draggedItem, previousStatus, projectId);
+       // this.logBoardChangeTask(draggedItem, previousStatus, projectId);
       });
     } else {
       this.changeOrder(toList, prevIndex, currentIndex, todo, progress, done);
@@ -96,7 +96,6 @@ export class KanbanService {
     }
     if (list.length > 0) {
       this.taskService.reorderTask(list).subscribe((response) => {
-        //console.log(response);
       });
     }
   }
@@ -134,6 +133,7 @@ export class KanbanService {
     console.log(task);
   }
 
+  /*
   logBoardChangeTask(task: TaskDto, previousStatus: string, projectId: number) {
     console.log(task.statusText, previousStatus);
 
@@ -159,7 +159,7 @@ export class KanbanService {
         //console.log(response);
       });
     }
-  }
+  }*/
 
   getStatusLabel(status: TaskStatus): string {
     return TaskStatusLabel[status];

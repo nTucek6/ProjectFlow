@@ -4,17 +4,7 @@
   <section id="information-container" class="grid-column">
     <div class="container">
       <h2>Project Description</h2>
-      <p>{{project()?.description}}</p>
-      <!--<p>
-        A comprehensive web-based student management system designed to streamline academic
-        administration processes. This project aims to create an intuitive platform that enables
-        efficient management of student records, course enrollment, grade tracking, and
-        communication between students, faculty, and administrators. The system will feature
-        role-based access control, real-time notifications, automated report generation, and
-        seamless integration with existing institutional databases. Built using modern web
-        technologies, the platform prioritizes user experience, data security, and scalability to
-        accommodate growing institutional needs.
-      </p>-->
+      <p>{{ project()?.description }}</p>
     </div>
 
     <div class="container">
@@ -72,9 +62,18 @@
   <section id="recent-activity" class="container">
     <h2>Recent activity</h2>
     <div class="activity-data">
-
+      <div class="recent-activities-data">
+        @if (recentProjectActivity.length > 0) { @for (a of recentProjectActivity; track $index) {
+        <app-activity-card
+          [description]="a.description"
+          [createdAt]="a.createdAt"
+          [includeIcon]="false"
+        ></app-activity-card>
+        } } @else {
+        <p>No recent activities.</p>
+        }
+      </div>
     </div>
-
   </section>
 </section>
 

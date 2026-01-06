@@ -9,6 +9,7 @@ import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.UserActivityRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserActivityService;
+import com.example.backend.utils.SecurityUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class UserActivityServiceImpl implements UserActivityService {
 
         a.setUser(user);
         a.setProject(project);
-        a.setAction(save.getAction());
+        //a.setAction(save.getAction());
         a.setDescription(save.getDescription());
         a.setCreatedAt(OffsetDateTime.now());
         return UserActivityMapper.mapUserActivityToUserActivityDto(userActivityRepository.save(a));
@@ -42,6 +43,12 @@ public class UserActivityServiceImpl implements UserActivityService {
 
     @Override
     public List<UserActivityDto> findRecent(Long userId) {
-        return userActivityRepository.findTop3ByUser_IdOrderByCreatedAtDesc(userId).stream().map(UserActivityMapper::mapUserActivityToUserActivityDto).toList();
+        User user = userRepository.findById(userId).orElseThrow(()-> new EntityNotFoundException("User not found"));
+        return userActivityRepository.findTop3ByProject_Members_UserOrderByCreatedAtDesc(user).stream().map(UserActivityMapper::mapUserActivityToUserActivityDto).toList();
+    }
+
+    @Override
+    public List<UserActivityDto> findProjectRecent(Long projectId) {
+        return userActivityRepository.findTop8ByProject_idOrderByCreatedAtDesc(projectId).stream().map(UserActivityMapper::mapUserActivityToUserActivityDto).toList();
     }
 }

@@ -16,7 +16,7 @@ public class SecurityUtils {
         return authentication;
     }
 
-    private static CustomUserDetails getPrincipal(){
+    public static CustomUserDetails getPrincipal(){
         Authentication authentication = getAuthentication();
         CustomUserDetails principal = null;
         if (authentication != null) {

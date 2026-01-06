@@ -15,5 +15,6 @@ export class ActivityCard {
   @Input() description : string = '';
   @Input() projectName : string = '';
   @Input() createdAt : Date = new Date();
+  @Input() includeIcon : boolean = true;
 
 }

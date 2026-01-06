@@ -10,7 +10,7 @@ public class UserActivityMapper {
         dto.setId(activity.getId());
         dto.setUserId(activity.getUser().getId());
         dto.setCreatedAt(activity.getCreatedAt());
-        dto.setAction(activity.getAction());
+        dto.setAction(activity.getAction().getDescription());
         dto.setDescription(activity.getDescription());
         dto.setUserFullName(activity.getUser().getFullName());
         dto.setProjectName(activity.getProject().getName());

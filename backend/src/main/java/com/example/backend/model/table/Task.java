@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -37,11 +38,13 @@ public class Task {
     @Column(name = "order_index")
     private Integer order;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToMany
+    @ToString.Exclude
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "task_assignees",
             joinColumns = @JoinColumn(name = "task_id"),
@@ -49,6 +52,7 @@ public class Task {
     )
     private List<User> assignees;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "project_milestone_id", nullable = true)
     private ProjectMilestones projectMilestones;

@@ -1,5 +1,6 @@
 package com.example.backend.model.table;
 
+import com.example.backend.enums.ActivityAction;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,13 +24,14 @@ public class UserActivity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String action;
+    private ActivityAction action;
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @Column(nullable = false, updatable = false)
     private OffsetDateTime createdAt;
 
 

@@ -22,6 +22,8 @@ import { CreateTaskDto } from '@shared/dto/create-task.dto';
 
 import { NgToastService } from 'ng-angular-popup';
 import { TaskDto } from '@shared/dto/task.dto';
+import { AuthService } from '@shared/services/api/auth.service';
+import { UserActivityDto } from '@shared/dto/user-activity.dto';
 
 @Component({
   selector: 'app-project-item-edit-modal',
@@ -48,6 +50,8 @@ export class ProjectItemEditModal {
   description: string = '';
   //@Input() projectId: number = 0;
 
+  taskExist = false;
+
   private dialogRef = inject(MatDialogRef<ProjectItemEditModal>);
   public data = inject(MAT_DIALOG_DATA);
 
@@ -64,11 +68,11 @@ export class ProjectItemEditModal {
   ngOnInit() {
     const task = this.data.task;
     if (task != null) {
-      console.log(this.data)
       this.taskId = task.id;
       this.title = task.title;
       this.description = task.description;
       this.selectedUsers = task.assignees;
+      this.taskExist = true;
     }
 
     this.options = this.myControl.valueChanges.pipe(
@@ -110,7 +114,7 @@ export class ProjectItemEditModal {
       });
     } else {
       const task: TaskDto = this.data.task;
-        console.log(this.selectedUsers)
+      console.log(this.selectedUsers);
       const updateTask: TaskDto = {
         id: this.taskId,
         title: this.title,
@@ -128,4 +132,11 @@ export class ProjectItemEditModal {
       });
     }
   }
+  deleteTask() {
+    this.taskService.deleteTask(this.taskId).subscribe(() => {
+      this.dialogRef.close(true);
+      this.toast.danger('Task removed: ' + this.title);
+    });
+  }
+
 }

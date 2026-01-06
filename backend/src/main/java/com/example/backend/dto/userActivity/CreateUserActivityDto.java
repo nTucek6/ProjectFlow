@@ -1,23 +1,20 @@
 package com.example.backend.dto.userActivity;
 
 import com.example.backend.enums.ActivityAction;
+import com.example.backend.model.table.Project;
+import com.example.backend.model.table.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserActivityDto {
-    private Long id;
+public class CreateUserActivityDto {
+
     private Long userId;
-    private String userFullName;
-    private Long projectId;
-    private String projectName;
-    private String action;
+    private Project project;
+    private ActivityAction action;
     private String description;
-    private OffsetDateTime createdAt;
+
 }

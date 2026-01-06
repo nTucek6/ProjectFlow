@@ -67,6 +67,12 @@ li > span:last-of-type {
   overflow-y: auto;
 }
 
+.recent-activities-data{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 /*
 .display {
   display: flex;

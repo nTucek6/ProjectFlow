@@ -11,4 +11,7 @@ public interface UserActivityService {
 
     List<UserActivityDto> findRecent(Long userId);
 
+    List<UserActivityDto> findProjectRecent(Long projectId);
+
+
 }

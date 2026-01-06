@@ -52,7 +52,6 @@ export class Board {
       this.tabTitle.setTitle(p.name + ' - Board');
       this.projectId = p.id
       this.taskService.getAllProjectTasks(p.id).subscribe((response) => {
-        //console.log(response);
         this.todo = response.filter((f) => f.status === 'TODO');
         this.progress = response.filter((f) => f.status === 'IN_PROGRESS');
         this.done = response.filter((f) => f.status === 'DONE');

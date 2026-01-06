@@ -21,6 +21,8 @@ import { ProjectMembersModal } from '../../shared/modals/project-members-modal/p
 import { ProjectMemberService } from '../../shared/services/api/project-member.service';
 import { filter, Subject } from 'rxjs';
 import { ProjectService } from '@shared/services/api/project.service';
+import { UserActivityService } from '@shared/services/api/user-activity.service';
+import { UserActivityDto } from '@shared/dto/user-activity.dto';
 
 @Component({
   selector: 'app-project',
@@ -50,6 +52,8 @@ export class Project {
 
   private activatedRoute = inject(ActivatedRoute);
 
+
+
   readonly dialog = inject(MatDialog);
 
   userId = 0;
@@ -64,10 +68,7 @@ export class Project {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id != null) {
       this.projectService.getProjectById(parseInt(id)).subscribe((response) => {
-        //this.project = response;
         this.projectService.setProject(response);
-        //this.projectId = this.project.id;
-        //this.projectName = this.project.name;
       });
       this.projectService.project$.pipe(filter(Boolean)).subscribe((project) => {
         this.project = project!;

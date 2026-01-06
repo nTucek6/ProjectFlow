@@ -4,6 +4,9 @@ import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.project.ProjectMemberDto;
 import com.example.backend.dto.task.CreateTaskDto;
 import com.example.backend.dto.task.TaskDto;
+import com.example.backend.dto.userActivity.CreateUserActivityDto;
+import com.example.backend.dto.userActivity.UserActivityDto;
+import com.example.backend.enums.ActivityAction;
 import com.example.backend.enums.ProjectStatus;
 import com.example.backend.enums.TaskStatus;
 import com.example.backend.mapper.TaskMapper;
@@ -13,10 +16,13 @@ import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.TaskRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.TaskService;
+import com.example.backend.service.auth.CustomUserDetails;
+import com.example.backend.utils.SecurityUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,13 +42,12 @@ public class TaskServiceImpl implements TaskService {
     private final ProjectRepository projectRepository;
     private final ProjectMilestonesRepository projectMilestonesRepository;
     private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
+
 
     @Override
     @Transactional
     public TaskDto save(CreateTaskDto newTaskDto) {
-
-        log.info("Radiiiiii");
-
         Project project = projectRepository.findById(newTaskDto.getProjectId()).orElseThrow(() -> new EntityNotFoundException("Project not found"));
 
         Task task = new Task();
@@ -51,6 +56,7 @@ public class TaskServiceImpl implements TaskService {
         task.setStatus(TaskStatus.TODO);
         task.setDescription(newTaskDto.getDescription());
         task.setCreatedAt(OffsetDateTime.now());
+        task.setAssignees(new ArrayList<>());
         int orderMax = taskRepository.findMaxOrderByProjectIdAndStatus(project.getId(), TaskStatus.TODO) + 1;
         task.setOrder(orderMax);
         if (newTaskDto.getProjectMilestoneId() > 0) {
@@ -59,27 +65,32 @@ public class TaskServiceImpl implements TaskService {
             task.setProjectMilestones(projectMilestone);
         }
 
-
         if (!newTaskDto.getAssignees().isEmpty()) {
             List<User> assigneeSet = new ArrayList<>();
             newTaskDto.getAssignees().forEach(a -> {
                 User u = userRepository.findById(a.getValue()).orElseThrow();
-                log.info(u.toString());
                 assigneeSet.add(u);
             });
-
-            /*
-            Set<User> assigneeSet = newTaskDto.getAssignees().stream()
-                    .map(a -> userRepository.findById(a.getValue()).orElseThrow(()-> new EntityNotFoundException("User not found" + a.getLabel())))
-                    .collect(Collectors.toSet());
-            log.info(assigneeSet.toString());*/
             task.setAssignees(assigneeSet);
         }
 
-        return TaskMapper.mapTaskToTaskDto(taskRepository.save(task));
+        Task newTask = taskRepository.save(task);
+
+        CustomUserDetails user = SecurityUtils.getPrincipal();
+        eventPublisher.publishEvent(
+                new CreateUserActivityDto(
+                        user.getId(),
+                        newTask.getProject(),
+                        ActivityAction.CREATED,
+                        user.getFullName()) + " created task: " + task.getTitle()
+        );
+
+
+        return TaskMapper.mapTaskToTaskDto(newTask);
     }
 
     @Override
+    @Transactional
     public TaskDto update(Long id, TaskDto taskDto) {
         Task taskToUpdate = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
 
@@ -89,8 +100,22 @@ public class TaskServiceImpl implements TaskService {
             taskToUpdate.setCreatedAt(OffsetDateTime.now());
         }
         if (taskDto.getStatus() != null) {
-            taskToUpdate.setStatus(taskDto.getStatus());
+            TaskStatus status = taskToUpdate.getStatus();
+            if (status != taskDto.getStatus()) {
+                taskToUpdate.setStatus(taskDto.getStatus());
+                CustomUserDetails user = SecurityUtils.getPrincipal();
+                String description = user.getFullName() + " changed task status " + taskToUpdate.getTitle() + " to: " + taskToUpdate.getStatus().getDescription();
+                eventPublisher.publishEvent(
+                        new CreateUserActivityDto(
+                                user.getId(),
+                                taskToUpdate.getProject(),
+                                ActivityAction.STATUS_CHANGED,
+                                description
+                        )
+                );
+            }
         }
+
         if (taskToUpdate.getAssignees() != null && taskDto.getAssignees() != null) {
             syncMembers(taskToUpdate, taskDto.getAssignees());
         }
@@ -116,8 +141,25 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        taskRepository.deleteById(id);
+        Task task = taskRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        Project project = projectRepository.findById(task.getProject().getId()).orElseThrow(EntityNotFoundException::new);
+        project.getTasks().remove(task);
+        taskRepository.flush();
+        taskRepository.decrementOrdersAfter(project.getId(), task.getStatus(), task.getOrder());
+
+        CustomUserDetails user = SecurityUtils.getPrincipal();
+
+        String description = user.getFullName() + " deleted task: " + task.getTitle();
+        eventPublisher.publishEvent(
+                new CreateUserActivityDto(
+                        user.getId(),
+                        project,
+                        ActivityAction.DELETED,
+                        description
+                )
+        );
     }
 
     @Override

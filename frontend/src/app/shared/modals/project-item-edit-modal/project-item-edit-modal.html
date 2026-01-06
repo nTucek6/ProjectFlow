@@ -58,6 +58,12 @@
         }
       </div>
     </div>
+
+    @if (taskExist) {
+    <div>
+      <button mat-button (click)="deleteTask()"><mat-icon>delete_outline</mat-icon></button>
+    </div>
+    }
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

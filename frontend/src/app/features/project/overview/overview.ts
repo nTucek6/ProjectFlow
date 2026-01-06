@@ -1,6 +1,5 @@
 import { Component, effect, inject } from '@angular/core';
 
-
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ProjectDto } from '../../../shared/dto/project.dto';
 import { DatePipe } from '@angular/common';
@@ -12,10 +11,13 @@ import { TaskDto } from '../../../shared/dto/task.dto';
 import { AuthService } from '@shared/services/api/auth.service';
 import { ProjectService } from '@shared/services/api/project.service';
 import { TaskService } from '@shared/services/api/task.service';
+import { UserActivityService } from '@shared/services/api/user-activity.service';
+import { UserActivityDto } from '@shared/dto/user-activity.dto';
+import { ActivityCard } from "@shared/components/activity-card/activity-card";
 
 @Component({
   selector: 'app-overview',
-  imports: [DatePipe, MatProgressBar],
+  imports: [DatePipe, MatProgressBar, ActivityCard],
   templateUrl: './overview.html',
   styleUrl: './overview.scss',
 })
@@ -24,8 +26,10 @@ export class Overview {
   private projectService = inject(ProjectService);
   private taskService = inject(TaskService);
   private tabTitle = inject(Title);
+  private userActivityService = inject(UserActivityService);
 
   project = toSignal<ProjectDto | null>(this.projectService.project$);
+  recentProjectActivity: UserActivityDto[] = [];
 
   tasks: TaskDto[] = [];
 
@@ -54,6 +58,9 @@ export class Overview {
         error: (err) => {
           console.error('API error:', err);
         },
+      });
+      this.userActivityService.fetchProjectRecentActivities(currentProject.id).subscribe((response) => {
+        this.recentProjectActivity = response;
       });
     }
   });

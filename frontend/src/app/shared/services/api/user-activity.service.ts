@@ -16,7 +16,11 @@ export class UserActivityService {
     return this.http.get<UserActivityDto[]>(`${this.apiUrl}/user/${userId}`);
   }
 
-  logUserActivity(activity: UserActivityDto): Observable<UserActivityDto> {
-    return this.http.post<UserActivityDto>(`${this.apiUrl}`, activity);
+  fetchProjectRecentActivities(projectId: number) : Observable<UserActivityDto[]> {
+    return this.http.get<UserActivityDto[]>(`${this.apiUrl}/project/${projectId}`);
   }
+
+  /*logUserActivity(activity: UserActivityDto): Observable<UserActivityDto> {
+    return this.http.post<UserActivityDto>(`${this.apiUrl}`, activity);
+  } */
 }

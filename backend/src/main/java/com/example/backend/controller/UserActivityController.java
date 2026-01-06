@@ -20,7 +20,7 @@ public class UserActivityController {
 
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<UserActivityDto>> fetchTop3Activity(@PathVariable Long userId){
+    public ResponseEntity<List<UserActivityDto>> fetchTop3Activity(@PathVariable Long userId) {
         try {
             return ResponseEntity.ok(userActivityService.findRecent(userId));
         } catch (EntityNotFoundException e) {
@@ -29,7 +29,18 @@ public class UserActivityController {
         }
     }
 
-    @PostMapping
+    @GetMapping("/project/{projectId}")
+    public ResponseEntity<List<UserActivityDto>> fetchTop8ProjectActivity(@PathVariable Long projectId) {
+        try {
+            return ResponseEntity.ok(userActivityService.findProjectRecent(projectId));
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+
+   /* @PostMapping
     public ResponseEntity<UserActivityDto> logUserActivity(@RequestBody UserActivityDto userActivityDto){
         try {
             return ResponseEntity.ok(userActivityService.save(userActivityDto));
@@ -37,7 +48,7 @@ public class UserActivityController {
             log.error(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
-    }
+    } */
 
 
 }

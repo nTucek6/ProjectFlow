@@ -7,7 +7,9 @@
       <span>{{ projectName }} - {{ createdAt | date : 'dd.MM.yy HH:mm' }}</span>
     </div>
   </div>
+  @if (includeIcon) {
   <mat-icon>create_new_folder</mat-icon>
+  }
 </section>
 
 <!--

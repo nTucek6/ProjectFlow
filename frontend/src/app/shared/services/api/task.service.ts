@@ -27,8 +27,12 @@ export class TaskService {
     return this.http.get<TaskDto[]>(`${this.apiUrl}/all/${projectId}`);
   }
 
-  saveTask(task: CreateTaskDto): Observable<TaskDto>{
+  saveTask(task: CreateTaskDto): Observable<TaskDto> {
     return this.http.post<TaskDto>(`${this.apiUrl}`, task);
+  }
+
+  deleteTask(taskId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${taskId}`);
   }
 
   updateTask(task: TaskDto): Observable<TaskDto> {
@@ -38,5 +42,4 @@ export class TaskService {
   reorderTask(reorderTask: TaskDto[]): Observable<any> {
     return this.http.put(`${this.apiUrl}/reorder`, reorderTask);
   }
-
 }
