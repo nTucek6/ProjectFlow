@@ -17,7 +17,7 @@
             [class.chat-message-row-current-user]="currentUser(chat.sender)"
           >
             <app-avatar-photo class="profile-image" [name]="chat.fullName"></app-avatar-photo>
-            <div class="chat-message-body chat-message-current-user">{{ chat.content }}</div>
+            <div class="chat-message-body chat-message-current-user">{{ chat.content }} {{chat.sent}}</div>
           </div>
 
           }

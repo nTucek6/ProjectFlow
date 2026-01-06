@@ -1,5 +1,4 @@
 import {
-  APP_INITIALIZER,
   ApplicationConfig,
   inject,
   provideAppInitializer,
@@ -17,11 +16,23 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { routes } from './app.routes';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { AuthExpiredInterceptor } from './core/interceptors/auth-expired.interceptor';
-import { AuthService } from './shared/services/auth.service';
+import { AuthService } from '@shared/services/api/auth.service';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MY_DATE_FORMATS } from './shared/formats/date-formats';
 
 import { provideNgToast } from 'ng-angular-popup';
+
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+
+const TIME_FORMATS = {
+  parse: {
+    timeInput: 'HH:mm', // Input parsing format
+  },
+  display: {
+    timeInput: 'HH:mm', // Display in input
+    timeOptionLabel: 'HH:mm', // Dropdown option labels
+  },
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -55,16 +66,17 @@ export const appConfig: ApplicationConfig = {
     }),
     provideNativeDateAdapter(MY_DATE_FORMATS),
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-   // provideZonelessChangeDetection(),
+    // provideZonelessChangeDetection(),
     provideNgToast({
-      duration: 3000,              // 3 seconds
+      duration: 3000, // 3 seconds
       position: 'toaster-top-right', // Default position
-      maxToasts: 3,                // Max 3 toasts at once
-      width: 400,                  // Toast width in pixels
-      showProgress: true,          // Show progress bar
-      dismissible: true,           // Allow manual dismiss
-      showIcon: true,              // Show icons
-      enableAnimations: true       // Enable animations
+      maxToasts: 3, // Max 3 toasts at once
+      width: 400, // Toast width in pixels
+      showProgress: true, // Show progress bar
+      dismissible: true, // Allow manual dismiss
+      showIcon: true, // Show icons
+      enableAnimations: true, // Enable animations
     }),
+    { provide: MAT_DATE_FORMATS, useValue: TIME_FORMATS },
   ],
 };

@@ -1,12 +1,17 @@
 package com.example.backend.model.table;
 
 import com.example.backend.enums.TaskStatus;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,7 +28,7 @@ public class Task {
     @Column(nullable = false)
     private String title;
     private String description;
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -42,10 +47,10 @@ public class Task {
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> assignees;
+    private List<User> assignees;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "project_milestone_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "project_milestone_id", nullable = true)
     private ProjectMilestones projectMilestones;
 
     public boolean isDone(){

@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ProjectDto } from '../dto/project.dto';
-import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ProjectFilterParams } from '../model/project-filter-params';
-import { SearchProjectDto } from '../dto/search-project.dto';
-import { NewProjectDto } from '../dto/new-project.dto';
-import { ChatMessageDto } from '../dto/chat-message.dto';
-import { DashboardSummaryDto } from '../dto/dashboard-summary.dto';
-import { UpdateProjectDto } from '../dto/update-project.dto';
+import { ProjectFilterParams } from '@shared/model/project-filter-params';
+import { environment } from 'environments/environment';
+import { ProjectDto } from '@shared/dto/project.dto';
+import { ChatMessageDto } from '@shared/dto/chat-message.dto';
+import { SearchProjectDto } from '@shared/dto/search-project.dto';
+import { NewProjectDto } from '@shared/dto/new-project.dto';
+import { UpdateProjectDto } from '@shared/dto/update-project.dto';
+import { DashboardSummaryDto } from '@shared/dto/dashboard-summary.dto';
 
 @Injectable({
   providedIn: 'root',

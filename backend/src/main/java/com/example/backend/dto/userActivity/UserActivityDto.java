@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,5 +18,5 @@ public class UserActivityDto {
     private String projectName;
     private String action;
     private String description;
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 }

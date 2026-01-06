@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Entity
@@ -20,12 +21,15 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private LocalDateTime createdAt;
-    private LocalDateTime startDate;
-    private LocalDateTime deadline;
-    private LocalDateTime updatedAt;
+    @Lob
+    private String description;
+    private OffsetDateTime createdAt;
     @Nullable
-    private LocalDateTime completedAt;
+    private OffsetDateTime startDate;
+    private OffsetDateTime deadline;
+    private OffsetDateTime updatedAt;
+    @Nullable
+    private OffsetDateTime completedAt;
     private ProjectStatus status;
 
 
@@ -38,6 +42,9 @@ public class Project {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectMilestones> milestones = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatRoom> chats = new ArrayList<>();
 
     public User getOwner() {
         List<ProjectMember> memberList = new ArrayList<>(members); // safe copy

@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.projectMember.NewProjectMemberDto;
 import com.example.backend.dto.projectMember.ProjectMemberDto;
@@ -11,6 +12,8 @@ import java.util.List;
 public interface ProjectMemberService {
 
     List<ProjectMemberDto> getProjectMembers(Long projectId, String search);
+
+    List<SelectDto> searchProjectMembers(Long projectId, String search);
 
     void save(NewProjectMemberDto newMember);
 

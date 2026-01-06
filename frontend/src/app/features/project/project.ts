@@ -1,5 +1,4 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
-import { ProjectService } from '../../shared/services/project.service';
 import { ActivatedRoute, RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { ProjectDto } from '../../shared/dto/project.dto';
 import { MatIcon } from '@angular/material/icon';
@@ -10,7 +9,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { FormsModule } from '@angular/forms';
 //import { ChatMessageDto } from '../../shared/dto/chat-message.dto';
-import { AuthService } from '../../shared/services/auth.service';
+//import { AuthService } from '@shared/services/api/auth.service'; from '@shared/services/api/auth.service'; from '../../shared/services/auth.service';
+import { AuthService } from '@shared/services/api/auth.service';
 //import { AvatarPhoto } from '../../shared/components/avatar-photo/avatar-photo';
 //import { Subscription } from 'rxjs';
 //import { WebSocketService } from '../../shared/services/web-socket.service';
@@ -18,8 +18,9 @@ import { ChatBox } from '../../shared/components/chat-box/chat-box';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectEditModal } from '../../shared/modals/project-edit-modal/project-edit-modal';
 import { ProjectMembersModal } from '../../shared/modals/project-members-modal/project-members-modal';
-import { ProjectMemberService } from '../../shared/services/project-member.service';
+import { ProjectMemberService } from '../../shared/services/api/project-member.service';
 import { filter, Subject } from 'rxjs';
+import { ProjectService } from '@shared/services/api/project.service';
 
 @Component({
   selector: 'app-project',
@@ -57,7 +58,6 @@ export class Project {
   projectName = '';
 
   project: ProjectDto | null = null;
-  //project = this.projectService.project$;
   progress: any;
 
   ngOnInit(): void {

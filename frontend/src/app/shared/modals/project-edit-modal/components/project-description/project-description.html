@@ -1,0 +1,21 @@
+<section>
+  <div>
+    <h3>Project Description</h3>
+    <span>Provide a detailed overview of the project goals and scope.</span>
+  </div>
+
+  <div>
+    <mat-form-field class="form-group" appearance="outline">
+      <mat-label>Description...</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="description"
+        placeholder="Description..."
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="2"
+      ></textarea>
+    </mat-form-field>
+  </div>
+
+  <div><button mat-button (click)="saveChanges()">Save changes</button></div>
+</section>

@@ -20,7 +20,7 @@ import {
   startWith,
   switchMap,
 } from 'rxjs';
-import { UserService } from '../../services/user-service';
+import { UserService } from '@shared/services/api/user-service';
 import { Select } from '../../model/select';
 
 import { MatChipsModule } from '@angular/material/chips';
@@ -28,10 +28,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { NewProjectMilestoneDto } from '../../dto/new-project-milestone.dto';
 import { NewProjectDto } from '../../dto/new-project.dto';
-import { ProjectService } from '../../services/project.service';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '@shared/services/api/auth.service';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { ProjectService } from '@shared/services/api/project.service';
+
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-new-project-modal',
@@ -62,7 +64,11 @@ export class NewProjectModal {
 
   private projectService = inject(ProjectService);
 
+  private toast = inject(NgToastService);
+
   name: string = '';
+
+  description: string = '';
 
   deadline = '';
 
@@ -134,9 +140,9 @@ export class NewProjectModal {
 
     let owner = this.authService.getUserId();
     if (owner != undefined) {
-
       const newProject: NewProjectDto = {
         name: this.name,
+        description: this.description,
         membersId: membersId,
         customMilestones: milesones,
         deadline: this.deadline,
@@ -148,7 +154,7 @@ export class NewProjectModal {
       this.projectService.createNewProject(newProject).subscribe((response) => {
         console.log(response);
         this.dialogRef.close('done');
-        alert('Project added, ' + response.name);
+        this.toast.success('Project added, ' + response.name)
       });
     }
   }

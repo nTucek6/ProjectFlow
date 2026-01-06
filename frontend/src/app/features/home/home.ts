@@ -1,15 +1,17 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../shared/services/auth.service';
+//import { AuthService } from '@shared/services/api/auth.service'; from '@shared/services/api/auth.service'; from '../../shared/services/auth.service';
+import { AuthService } from '@shared/services/api/auth.service';
 import { TwoLineInfoCard } from '../../shared/components/two-line-info-card/two-line-info-card';
 import { ProjectOverviewCard } from '../../shared/components/project-overview-card/project-overview-card';
 import { AvatarPhoto } from '../../shared/components/avatar-photo/avatar-photo';
 import { ActivityCard } from '../../shared/components/activity-card/activity-card';
-import { ProjectService } from '../../shared/services/project.service';
+
 import { DashboardSummaryDto } from '../../shared/dto/dashboard-summary.dto';
-import { ProjectMemberService } from '../../shared/services/project-member.service';
+import { ProjectMemberService } from '../../shared/services/api/project-member.service';
 import { ProjectDto } from '../../shared/dto/project.dto';
-import { UserActivityService } from '../../shared/services/user-activity.service';
+import { UserActivityService } from '@shared/services/api/user-activity.service';
 import { UserActivityDto } from '../../shared/dto/user-activity.dto';
+import { ProjectService } from '@shared/services/api/project.service';
 
 @Component({
   selector: 'app-home',

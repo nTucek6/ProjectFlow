@@ -31,6 +31,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -121,7 +122,7 @@ public class AuthController {
         try {
             VerificationToken vt = tokenService.findVerificationToken(verifyToken);
 
-            if (vt.getExpiresAt().isBefore(LocalDateTime.now())) {
+            if (vt.getExpiresAt().isBefore(OffsetDateTime.now())) {
                 throw new RuntimeException("Token expired!");
             }
 

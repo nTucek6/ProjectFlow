@@ -1,5 +1,7 @@
 package com.example.backend.repository;
 
+import com.example.backend.enums.ProjectStatus;
+import com.example.backend.enums.TaskStatus;
 import com.example.backend.model.table.Task;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
@@ -20,6 +23,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findAllByProject_IdOrderByOrderAsc(Long projectId);
 
-    //List<Task> findByProject(Long project_id);
+    @Query("SELECT COALESCE(MAX(t.order), -1) FROM Task t " +
+            "WHERE t.project.id = :projectId AND t.status = :status")
+    Integer findMaxOrderByProjectIdAndStatus(Long projectId, TaskStatus status);
+
 
 }

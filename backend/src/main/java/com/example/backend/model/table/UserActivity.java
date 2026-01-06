@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class UserActivity {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
 
 
 }

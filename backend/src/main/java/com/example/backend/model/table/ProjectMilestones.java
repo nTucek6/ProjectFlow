@@ -33,8 +33,8 @@ public class ProjectMilestones {
     private String color;
     private int sequence;
 
-    @OneToOne(mappedBy = "projectMilestones")
-    private Task task;
+   /* @OneToOne(mappedBy = "projectMilestones")
+    private Task task; */
 
     public ProjectMilestones(String name, String description, Project project, MilestoneTemplates template, String color, int sequence) {
         this.name = name;

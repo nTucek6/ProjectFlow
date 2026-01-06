@@ -11,10 +11,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AvatarPhoto } from '../../components/avatar-photo/avatar-photo';
 import { MatSelectModule } from '@angular/material/select';
 
-import { Select } from '../../model/select';
-import { ProjectMemberService } from '../../services/project-member.service';
-import { ProjectMemberDto } from '../../dto/project-member.dto';
-import { ProjectRole } from '../../enums/project-role.enum';
+
+import { ProjectMemberService } from '@shared/services/api/project-member.service';
+import { ProjectMemberDto } from '@shared/dto/project-member.dto';
+import { ProjectRole } from '@shared/enums/project-role.enum';
 import { CustomSearchInput } from '../../components/custom-search-input/custom-search-input';
 import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 

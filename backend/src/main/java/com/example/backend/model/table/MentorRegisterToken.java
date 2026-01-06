@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -19,5 +20,5 @@ public class MentorRegisterToken {
     private Long id;
     private String token;
     private String email;
-    private LocalDateTime expiresAt;
+    private OffsetDateTime expiresAt;
 }

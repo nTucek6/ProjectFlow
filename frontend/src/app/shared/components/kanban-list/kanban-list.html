@@ -1,0 +1,22 @@
+<!--#todoList="cdkDropList"-->
+<div
+  cdkDropList
+  [id]="listId"
+  [cdkDropListData]="list"
+  class="example-list"
+  (cdkDropListDropped)="drop($event)"
+>
+  @for (item of list; track item) {
+  <div
+    class="example-box"
+    cdkDrag
+    [cdkDragData]="item"
+    (cdkDragStarted)="isDragging = true"
+    (cdkDragEnded)="isDragging = false"
+    (click)="!isDragging && editItem(item)"
+  >
+    <span>{{ item.title }}</span>
+    <span>{{ item.description }}</span>
+  </div>
+  }
+</div>

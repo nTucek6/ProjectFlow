@@ -4,11 +4,13 @@ import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/materia
 import { MatIcon } from "@angular/material/icon";
 import { BasicInformation } from "./components/basic-information/basic-information";
 import { ProjectDto } from '../../dto/project.dto';
-import { ProjectService } from '../../services/project.service';
+import { ProjectService } from '@shared/services/api/project.service';
+import { ProjectDescription } from "./components/project-description/project-description";
+
 
 @Component({
   selector: 'app-project-edit-modal',
-  imports: [MatButtonModule, MatIcon, MatDialogModule, BasicInformation],
+  imports: [MatButtonModule, MatIcon, MatDialogModule, BasicInformation, ProjectDescription],
   templateUrl: './project-edit-modal.html',
   styleUrl: './project-edit-modal.scss',
 })

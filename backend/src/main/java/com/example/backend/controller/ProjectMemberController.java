@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.projectMember.NewProjectMemberDto;
 import com.example.backend.dto.projectMember.ProjectMemberDto;
@@ -28,6 +29,16 @@ public class ProjectMemberController {
     public ResponseEntity<List<ProjectMemberDto>> getProjectMembers(@PathVariable Long projectId, @RequestParam String search){
         try {
             return ResponseEntity.ok(projectMemberService.getProjectMembers(projectId, search));
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/searchUser/{projectId}")
+    public ResponseEntity<List<SelectDto>> getProjectMembersSelect(@PathVariable Long projectId, @RequestParam String search){
+        try {
+            return ResponseEntity.ok(projectMemberService.searchProjectMembers(projectId, search));
         } catch (EntityNotFoundException e) {
             log.error(e.getMessage());
             return ResponseEntity.internalServerError().build();

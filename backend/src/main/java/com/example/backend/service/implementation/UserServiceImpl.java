@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
         if (registerRequest.getToken() != null) {
             MentorRegisterToken mrt = mentorRegisterTokenRepository.findByToken(registerRequest.getToken()).orElseThrow(()-> new RuntimeException("Token not found!"));
-            if (mrt.getExpiresAt().isBefore(LocalDateTime.now())) {
+            if (mrt.getExpiresAt().isBefore(OffsetDateTime.now())) {
                 throw new RuntimeException("Token expired!");
             }
             if(!mrt.getEmail().equals(registerRequest.getEmail())){

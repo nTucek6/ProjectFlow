@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class ChatMessageDto {
     private MessageType type;
     private String fullName;
     private Long projectId;
-    private LocalDateTime sent;
+    private OffsetDateTime sent;
     @Nullable
     private String fileUrl;
 }

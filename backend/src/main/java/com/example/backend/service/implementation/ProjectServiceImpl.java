@@ -28,6 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -77,9 +78,10 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDto save(NewProjectDto newProjectDto) {
         Project project = new Project();
         project.setName(newProjectDto.getName());
+        project.setDescription(newProjectDto.getDescription());
         project.setDeadline(newProjectDto.getDeadline());
-        project.setCreatedAt(LocalDateTime.now());
-        project.setUpdatedAt(LocalDateTime.now());
+        project.setCreatedAt(OffsetDateTime.now());
+        project.setUpdatedAt(OffsetDateTime.now());
         project.setStatus(ProjectStatus.BACKLOG);
 
         List<ProjectMember> members = new ArrayList<>();
@@ -127,8 +129,11 @@ public class ProjectServiceImpl implements ProjectService {
 
         proToUpdate.setName(updateProject.getName());
         proToUpdate.setDeadline(updateProject.getDeadline());
-        proToUpdate.setStartDate(updateProject.getStartDate());
+        proToUpdate.setDescription(updateProject.getDescription());
 
+        if (updateProject.getStartDate() != null) {
+            proToUpdate.setStartDate(updateProject.getStartDate());
+        }
         if (updateProject.getUpdatedAt() != null) {
             proToUpdate.setUpdatedAt(updateProject.getUpdatedAt());
         }

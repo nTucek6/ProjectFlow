@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -15,10 +16,11 @@ import java.util.List;
 public class UpdateProjectDto {
 
     private String name;
+    private String description;
     private List<ProjectMemberDto> members;
     private List<UpdateCustomMilestoneDto> customMilestones;
-    private LocalDateTime deadline;
-    private LocalDateTime startDate;
-    private LocalDateTime updatedAt;
+    private OffsetDateTime deadline;
+    private OffsetDateTime startDate;
+    private OffsetDateTime updatedAt;
 
 }

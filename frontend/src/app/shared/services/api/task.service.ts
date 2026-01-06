@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from 'environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TaskDto } from '../dto/task.dto';
+import { TaskDto } from '@shared/dto/task.dto';
+import { CreateTaskDto } from '@shared/dto/create-task.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,10 @@ export class TaskService {
 
   getAllProjectTasks(projectId: number): Observable<TaskDto[]> {
     return this.http.get<TaskDto[]>(`${this.apiUrl}/all/${projectId}`);
+  }
+
+  saveTask(task: CreateTaskDto): Observable<TaskDto>{
+    return this.http.post<TaskDto>(`${this.apiUrl}`, task);
   }
 
   updateTask(task: TaskDto): Observable<TaskDto> {

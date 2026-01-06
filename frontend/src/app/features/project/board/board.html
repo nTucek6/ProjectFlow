@@ -1,11 +1,21 @@
-<section>
+@if (project()) {
+<section cdkDropListGroup>
   <div class="example-container">
     <div class="column-header">
       <h2>To do</h2>
-      <mat-icon class="vivid-orange-hover">add</mat-icon>
+      <mat-icon class="vivid-orange-hover" (click)="openItemEditDialog()">add</mat-icon>
     </div>
 
-    <div
+    <app-kanban-list
+      [listId]="taskStatus.TODO.toString()"
+      [list]="todo"
+      [isDragging]="isDragging"
+      (onDrop)="drop($event)"
+      (onUpdate)="getProjectTasks()"
+      [projectId]="projectId"
+    ></app-kanban-list>
+
+    <!--<div
       cdkDropList
       #todoList="cdkDropList"
       [id]="taskStatus.TODO.toString()"
@@ -23,10 +33,11 @@
         (cdkDragEnded)="isDragging = false"
         (click)="!isDragging && editItem(item)"
       >
-        {{ item.title }}
+        <span>{{ item.title }}</span>
+        <span>{{ item.description }}</span>
       </div>
       }
-    </div>
+    </div>-->
   </div>
 
   <div class="example-container">
@@ -34,7 +45,15 @@
       <h2>In progress</h2>
     </div>
 
-    <div
+    <app-kanban-list
+      [listId]="taskStatus.IN_PROGRESS.toString()"
+      [list]="progress"
+      [isDragging]="isDragging"
+      (onDrop)="drop($event)"
+      (onUpdate)="getProjectTasks()"
+      [projectId]="projectId"
+    ></app-kanban-list>
+    <!--<div
       cdkDropList
       [id]="taskStatus.IN_PROGRESS.toString()"
       #progressList="cdkDropList"
@@ -52,10 +71,11 @@
         (cdkDragEnded)="isDragging = false"
         (click)="!isDragging && editItem(item)"
       >
-        {{ item.title }}
+        <span>{{ item.title }}</span>
+        <span>{{ item.description }}</span>
       </div>
       }
-    </div>
+    </div> -->
   </div>
 
   <div class="example-container">
@@ -63,7 +83,15 @@
       <h2>Done</h2>
     </div>
 
-    <div
+    <app-kanban-list
+      [listId]="taskStatus.DONE.toString()"
+      [list]="done"
+      [isDragging]="isDragging"
+      (onDrop)="drop($event)"
+      (onUpdate)="getProjectTasks()"
+      [projectId]="projectId"
+    ></app-kanban-list>
+    <!--<div
       cdkDropList
       [id]="taskStatus.DONE.toString()"
       #doneList="cdkDropList"
@@ -81,9 +109,12 @@
         (cdkDragEnded)="isDragging = false"
         (click)="!isDragging && editItem(item)"
       >
-        {{ item.title }}
+        <span>{{ item.title }}</span>
+        <span>{{ item.description }}</span>
       </div>
       }
-    </div>
+    </div>-->
   </div>
 </section>
+
+}

@@ -53,7 +53,7 @@
   <h2>Recent activities</h2>
   <div class="recent-activities-data">
     @if (recentActivities.length > 0) { @for (a of recentActivities; track $index) {
-    <app-activity-card [action]="a.action" [description]="a.description"></app-activity-card>
+    <app-activity-card [action]="a.action" [description]="a.description" [createdAt]="a.createdAt"></app-activity-card>
     } } @else {
     <p>No recent activities.</p>
     }

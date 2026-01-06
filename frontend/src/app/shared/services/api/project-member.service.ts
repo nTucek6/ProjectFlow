@@ -1,11 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from 'environments/environment.development';
 import { HttpClient } from '@angular/common/http';
-import { ProjectMemberDto } from '../dto/project-member.dto';
+import { ProjectMemberDto } from '@shared/dto/project-member.dto';
 import { Observable } from 'rxjs';
-import { ProjectRole } from '../enums/project-role.enum';
-import { UpdateLastAccessedDto } from '../dto/last-accessed.dto';
-import { ProjectDto } from '../dto/project.dto';
+import { ProjectRole } from '@shared/enums/project-role.enum';
+import { UpdateLastAccessedDto } from '@shared/dto/last-accessed.dto';
+import { ProjectDto } from '@shared/dto/project.dto';
+import { Select } from '@shared/model/select';
+
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +23,13 @@ export class ProjectMemberService {
     };
 
     return this.http.get<ProjectMemberDto[]>(`${this.apiUrl}/project/${projectId}`, { params });
+  }
+
+  searchProjectMembers(projectId: number, search: string): Observable<Select[]> {
+    const params = {
+      search: search,
+    };
+    return this.http.get<Select[]>(`${this.apiUrl}/searchUser/${projectId}`, { params });
   }
 
   updateUserRole(id: number, role: ProjectRole): Observable<void> {

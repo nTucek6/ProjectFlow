@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from 'environments/environment';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import {
   BehaviorSubject,
@@ -11,9 +11,14 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import { UserCredentials } from '../model/user-credentials';
-import { UserDto } from '../dto/user.dto';
-import { RegisterRequestDto } from '../dto/register-request.dto';
+
+
+import { UserCredentials } from '@shared/model/user-credentials';
+//import { UserCredentials } from '../model/user-credentials';
+import { UserDto } from '@shared/dto/user.dto';
+//import { UserDto } from '../dto/user.dto';
+import { RegisterRequestDto } from '@shared/dto/register-request.dto';
+//import { RegisterRequestDto } from '../dto/register-request.dto';
 
 import { NgToastService } from 'ng-angular-popup';
 

@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserActivityDto } from '../dto/user-activity.dto';
+import { environment } from 'environments/environment';
+import { UserActivityDto } from '@shared/dto/user-activity.dto';
+
 
 @Injectable({
   providedIn: 'root',

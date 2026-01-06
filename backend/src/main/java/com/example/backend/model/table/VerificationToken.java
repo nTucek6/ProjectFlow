@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Data
@@ -22,6 +23,6 @@ public class VerificationToken {
     @OneToOne
     private User user;
 
-    private LocalDateTime expiresAt;
+    private OffsetDateTime expiresAt;
 
 }

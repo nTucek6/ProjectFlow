@@ -21,10 +21,7 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 
 import java.security.Key;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,9 +70,9 @@ public class TokenServiceImpl implements TokenService {
         Map<String, Object> claims = new HashMap<>();
 
         String t1 = createToken(claims, user.getEmail(), 24 * 60);
-        LocalDateTime expire = extractExpiration(t1).toInstant()
+        OffsetDateTime expire = extractExpiration(t1).toInstant()
                 .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();;
+                .toOffsetDateTime();;
 
         VerificationToken token = new VerificationToken();
         token.setToken(t1);
@@ -96,9 +93,9 @@ public class TokenServiceImpl implements TokenService {
         Map<String, Object> claims = new HashMap<>();
 
         String t1 = createToken(claims, mentor.getEmail(), 24 * 60);
-        LocalDateTime expire = extractExpiration(t1).toInstant()
+        OffsetDateTime expire = extractExpiration(t1).toInstant()
                 .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();;
+                .toOffsetDateTime();;
 
         MentorRegisterToken mrt = new MentorRegisterToken();
         mrt.setEmail(mentor.getEmail());
@@ -111,7 +108,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public boolean validateMentorRegisterToken(String token) {
         MentorRegisterToken mrt = mentorRegTokenRepository.findByToken(token).orElseThrow(()-> new EntityNotFoundException("Token not found"));
-        if (mrt.getExpiresAt().isBefore(LocalDateTime.now())){
+        if (mrt.getExpiresAt().isBefore(OffsetDateTime.now())){
             throw new RuntimeException("Token expired");
         }
         return true;

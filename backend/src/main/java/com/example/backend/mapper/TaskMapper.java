@@ -3,6 +3,9 @@ package com.example.backend.mapper;
 import com.example.backend.dto.task.TaskDto;
 import com.example.backend.enums.TaskStatus;
 import com.example.backend.model.table.Task;
+import com.example.backend.model.table.User;
+
+import java.util.List;
 
 public class TaskMapper {
 
@@ -15,6 +18,7 @@ public class TaskMapper {
         taskDto.setStatus(task.getStatus());
         taskDto.setStatusText(convertStatus(task.getStatus()));
         taskDto.setOrder(task.getOrder());
+        taskDto.setAssignees(task.getAssignees().stream().map(UserMapper::mapUserToSelectDto).toList());
         return taskDto;
     }
 

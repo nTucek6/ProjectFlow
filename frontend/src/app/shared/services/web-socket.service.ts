@@ -1,8 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import SockJS from 'sockjs-client';
 import { Client, IMessage, Message, Stomp, StompSubscription } from '@stomp/stompjs';
-import { ChatMessageDto } from '../dto/chat-message.dto';
-import { ProjectService } from './project.service';
+//import { ChatMessageDto } from '../dto/chat-message.dto';
+import { ChatMessageDto } from '@shared/dto/chat-message.dto';
+//import { ProjectService } from './project.service';
+import { ProjectService } from '@shared/services/api/project.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -26,7 +28,6 @@ export class WebSocketService {
       //debug: (str) => console.log(str),
     });
 
-
     this.stompClient.onConnect = () => {
       this.connected = true;
       console.log('STOMP connected');
@@ -34,14 +35,14 @@ export class WebSocketService {
       const subscription = this.stompClient.subscribe(
         `/project/${projectId}`,
         (message: IMessage) => {
-         // console.log('Message received', message.body);
+          // console.log('Message received', message.body);
           this.projectService.recivedMessage(JSON.parse(message.body));
         }
       );
       this.projectSubscriptions.set(projectId, subscription);
     };
 
-       this.stompClient.activate();
+    this.stompClient.activate();
   }
 
   send(message: ChatMessageDto) {

@@ -32,4 +32,16 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
 
     List<ProjectMember> findTop3ByUser_IdOrderByLastAccessedDesc(Long userId);
 
+    @Query("""
+                SELECT e FROM ProjectMember e
+                WHERE e.project.id = :projectId
+                  AND e.role NOT IN :roles
+                  AND (
+                       :search IS NULL OR
+                       LOWER(e.user.name) LIKE LOWER(CONCAT('%', :search, '%'))
+                       OR LOWER(e.user.surname) LIKE LOWER(CONCAT('%', :search, '%'))
+                  )
+            """)
+    List<ProjectMember> findAllByProject_IdAndSearch(@Param("projectId") Long projectId, @Param("roles") List<ProjectRole> roles, @Param("search") String search);
+
 }

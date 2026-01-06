@@ -22,7 +22,7 @@
     <app-basic-information [project]="data.project"></app-basic-information>
     } @if (activeTab === 'description') {
     <div>
-      <p>Description data</p>
+      <app-project-description [project]="data.project"></app-project-description>
     </div>
     } @if (activeTab ==='objectives') {
     <div>

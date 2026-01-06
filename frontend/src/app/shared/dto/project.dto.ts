@@ -1,6 +1,7 @@
 export type ProjectDto = {
     id: number;
     name: string;
+    description: string;
     createdAt: Date;
     updatedAt: Date;
     startDate: Date;

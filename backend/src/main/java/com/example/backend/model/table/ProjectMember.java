@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "project_members")
@@ -34,9 +35,9 @@ public class ProjectMember {
     private ProjectRole role;
 
     @Column(nullable = false)
-    private LocalDateTime joinedAt;
+    private OffsetDateTime joinedAt;
     @Nullable
-    private LocalDateTime lastAccessed;
+    private OffsetDateTime lastAccessed;
 
 
     public ProjectMember(Project project, User user, ProjectRole role) {
@@ -44,7 +45,7 @@ public class ProjectMember {
         this.user = user;
         //this.role = ProjectRole.MEMBER;
         this.role = role != null ? role : ProjectRole.MEMBER;
-        this.joinedAt = LocalDateTime.now();
+        this.joinedAt = OffsetDateTime.now();
     }
 
     public static ProjectMember createMember(Project project, User user) {

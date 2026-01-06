@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MatIcon } from '@angular/material/icon';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '@shared/services/api/auth.service';
 import { Router } from '@angular/router';
 import { AvatarPhoto } from '../../shared/components/avatar-photo/avatar-photo';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';

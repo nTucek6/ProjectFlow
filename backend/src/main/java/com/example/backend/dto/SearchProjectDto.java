@@ -3,6 +3,7 @@ package com.example.backend.dto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 public class SearchProjectDto {
@@ -10,7 +11,6 @@ public class SearchProjectDto {
     private Long id;
     private String name;
     private String creatorName;
-    private LocalDateTime createdAt;
-    private LocalDateTime deadline;
-
+    private OffsetDateTime createdAt;
+    private OffsetDateTime deadline;
 }

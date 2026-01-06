@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class ChatRoom {
     private Project project;
     private String content;
 
-    private LocalDateTime sent;
+    private OffsetDateTime sent;
     @Nullable
     private String fileUrl;
 }

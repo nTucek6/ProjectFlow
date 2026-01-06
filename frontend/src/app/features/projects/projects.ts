@@ -6,7 +6,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ProjectService } from '../../shared/services/project.service';
 import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
 import { ProjectFilterParams } from '../../shared/model/project-filter-params';
 import { SearchProjectDto } from '../../shared/dto/search-project.dto';
@@ -19,6 +18,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NewProjectModal } from '../../shared/modals/new-project-modal/new-project-modal';
 import { CustomSearchInput } from "../../shared/components/custom-search-input/custom-search-input";
+import { ProjectService } from '@shared/services/api/project.service';
 
 @Component({
   selector: 'app-projects',

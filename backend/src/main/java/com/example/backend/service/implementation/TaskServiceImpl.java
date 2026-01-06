@@ -1,16 +1,19 @@
 package com.example.backend.service.implementation;
 
+import com.example.backend.dto.SelectDto;
+import com.example.backend.dto.project.ProjectMemberDto;
 import com.example.backend.dto.task.CreateTaskDto;
 import com.example.backend.dto.task.TaskDto;
+import com.example.backend.enums.ProjectStatus;
 import com.example.backend.enums.TaskStatus;
 import com.example.backend.mapper.TaskMapper;
-import com.example.backend.model.table.Project;
-import com.example.backend.model.table.Task;
-import com.example.backend.model.table.User;
+import com.example.backend.model.table.*;
+import com.example.backend.repository.ProjectMilestonesRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.TaskRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.TaskService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.OffsetDateTime;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,18 +34,47 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
+    private final ProjectMilestonesRepository projectMilestonesRepository;
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public TaskDto save(CreateTaskDto newTaskDto) {
 
-        Project project = projectRepository.findById(newTaskDto.getProjectId()).orElseThrow(() -> new RuntimeException("Project not found"));
+        log.info("Radiiiiii");
+
+        Project project = projectRepository.findById(newTaskDto.getProjectId()).orElseThrow(() -> new EntityNotFoundException("Project not found"));
 
         Task task = new Task();
+        task.setTitle(newTaskDto.getTitle());
         task.setProject(project);
         task.setStatus(TaskStatus.TODO);
         task.setDescription(newTaskDto.getDescription());
-        task.setCreatedAt(LocalDateTime.now());
+        task.setCreatedAt(OffsetDateTime.now());
+        int orderMax = taskRepository.findMaxOrderByProjectIdAndStatus(project.getId(), TaskStatus.TODO) + 1;
+        task.setOrder(orderMax);
+        if (newTaskDto.getProjectMilestoneId() > 0) {
+            ProjectMilestones projectMilestone = projectMilestonesRepository.findById(newTaskDto.getProjectMilestoneId())
+                    .orElseThrow(() -> new EntityNotFoundException("Project milestone not found!"));
+            task.setProjectMilestones(projectMilestone);
+        }
+
+
+        if (!newTaskDto.getAssignees().isEmpty()) {
+            List<User> assigneeSet = new ArrayList<>();
+            newTaskDto.getAssignees().forEach(a -> {
+                User u = userRepository.findById(a.getValue()).orElseThrow();
+                log.info(u.toString());
+                assigneeSet.add(u);
+            });
+
+            /*
+            Set<User> assigneeSet = newTaskDto.getAssignees().stream()
+                    .map(a -> userRepository.findById(a.getValue()).orElseThrow(()-> new EntityNotFoundException("User not found" + a.getLabel())))
+                    .collect(Collectors.toSet());
+            log.info(assigneeSet.toString());*/
+            task.setAssignees(assigneeSet);
+        }
 
         return TaskMapper.mapTaskToTaskDto(taskRepository.save(task));
     }
@@ -54,14 +85,14 @@ public class TaskServiceImpl implements TaskService {
 
         taskToUpdate.setTitle(taskDto.getTitle());
         taskToUpdate.setDescription(taskDto.getDescription());
-        taskToUpdate.setCreatedAt(LocalDateTime.now());
-        taskToUpdate.setStatus(taskDto.getStatus());
-
-        if (taskDto.getAssigneesId() != null) {
-            for (Long userId : taskDto.getAssigneesId()) {
-                User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-                taskToUpdate.getAssignees().add(user);
-            }
+        if (taskDto.getCreatedAt() != null) {
+            taskToUpdate.setCreatedAt(OffsetDateTime.now());
+        }
+        if (taskDto.getStatus() != null) {
+            taskToUpdate.setStatus(taskDto.getStatus());
+        }
+        if (taskToUpdate.getAssignees() != null && taskDto.getAssignees() != null) {
+            syncMembers(taskToUpdate, taskDto.getAssignees());
         }
 
         return TaskMapper.mapTaskToTaskDto(taskRepository.save(taskToUpdate));
@@ -110,4 +141,31 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskDto> findUserTasks(Long projectId, Long userId) {
         return taskRepository.findTop3ByProjectIdAndAssignees_IdOrderByCreatedAtDesc(projectId, userId).stream().map(TaskMapper::mapTaskToTaskDto).toList();
     }
+
+
+    private void syncMembers(Task task, List<SelectDto> members) {
+
+        Map<Long, User> existingUsers =
+                task.getAssignees().stream()
+                        .collect(Collectors.toMap(
+                                User::getId,
+                                Function.identity()
+                        ));
+
+        List<User> updatedMembers = new ArrayList<>();
+
+        for (SelectDto member : members) {
+            User existing = existingUsers.get(member.getValue());
+
+            if (existing != null) {
+                updatedMembers.add(existing);
+            } else {
+                User newUser = userRepository.findById(member.getValue()).orElseThrow(EntityNotFoundException::new);
+                updatedMembers.add(newUser);
+            }
+        }
+        task.getAssignees().clear();
+        task.getAssignees().addAll(updatedMembers);
+    }
+
 }

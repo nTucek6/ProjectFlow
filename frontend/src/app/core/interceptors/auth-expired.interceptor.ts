@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, switchMap, throwError } from 'rxjs';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '@shared/services/api/auth.service';
 
 @Injectable()
 export class AuthExpiredInterceptor implements HttpInterceptor {

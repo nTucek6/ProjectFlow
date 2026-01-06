@@ -1,5 +1,6 @@
 package com.example.backend.service.implementation;
 
+import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.projectMember.NewProjectMemberDto;
 import com.example.backend.dto.projectMember.ProjectMemberDto;
@@ -21,6 +22,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,13 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         List<ProjectRole> excludedRoles = List.of(ProjectRole.OWNER, ProjectRole.MENTOR);
         return projectMemberRepository.findAllByProject_IdAndRoleNotIn(projectId, excludedRoles, search).stream().map(ProjectMemberMapper::mapProjectMemberToProjectMemberDto).toList();
     }
+
+    @Override
+    public List<SelectDto> searchProjectMembers(Long projectId, String search) {
+        List<ProjectRole> excludedRoles = List.of(ProjectRole.MENTOR);
+        return projectMemberRepository.findAllByProject_IdAndSearch(projectId,excludedRoles,search).stream().map(ProjectMemberMapper::mapProjectMemberToSelectDto).toList();
+    }
+
 
     @Override
     public void save(NewProjectMemberDto newMember) {
@@ -67,7 +76,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Override
     public void updateLastAccessed(UpdateLastAccessedDto lastAccessedDto) {
         ProjectMember pm = projectMemberRepository.findByProject_IdAndUser_Id(lastAccessedDto.getProjectId(), lastAccessedDto.getUserId());
-        pm.setLastAccessed(LocalDateTime.now());
+        pm.setLastAccessed(OffsetDateTime.now());
         projectMemberRepository.save(pm);
     }
 

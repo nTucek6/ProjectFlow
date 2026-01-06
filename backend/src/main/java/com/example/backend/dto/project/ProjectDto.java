@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @AllArgsConstructor
@@ -13,10 +14,11 @@ public class ProjectDto {
 
     private Long id;
     private String name;
-    public LocalDateTime createdAt;
-    public LocalDateTime updatedAt;
-    public LocalDateTime startDate;
-    public LocalDateTime deadline;
+    private String description;
+    public OffsetDateTime createdAt;
+    public OffsetDateTime updatedAt;
+    public OffsetDateTime startDate;
+    public OffsetDateTime deadline;
     public int progress;
     public int totalTasks;
     public int membersCount;

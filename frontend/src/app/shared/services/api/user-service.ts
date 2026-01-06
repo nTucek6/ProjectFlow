@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Select } from '../model/select';
+import { Select } from '@shared/model/select';
+import { environment } from 'environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,5 @@ export class UserService {
   searchUsers(search: string): Observable<Select[]> {
     let params = new HttpParams().set('search', search)
     return this.http.get<Select[]>(`${this.apiUrl}/find`, { params });
-
   }
 }

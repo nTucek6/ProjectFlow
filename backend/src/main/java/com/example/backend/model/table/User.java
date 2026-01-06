@@ -31,6 +31,8 @@ public class User {
     private Set<ProjectMember> projects;
 
 
+
+
     public String getFullName() {
         return this.name + " " + this.surname;
     }

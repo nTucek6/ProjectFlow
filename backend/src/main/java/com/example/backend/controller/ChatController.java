@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 
@@ -38,7 +39,7 @@ public class ChatController {
         CustomUserDetails user = (CustomUserDetails) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
         chatMessage.setSender(user.getId());
         chatMessage.setFullName(user.getFullName());
-        chatMessage.setSent(LocalDateTime.now());
+        chatMessage.setSent(OffsetDateTime.now());
 
         try {
             ChatMessageDto message = chatService.save(chatMessage);

@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -35,7 +36,7 @@ public class UserActivityServiceImpl implements UserActivityService {
         a.setProject(project);
         a.setAction(save.getAction());
         a.setDescription(save.getDescription());
-        a.setCreatedAt(LocalDateTime.now());
+        a.setCreatedAt(OffsetDateTime.now());
         return UserActivityMapper.mapUserActivityToUserActivityDto(userActivityRepository.save(a));
     }
 

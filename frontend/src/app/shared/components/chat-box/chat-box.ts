@@ -2,10 +2,11 @@ import { Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
 import { WebSocketService } from '../../services/web-socket.service';
 import { Subscription } from 'rxjs';
 import { ChatMessageDto } from '../../dto/chat-message.dto';
-import { ProjectService } from '../../services/project.service';
+
 import { MatIcon } from "@angular/material/icon";
 import { FormsModule } from '@angular/forms';
 import { AvatarPhoto } from "../avatar-photo/avatar-photo";
+import { ProjectService } from '@shared/services/api/project.service';
 
 @Component({
   selector: 'app-chat-box',

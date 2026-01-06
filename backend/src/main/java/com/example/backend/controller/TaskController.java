@@ -5,6 +5,7 @@ import com.example.backend.dto.task.TaskDto;
 import com.example.backend.service.TaskService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequestMapping("/api/task")
 @AllArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@Slf4j
 public class TaskController {
 
     private final TaskService taskService;
@@ -28,6 +30,7 @@ public class TaskController {
             TaskDto task = taskService.save(newTaskDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(task);
         } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }

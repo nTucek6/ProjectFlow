@@ -1,14 +1,17 @@
 import { Component, effect, inject } from '@angular/core';
-import { ProjectService } from '../../../shared/services/project.service';
+
 
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ProjectDto } from '../../../shared/dto/project.dto';
 import { DatePipe } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { MatProgressBar } from '@angular/material/progress-bar';
-import { TaskService } from '../../../shared/services/task.service';
+
 import { TaskDto } from '../../../shared/dto/task.dto';
-import { AuthService } from '../../../shared/services/auth.service';
+//import { AuthService } from '@shared/services/api/auth.service';
+import { AuthService } from '@shared/services/api/auth.service';
+import { ProjectService } from '@shared/services/api/project.service';
+import { TaskService } from '@shared/services/api/task.service';
 
 @Component({
   selector: 'app-overview',
