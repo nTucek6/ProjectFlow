@@ -3,7 +3,6 @@ import { Component, inject } from '@angular/core';
 import { AuthService } from '@shared/services/api/auth.service';
 import { TwoLineInfoCard } from '../../shared/components/two-line-info-card/two-line-info-card';
 import { ProjectOverviewCard } from '../../shared/components/project-overview-card/project-overview-card';
-import { AvatarPhoto } from '../../shared/components/avatar-photo/avatar-photo';
 import { ActivityCard } from '../../shared/components/activity-card/activity-card';
 
 import { DashboardSummaryDto } from '../../shared/dto/dashboard-summary.dto';
@@ -29,7 +28,7 @@ export class Home {
   private userActivityService = inject(UserActivityService);
 
   user_name = '';
-
+  
   userSummary: DashboardSummaryDto | null = null;
 
   recentProjects: ProjectDto[] = [];

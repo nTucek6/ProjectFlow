@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterOutlet, RouterLinkActive } from '@angular/router';
 import { ProjectDto } from '../../shared/dto/project.dto';
 import { MatIcon } from '@angular/material/icon';
@@ -52,14 +52,15 @@ export class Project {
 
   private activatedRoute = inject(ActivatedRoute);
 
-
-
   readonly dialog = inject(MatDialog);
 
   userId = 0;
   userFullName = '';
   projectId = 0;
+
   projectName = '';
+
+  startChat: boolean = false;
 
   project: ProjectDto | null = null;
   progress: any;
@@ -69,11 +70,14 @@ export class Project {
     if (id != null) {
       this.projectService.getProjectById(parseInt(id)).subscribe((response) => {
         this.projectService.setProject(response);
+        this.projectId = response.id;
+        this.startChat = true;
       });
       this.projectService.project$.pipe(filter(Boolean)).subscribe((project) => {
         this.project = project!;
         this.projectId = project!.id;
         this.projectName = project!.name;
+        
       });
     }
     const userId = this.authService.getUserId();

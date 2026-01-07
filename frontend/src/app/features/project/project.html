@@ -17,7 +17,9 @@
 
     <div id="project-options">
       <button (click)="openEditDialog()"><mat-icon>edit</mat-icon><span>Edit</span></button>
-      <button (click)="openMembersDialog()"><mat-icon>people_outline</mat-icon><span>Members</span></button>
+      <button (click)="openMembersDialog()">
+        <mat-icon>people_outline</mat-icon><span>Members</span>
+      </button>
       <button><mat-icon>receipt</mat-icon><span>Report</span></button>
     </div>
   </div>
@@ -49,7 +51,7 @@
   </div>
 </nav>
 
-@if (projectId > 0 && userId > 0) {
+@if (startChat && projectId > 0 && userId > 0) {
 <app-chat-box
   [projectId]="projectId"
   [projectName]="projectName"
@@ -57,7 +59,10 @@
   [userFullName]="userFullName"
 ></app-chat-box>
 }
-<router-outlet></router-outlet>
+<section class="project-content">
+  <router-outlet></router-outlet>
+</section>
+
 } @else {
 <section class="loading-content-spinner">
   <mat-spinner></mat-spinner>

@@ -62,8 +62,14 @@ li > span:last-of-type {
   color: #64748b;
 }
 
-#recent-activity > .activity-data {
-  max-height: 600px;
+
+#recent-activity{
+  flex: 1;
+}
+
+#recent-activity > .activity-data{
+  max-height: 450px;
+
   overflow-y: auto;
 }
 
@@ -71,6 +77,7 @@ li > span:last-of-type {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
 }
 
 /*

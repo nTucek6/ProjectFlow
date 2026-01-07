@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 })
 export class ActivityCard {
 
+  @Input() userFullName : string = '';
   @Input() action : string = '';
   @Input() description : string = '';
   @Input() projectName : string = '';

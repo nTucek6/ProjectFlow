@@ -32,13 +32,6 @@ export class ProjectService {
     ascending?: boolean,
     sortBy?: string
   ): Observable<SearchProjectDto[]> {
-    const pad = (n: number) => n.toString().padStart(2, '0');
-
-    const formatLocalDateTime = (d: Date) =>
-      `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(
-        d.getMinutes()
-      )}:${pad(d.getSeconds())}`;
-
     let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
     if (sortBy != undefined) {
       params = params.set('sortBy', sortBy);
@@ -52,8 +45,8 @@ export class ProjectService {
         value = value.toString();
         if (value !== undefined && value !== null && value.length > 0) {
           if (key === 'startDateTimeFrom' || key === 'startDateTimeTo') {
-            const dateObj = new Date(value);
-            params = params.set(key, formatLocalDateTime(dateObj));
+            const dateObj = new Date(value).toISOString();
+            params = params.set(key, dateObj);
           } else {
             params = params.set(key, value.toString());
           }

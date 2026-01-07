@@ -40,7 +40,7 @@ export class BasicInformation {
   ngOnInit() {
     if (this.project != null) {
       this.name = this.project.name;
-      if (this.startDate != null) {
+      if (this.project.startDate != null) {
         this.startDate = new Date(this.project.startDate);
       }
 

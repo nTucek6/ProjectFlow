@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
@@ -33,8 +34,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 """)
     Page<Project> findFilteredAndPaged(
             @Param("title") String title,
-            @Param("startDateTimeFrom") LocalDateTime startDateTimeFrom,
-            @Param("startDateTimeTo") LocalDateTime startDateTimeTo,
+            @Param("startDateTimeFrom") OffsetDateTime startDateTimeFrom,
+            @Param("startDateTimeTo") OffsetDateTime startDateTimeTo,
             @Param("studentId") Long studentId,
             Pageable pageable);
 

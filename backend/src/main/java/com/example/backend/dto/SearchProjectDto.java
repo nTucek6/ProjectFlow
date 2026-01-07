@@ -13,4 +13,5 @@ public class SearchProjectDto {
     private String creatorName;
     private OffsetDateTime createdAt;
     private OffsetDateTime deadline;
+    private Long length;
 }

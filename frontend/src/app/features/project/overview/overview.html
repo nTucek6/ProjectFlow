@@ -65,6 +65,7 @@
       <div class="recent-activities-data">
         @if (recentProjectActivity.length > 0) { @for (a of recentProjectActivity; track $index) {
         <app-activity-card
+          [userFullName]="a.userFullName"
           [description]="a.description"
           [createdAt]="a.createdAt"
           [includeIcon]="false"

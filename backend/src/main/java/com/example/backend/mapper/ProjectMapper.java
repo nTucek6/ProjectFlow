@@ -7,13 +7,14 @@ import com.example.backend.model.table.User;
 
 public class ProjectMapper {
 
-    public static SearchProjectDto mapProjectToSearchProjectDto(Project project, User owner){
+    public static SearchProjectDto mapProjectToSearchProjectDto(Project project, User owner, Long length){
         SearchProjectDto projectDto = new SearchProjectDto();
         projectDto.setId(project.getId());
         projectDto.setName(project.getName());
         projectDto.setCreatorName(owner.getFullName());
         projectDto.setCreatedAt(project.getCreatedAt());
         projectDto.setDeadline(project.getDeadline());
+        projectDto.setLength(length);
         return projectDto;
     }
 

@@ -3,9 +3,9 @@ import { WebSocketService } from '../../services/web-socket.service';
 import { Subscription } from 'rxjs';
 import { ChatMessageDto } from '../../dto/chat-message.dto';
 
-import { MatIcon } from "@angular/material/icon";
+import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { AvatarPhoto } from "../avatar-photo/avatar-photo";
+import { AvatarPhoto } from '../avatar-photo/avatar-photo';
 import { ProjectService } from '@shared/services/api/project.service';
 
 @Component({
@@ -17,10 +17,37 @@ import { ProjectService } from '@shared/services/api/project.service';
 export class ChatBox {
   private webSocketService = inject(WebSocketService);
 
-  @Input() projectId = 0;
+  @Input() _projectId = 0;
   @Input() userId = 0;
   @Input() userFullName = '';
   @Input() projectName = '';
+
+  @Input() set projectId(value: number) {
+    if (value > 0 && value !== this._projectId) {
+      this._projectId = value;
+
+      this.webSocketService.connect(this._projectId);
+
+      this.projectService.getChatMessages(this._projectId, 0, 20).subscribe((response) => {
+        this.chatData = response;
+        this.projectService.setMessages(response);
+      });
+
+      this.subscription = this.projectService.chat$.subscribe((messages) => {
+        //console.log('Chat updated:', messages);
+        if (messages != null && messages.length > 0) {
+          this.chatData = messages;
+
+          const hasNewMessage = messages.length > this.lastMessageCount;
+          this.lastMessageCount = messages.length;
+
+          if (hasNewMessage && this.autoScrollEnabled) {
+            this.scrollToBottom();
+          }
+        }
+      });
+    }
+  }
 
   private projectService = inject(ProjectService);
 
@@ -44,7 +71,7 @@ export class ChatBox {
   hasOverflow: boolean = false;
 
   ngOnInit() {
-    this.webSocketService.connect(this.projectId);
+    /* this.webSocketService.connect(this.projectId);
 
     this.projectService.getChatMessages(this.projectId, 0, 20).subscribe((response) => {
       this.chatData = response;
@@ -63,9 +90,8 @@ export class ChatBox {
           this.scrollToBottom();
         }
       }
-    });
+    }); */
   }
-
   toggleChat() {
     this.hideChat = !this.hideChat;
 
@@ -86,7 +112,7 @@ export class ChatBox {
       content: this.message,
       type: 'SEND',
       fullName: this.userFullName,
-      projectId: this.projectId,
+      projectId: this._projectId,
     };
     this.message = '';
 
@@ -147,8 +173,8 @@ export class ChatBox {
   }
 
   ngOnDestroy() {
-    console.log("Destroyed");
+    this.projectService.setMessages([]);
     this.subscription.unsubscribe();
-    this.webSocketService.unsubscribeFromProject(this.projectId);
+    this.webSocketService.unsubscribeFromProject(this._projectId);
   }
 }

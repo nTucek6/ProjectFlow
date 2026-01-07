@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 public class ProjectFilterParams {
 
     private String title;
-    private LocalDateTime startDateTimeFrom;
-    private LocalDateTime startDateTimeTo;
+    private OffsetDateTime startDateTimeFrom;
+    private OffsetDateTime startDateTimeTo;
+    private Long userId;
 }

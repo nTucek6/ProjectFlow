@@ -29,7 +29,6 @@ export class KanbanList {
   }
 
   editItem(task: TaskDto) {
-    console.log(task);
     const dialogRef = this.dialog.open(ProjectItemEditModal, {
       panelClass: 'custom-dialog-container',
       data: { projectId: this.projectId, task: task },

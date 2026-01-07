@@ -57,14 +57,19 @@ export class WebSocketService {
   }
 
   unsubscribeFromProject(projectId: number) {
-    this.stompClient.deactivate();
     const subscription = this.projectSubscriptions.get(projectId);
-    if (subscription) {
-      console.log(this.projectSubscriptions);
+    if (subscription != undefined) {
       subscription.unsubscribe();
       this.projectSubscriptions.delete(projectId);
-      console.log(this.projectSubscriptions);
       console.log(`Unsubscribed from project ${projectId}`);
     }
+
+    if (this.projectSubscriptions.size === 0) {
+      if (this.stompClient.active) {
+        this.stompClient.deactivate();
+        console.log('Disconnected - no active projects');
+      }
+    }
+    // this.stompClient.deactivate();
   }
 }

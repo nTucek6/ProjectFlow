@@ -17,8 +17,10 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { NewProjectModal } from '../../shared/modals/new-project-modal/new-project-modal';
-import { CustomSearchInput } from "../../shared/components/custom-search-input/custom-search-input";
+import { CustomSearchInput } from '../../shared/components/custom-search-input/custom-search-input';
 import { ProjectService } from '@shared/services/api/project.service';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { AuthService } from '@shared/services/api/auth.service';
 
 @Component({
   selector: 'app-projects',
@@ -32,14 +34,16 @@ import { ProjectService } from '@shared/services/api/project.service';
     MatAnchor,
     RouterLink,
     MatDatepickerModule,
-    CustomSearchInput
-],
+    CustomSearchInput,
+    MatPaginatorModule,
+  ],
   templateUrl: './projects.html',
   providers: [provideNativeDateAdapter()],
   styleUrl: './projects.scss',
 })
 export class Projects {
   private projectService = inject(ProjectService);
+  private authService = inject(AuthService);
 
   readonly dialog = inject(MatDialog);
 
@@ -68,28 +72,40 @@ export class Projects {
     )
   );
 
-  setSearch(search: string){
-     this.searchData = search;
-     this.searchProjects();
+  setSearch(search: string) {
+    this.searchData = search;
+    this.searchProjects();
   }
 
   searchProjects() {
-    const projectFilterParams: ProjectFilterParams = {
+    const userId = this.authService.getUserId();
+    if(userId != undefined){
+  const projectFilterParams: ProjectFilterParams = {
       title: this.searchData,
       startDateTimeFrom: this.startDate,
       startDateTimeTo: this.endDate,
+      userId: userId
     };
+
+    //if(this.searchData != null ||)
 
     if (this.showFilter) {
       this.page = 0;
     }
 
     this.searchSubject.next(projectFilterParams);
+    }
+  
   }
 
   ngOnInit() {
     this.projectPosts$.subscribe((projects) => {
       this.dataSource.data = projects;
+      if (projects.length > 0) {
+        this.length = projects[0].length;
+      } else {
+        this.length = 0;
+      }
     });
 
     this.searchProjects();
@@ -114,5 +130,15 @@ export class Projects {
       this.endDate = '';
       this.searchProjects();
     }
+  }
+
+  handlePageEvent(event: PageEvent) {
+    this.page = event.pageIndex;
+    if (event.pageSize != this.size) {
+      this.size = event.pageSize;
+      this.page = 0;
+    }
+
+    this.searchProjects();
   }
 }

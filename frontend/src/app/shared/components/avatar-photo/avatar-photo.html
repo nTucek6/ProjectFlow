@@ -1,4 +1,4 @@
-<div class="circle" [ngStyle]="{ 'background-color': circleColor }">
+<div class="circle" [ngStyle]="{ 'background-color': circleColor }" [style.width.px]="size" [style.height.px]="size">
   @if (!showInitials) {
   <img src="{{ photoUrl }}" />
   } @else {

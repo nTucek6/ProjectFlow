@@ -4,6 +4,8 @@ import com.example.backend.dto.customMilestone.CustomMilestonesDto;
 import com.example.backend.dto.customMilestone.UpdateCustomMilestoneDto;
 import com.example.backend.dto.project.*;
 import com.example.backend.dto.SearchProjectDto;
+import com.example.backend.dto.userActivity.CreateUserActivityDto;
+import com.example.backend.enums.ActivityAction;
 import com.example.backend.enums.ProjectRole;
 import com.example.backend.enums.ProjectStatus;
 import com.example.backend.filterParams.ProjectFilterParams;
@@ -21,6 +23,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -42,25 +45,26 @@ public class ProjectServiceImpl implements ProjectService {
     private final UserRepository userRepository;
     private final MilestoneTemplatesRepository milestoneTemplatesRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
     public List<SearchProjectDto> findAllPagedAndFiltered(Pageable pageable, ProjectFilterParams filterParams) {
 
-        Long userId = SecurityUtils.getCurrentUserId();
+        //Long userId = SecurityUtils.getCurrentUserId();
 
         Page<Project> p = projectRepository
                 .findFilteredAndPaged(
                         filterParams.getTitle(),
                         filterParams.getStartDateTimeFrom(),
                         filterParams.getStartDateTimeTo(),
-                        userId,
+                        filterParams.getUserId(),
                         pageable
                 );
 
         return new ArrayList<>(p.getContent().
                 stream()
-                .map(project -> ProjectMapper.mapProjectToSearchProjectDto(project, project.getOwner())).toList());
+                .map(project -> ProjectMapper.mapProjectToSearchProjectDto(project, project.getOwner(), p.getTotalElements())).toList());
     }
 
     @Override
@@ -119,6 +123,15 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project savedProject = projectRepository.save(project);
         int membersCount = savedProject.getMembers().size();
+        String description = owner.getFullName() + " created new project: " + savedProject.getName();
+        eventPublisher.publishEvent(
+                new CreateUserActivityDto(
+                        owner.getId(),
+                        savedProject,
+                        ActivityAction.CREATED,
+                        description
+                )
+        );
         return ProjectMapper.mapProjectToProjectDto(savedProject, 0, 0, membersCount);
     }
 
@@ -143,7 +156,21 @@ public class ProjectServiceImpl implements ProjectService {
         if (updateProject.getCustomMilestones() != null && !updateProject.getCustomMilestones().isEmpty()) {
             syncCustomMilestones(proToUpdate, updateProject.getCustomMilestones());
         }
-        return ProjectMapper.mapProjectToProjectDto(proToUpdate, proToUpdate.getProgress(), proToUpdate.getTotalTasks(), proToUpdate.getMembersCount());
+
+        Project updatedProject = projectRepository.save(proToUpdate);
+        CustomUserDetails user = SecurityUtils.getPrincipal();
+        String description = user.getFullName() + " updated project: " + updatedProject.getName();
+        eventPublisher.publishEvent(
+                new CreateUserActivityDto(
+                        user.getId(),
+                        updatedProject,
+                        ActivityAction.UPDATED,
+                        description
+                )
+        );
+
+        return ProjectMapper.mapProjectToProjectDto(updatedProject, updatedProject.getProgress(), updatedProject.getTotalTasks(), updatedProject.getMembersCount());
+        //return ProjectMapper.mapProjectToProjectDto(proToUpdate, proToUpdate.getProgress(), proToUpdate.getTotalTasks(), proToUpdate.getMembersCount());
     }
 
     @Override
