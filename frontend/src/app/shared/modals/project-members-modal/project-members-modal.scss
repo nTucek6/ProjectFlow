@@ -21,6 +21,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    min-height: 40px;
   }
 }
 
@@ -74,4 +75,13 @@
     border: 1px solid #ddd;
     border-radius: 0.375rem;
   }
+}
+
+.add-new-member{
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: .25rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
 }

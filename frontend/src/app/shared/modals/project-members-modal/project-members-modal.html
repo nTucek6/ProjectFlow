@@ -9,10 +9,37 @@
         (searchEmitter)="setSearch($event)"
         (clearEmitter)="clearSearch()"
       ></app-custom-search-input>
+      @if(!addNewMembers){
       <button mat-button (click)="toggleAddNewMembers()">Add members</button>
+      }
     </div>
     @if (addNewMembers) {
-    <div></div>
+    <div class="add-new-member">
+      <span>Invite new member</span>
+      <div class="search-members">
+          <mat-form-field class="example-full-width" appearance="outline">
+          <input
+            type="text"
+            placeholder="Search memebers"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="addMember($event.option.value)"
+          >
+            @for (option of (options | async); track option.value ) {
+            <mat-option [value]="option">{{ option.label }}</mat-option>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div align="end">
+        <button mat-button (click)="toggleAddNewMembers()">Close</button>
+        <button mat-button>Send invite</button>
+      </div>
+    </div>
     }
     <div class="members-list">
       @for (m of projectMembers; track $index) {
