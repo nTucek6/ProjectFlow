@@ -11,12 +11,27 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AvatarPhoto } from '../../components/avatar-photo/avatar-photo';
 import { MatSelectModule } from '@angular/material/select';
 
-
 import { ProjectMemberService } from '@shared/services/api/project-member.service';
 import { ProjectMemberDto } from '@shared/dto/project-member.dto';
 import { ProjectRole } from '@shared/enums/project-role.enum';
 import { CustomSearchInput } from '../../components/custom-search-input/custom-search-input';
-import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Observable,
+  Subject,
+  switchMap,
+} from 'rxjs';
+import { NgToastService } from 'ng-angular-popup';
+import { UserService } from '@shared/services/api/user-service';
+import { Select } from '@shared/model/select';
+import { AuthService } from '@shared/services/api/auth.service';
+import { MatAutocomplete } from '@angular/material/autocomplete';
+import { AsyncPipe } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-project-members-modal',
@@ -32,6 +47,10 @@ import { debounceTime, distinctUntilChanged, Subject, switchMap } from 'rxjs';
     AvatarPhoto,
     MatSelectModule,
     CustomSearchInput,
+    MatAutocomplete,
+    AsyncPipe,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
   ],
   templateUrl: './project-members-modal.html',
   styleUrl: './project-members-modal.scss',
@@ -41,12 +60,20 @@ export class ProjectMembersModal {
   public data = inject(MAT_DIALOG_DATA);
 
   private projectMemberService = inject(ProjectMemberService);
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
+
+  private toast = inject(NgToastService);
 
   projectMembers: ProjectMemberDto[] = [];
 
   search: string = '';
 
   addNewMembers: boolean = false;
+
+  myControl = new FormControl('');
+  options!: Observable<Select[]>;
+
 
   roles = [
     { value: 'MEMBER', label: 'MEMEBER' },
@@ -67,8 +94,27 @@ export class ProjectMembersModal {
     this.membersPosts$.subscribe((members) => {
       this.projectMembers = members;
     });
-
     this.searchMembers();
+
+    this.options = this.myControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      filter((value: any) => value && value.length > 0),
+      switchMap((value) =>
+        this.userService
+          .searchUsers(value || '')
+          .pipe(
+            map((users) =>
+              users.filter(
+                (u) =>
+                  u.value !== this.authService.getUserId() &&
+                  //!this.selectedUsers.some((m) => m.value === u.value)
+                  !this.projectMembers.some((m)=> m.userId === u.value)
+              )
+            )
+          )
+      )
+    );
   }
 
   toggleAddNewMembers() {
@@ -78,7 +124,7 @@ export class ProjectMembersModal {
   onRoleChange(role: ProjectRole, id: number) {
     this.projectMemberService
       .updateUserRole(id, role)
-      .subscribe((response) => console.log(response));
+      .subscribe(() => this.toast.success('User role updated!'));
   }
 
   searchMembers() {
@@ -92,5 +138,13 @@ export class ProjectMembersModal {
   clearSearch() {
     this.search = '';
     this.searchMembers();
+  }
+
+  addMember(user: any) {
+    console.log(user);
+   /* if (!this.selectedUsers.some((m) => m.value === user.value)) {
+      this.selectedUsers.push(user);
+      this.myControl.setValue('');
+    } */
   }
 }
