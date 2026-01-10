@@ -49,6 +49,10 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatRoom> chats = new ArrayList<>();
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserActivity> userActivity = new ArrayList<>();
+
     public User getOwner() {
         List<ProjectMember> memberList = new ArrayList<>(members); // safe copy
         return memberList.stream()

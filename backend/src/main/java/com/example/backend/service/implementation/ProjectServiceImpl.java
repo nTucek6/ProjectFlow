@@ -74,7 +74,13 @@ public class ProjectServiceImpl implements ProjectService {
         int progress = (project.getTasks().isEmpty()) ? 0 : (int) Math.round((done * 100.0) / project.getTasks().size());
         int totalTasks = project.getTasks().size();
         int membersCount = project.getMembers().size();
-        return ProjectMapper.mapProjectToProjectDto(project, progress, totalTasks, membersCount);
+
+        Long userId = SecurityUtils.getCurrentUserId();
+
+        ProjectMember u = project.getMembers().stream().filter(f-> Objects.equals(f.getUser().getId(), userId)).findFirst().orElseThrow();
+        ProjectDto dto = ProjectMapper.mapProjectToProjectDto(project, progress, totalTasks, membersCount);
+        dto.setRole(u.getRole());
+        return dto;
     }
 
     @Transactional
@@ -146,6 +152,10 @@ public class ProjectServiceImpl implements ProjectService {
 
         if (updateProject.getStartDate() != null) {
             proToUpdate.setStartDate(updateProject.getStartDate());
+            proToUpdate.setStatus(ProjectStatus.PLANNED);
+            if(updateProject.getStartDate().isBefore(OffsetDateTime.now())){
+                proToUpdate.setStatus(ProjectStatus.IN_PROGRESS);
+            }
         }
         if (updateProject.getUpdatedAt() != null) {
             proToUpdate.setUpdatedAt(updateProject.getUpdatedAt());

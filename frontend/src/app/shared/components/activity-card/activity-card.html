@@ -2,7 +2,7 @@
   <div>
     <app-avatar-photo [name]="userFullName"></app-avatar-photo>
     <div class="activity-info">
-      <span class="title">{{ action }}</span>
+      <span class="title">{{ action | uppercase }}</span>
       <span>{{ description }}</span>
       <span>{{ projectName }} - {{ createdAt | date : 'dd.MM.yy HH:mm' }}</span>
     </div>

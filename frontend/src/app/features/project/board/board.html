@@ -3,7 +3,7 @@
   <div class="example-container">
     <div class="column-header">
       <h2>To do</h2>
-      <mat-icon class="vivid-orange-hover" (click)="openItemEditDialog()">add</mat-icon>
+      <mat-icon class="vivid-orange-hover" *hasPermission="Action.MOVE_TASK" (click)="openItemEditDialog()">add</mat-icon>
     </div>
 
     <app-kanban-list
@@ -14,30 +14,6 @@
       (onUpdate)="getProjectTasks()"
       [projectId]="projectId"
     ></app-kanban-list>
-
-    <!--<div
-      cdkDropList
-      #todoList="cdkDropList"
-      [id]="taskStatus.TODO.toString()"
-      [cdkDropListData]="todo"
-      [cdkDropListConnectedTo]="[doneList, progressList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)"
-    >
-      @for (item of todo; track item) {
-      <div
-        class="example-box"
-        cdkDrag
-        [cdkDragData]="item"
-        (cdkDragStarted)="isDragging = true"
-        (cdkDragEnded)="isDragging = false"
-        (click)="!isDragging && editItem(item)"
-      >
-        <span>{{ item.title }}</span>
-        <span>{{ item.description }}</span>
-      </div>
-      }
-    </div>-->
   </div>
 
   <div class="example-container">
@@ -53,29 +29,6 @@
       (onUpdate)="getProjectTasks()"
       [projectId]="projectId"
     ></app-kanban-list>
-    <!--<div
-      cdkDropList
-      [id]="taskStatus.IN_PROGRESS.toString()"
-      #progressList="cdkDropList"
-      [cdkDropListData]="progress"
-      [cdkDropListConnectedTo]="[todoList, doneList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)"
-    >
-      @for (item of progress; track item) {
-      <div
-        class="example-box"
-        cdkDrag
-        [cdkDragData]="item"
-        (cdkDragStarted)="isDragging = true"
-        (cdkDragEnded)="isDragging = false"
-        (click)="!isDragging && editItem(item)"
-      >
-        <span>{{ item.title }}</span>
-        <span>{{ item.description }}</span>
-      </div>
-      }
-    </div> -->
   </div>
 
   <div class="example-container">
@@ -91,29 +44,6 @@
       (onUpdate)="getProjectTasks()"
       [projectId]="projectId"
     ></app-kanban-list>
-    <!--<div
-      cdkDropList
-      [id]="taskStatus.DONE.toString()"
-      #doneList="cdkDropList"
-      [cdkDropListData]="done"
-      [cdkDropListConnectedTo]="[todoList, progressList]"
-      class="example-list"
-      (cdkDropListDropped)="drop($event)"
-    >
-      @for (item of done; track item) {
-      <div
-        class="example-box"
-        cdkDrag
-        [cdkDragData]="item"
-        (cdkDragStarted)="isDragging = true"
-        (cdkDragEnded)="isDragging = false"
-        (click)="!isDragging && editItem(item)"
-      >
-        <span>{{ item.title }}</span>
-        <span>{{ item.description }}</span>
-      </div>
-      }
-    </div>-->
   </div>
 </section>
 

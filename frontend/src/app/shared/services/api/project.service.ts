@@ -98,4 +98,8 @@ export class ProjectService {
      return this.http.get<DashboardSummaryDto>(`${this.apiUrl}/user/${userId}`);
   }
 
+  deleteProject(projectId: number) : Observable<void>{
+     return this.http.delete<void>(`${this.apiUrl}/${projectId}`);
+  }
+
 }

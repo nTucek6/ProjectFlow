@@ -41,7 +41,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<SelectDto> findBySearch(String search) {
-        return userRepository.searchUsers(search).
+        List<UserRole> roles = List.of(UserRole.ADMIN);
+        return userRepository.searchUsers(search, roles).
                 stream()
                 .map(UserMapper::mapUserToSelectDto).toList();
     }

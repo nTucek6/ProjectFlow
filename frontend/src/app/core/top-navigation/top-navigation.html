@@ -30,7 +30,7 @@
       <app-avatar-photo class="profile-image" [name]="userFullname"></app-avatar-photo>
       <div>
         <span>{{ userFullname }}</span>
-        <span class="user-role">Student</span>
+        <span class="user-role">{{userRole}}</span>
       </div>
       <mat-icon [class.rotate]="isProfileOpen" class="arrow-icon">keyboard_arrow_down</mat-icon>
     </div>
@@ -38,7 +38,7 @@
       <div class="profile-menu">
         <div class="profile-menu-info">
           <span>{{ userFullname }}</span>
-          <span class="user-role">Student</span>
+          <span class="user-role">{{userRole}}</span>
         </div>
         <div class="profile-item">
           <mat-icon aria-hidden="false" aria-label="Settings icon" fontIcon="settings"></mat-icon>

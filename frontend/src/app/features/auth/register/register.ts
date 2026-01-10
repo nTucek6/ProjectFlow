@@ -85,10 +85,16 @@ export class Register {
       token: this.token,
     };
 
-    this.authService.register(userCredentials).subscribe((response) => {
-      console.log(response);
-      this.router.navigate(['/register-success']);
-      this.toggleLoading();
+    this.authService.register(userCredentials).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.router.navigate(['/register-success']);
+        this.toggleLoading();
+      },
+      error: (error) => {
+        console.error('Registration failed:', error);
+        this.toggleLoading();
+      },
     });
   }
 

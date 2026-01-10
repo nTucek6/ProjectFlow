@@ -3,4 +3,6 @@ export type UserDto = {
     email:string;
     name:string;
     surname:string;
+    role: string;
+    roleText: string
 }

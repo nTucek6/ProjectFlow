@@ -6,11 +6,12 @@ import { BasicInformation } from "./components/basic-information/basic-informati
 import { ProjectDto } from '../../dto/project.dto';
 import { ProjectService } from '@shared/services/api/project.service';
 import { ProjectDescription } from "./components/project-description/project-description";
+import { ProjectSettings } from "./components/project-settings/project-settings";
 
 
 @Component({
   selector: 'app-project-edit-modal',
-  imports: [MatButtonModule, MatIcon, MatDialogModule, BasicInformation, ProjectDescription],
+  imports: [MatButtonModule, MatIcon, MatDialogModule, BasicInformation, ProjectDescription, ProjectSettings],
   templateUrl: './project-edit-modal.html',
   styleUrl: './project-edit-modal.scss',
 })

@@ -15,10 +15,12 @@ import { ProjectService } from '@shared/services/api/project.service';
 import { KanbanService } from '@shared/services/kanban.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectItemEditModal } from '@shared/modals/project-item-edit-modal/project-item-edit-modal';
+import { HasPermissionDirective } from "app/core/directives/permission.directive";
+import { Action } from '@shared/enums/action.enum';
 
 @Component({
   selector: 'app-board',
-  imports: [DragDropModule, MatButtonModule, MatIconModule, KanbanList],
+  imports: [DragDropModule, MatButtonModule, MatIconModule, KanbanList, HasPermissionDirective],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
@@ -29,6 +31,7 @@ export class Board {
   private kanbanService = inject(KanbanService);
 
   readonly dialog = inject(MatDialog);
+  readonly Action = Action;
 
   taskStatus = TaskStatus;
 
@@ -50,7 +53,7 @@ export class Board {
     const p = this.project();
     if (p) {
       this.tabTitle.setTitle(p.name + ' - Board');
-      this.projectId = p.id
+      this.projectId = p.id;
       this.taskService.getAllProjectTasks(p.id).subscribe((response) => {
         this.todo = response.filter((f) => f.status === 'TODO');
         this.progress = response.filter((f) => f.status === 'IN_PROGRESS');

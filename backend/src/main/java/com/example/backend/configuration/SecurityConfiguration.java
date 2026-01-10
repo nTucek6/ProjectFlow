@@ -41,20 +41,23 @@ public class SecurityConfiguration {
                                 .requestMatchers("/auth/api/v1/login", "/auth/api/v1/refreshToken", "/auth/api/v1/logout", "/auth/api/v1/me").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                                .requestMatchers(HttpMethod.GET, "/api/project/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/project/**").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/api/project/**").authenticated()
 
                                 //testiranje delete makni kasnije
                                 .requestMatchers(HttpMethod.DELETE, "/api/project/**").permitAll()
-                                .requestMatchers(HttpMethod.PUT, "/api/project/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/api/project/**").authenticated()
                                 //User permissions
                                 .requestMatchers(HttpMethod.GET, "/api/user/**").authenticated()
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                                 //ProjectMembers permissions
-                                .requestMatchers(HttpMethod.GET,"/api/project-members/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/project-members/**").authenticated()
                                 .requestMatchers(HttpMethod.POST,"/api/project-members/**").authenticated()
                                 .requestMatchers(HttpMethod.PUT,"/api/project-members/**").authenticated()
+
+                                //UserActivity
+                                .requestMatchers(HttpMethod.GET, "/api/user-activity/**").authenticated()
 
 
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()

@@ -2,8 +2,10 @@ package com.example.backend.mapper;
 
 import com.example.backend.dto.project.ProjectDto;
 import com.example.backend.dto.SearchProjectDto;
+import com.example.backend.enums.ProjectRole;
 import com.example.backend.model.table.Project;
 import com.example.backend.model.table.User;
+import jakarta.annotation.Nullable;
 
 public class ProjectMapper {
 
@@ -18,7 +20,7 @@ public class ProjectMapper {
         return projectDto;
     }
 
-    public static ProjectDto mapProjectToProjectDto(Project project, int progress, int totalTasks,int membersCount){
+    public static ProjectDto mapProjectToProjectDto(Project project, int progress, int totalTasks, int membersCount){
         ProjectDto projectDto = new ProjectDto();
         projectDto.setId(project.getId());
         projectDto.setName(project.getName());
@@ -30,7 +32,7 @@ public class ProjectMapper {
         projectDto.setProgress(progress);
         projectDto.setTotalTasks(totalTasks);
         projectDto.setMembersCount(membersCount);
-        return  projectDto;
+        return projectDto;
     }
 
 }

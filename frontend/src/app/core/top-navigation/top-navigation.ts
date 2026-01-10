@@ -21,11 +21,14 @@ export class TopNavigation {
   isSidebarOpen: boolean = true;
 
   userFullname = '';
+  userRole = '';
 
   isProfileOpen: boolean = false;
 
   ngOnInit() {
     this.userFullname = this.authService.getUserFullName();
+    const role = this.authService.getUserRole();
+    if (role != undefined) this.userRole = role;
   }
 
   toggleSidebar() {
@@ -34,9 +37,7 @@ export class TopNavigation {
   }
 
   logout() {
-    console.log('Called!');
     this.authService.logout().subscribe((response) => {
-      console.log(response);
       this.authService.setUser(null);
       this.router.navigate(['/login']);
     });

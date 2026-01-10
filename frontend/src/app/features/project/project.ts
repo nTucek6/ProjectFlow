@@ -23,7 +23,12 @@ import { filter, Subject } from 'rxjs';
 import { ProjectService } from '@shared/services/api/project.service';
 import { UserActivityService } from '@shared/services/api/user-activity.service';
 import { UserActivityDto } from '@shared/dto/user-activity.dto';
-
+import { ConfirmDialogComponent } from '@shared/modals/confirm-dialog-component/confirm-dialog-component';
+import { GeneratePDFService } from '@shared/services/generate-pdf.service';
+import { PermissionsService } from '@shared/services/permission.service';
+import { HasPermissionDirective } from 'app/core/directives/permission.directive';
+import { Action } from '@shared/enums/action.enum';
+import { ProjectRole } from '@shared/enums/project-role.enum';
 @Component({
   selector: 'app-project',
   imports: [
@@ -36,8 +41,8 @@ import { UserActivityDto } from '@shared/dto/user-activity.dto';
     MatProgressBar,
     MatProgressSpinnerModule,
     FormsModule,
-    // AvatarPhoto,
     ChatBox,
+    HasPermissionDirective,
   ],
   templateUrl: './project.html',
   styleUrl: './project.scss',
@@ -50,9 +55,15 @@ export class Project {
 
   private authService = inject(AuthService);
 
+  private pdfService = inject(GeneratePDFService);
+
   private activatedRoute = inject(ActivatedRoute);
 
+  readonly permission = inject(PermissionsService);
+
   readonly dialog = inject(MatDialog);
+
+  readonly Action = Action;
 
   userId = 0;
   userFullName = '';
@@ -72,12 +83,15 @@ export class Project {
         this.projectService.setProject(response);
         this.projectId = response.id;
         this.startChat = true;
+        this.permission.reset();
+        this.setPermission(response.role);
       });
       this.projectService.project$.pipe(filter(Boolean)).subscribe((project) => {
         this.project = project!;
         this.projectId = project!.id;
         this.projectName = project!.name;
-        
+        this.permission.reset();
+        this.setPermission(project.role);
       });
     }
     const userId = this.authService.getUserId();
@@ -114,7 +128,30 @@ export class Project {
       }); */
   }
 
+  generateProjectPdf() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      //panelClass: 'custom-dialog-container',
+      data: {
+        title: 'Generate PDF',
+        message: 'Do you want to generate project PDF?',
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (this.project != null) this.pdfService.generateProjectPdf(this.project);
+      }
+    });
+  }
+
+  setPermission(role: ProjectRole | undefined) {
+    if (role != undefined) {
+      this.permission.setProjectRole(role);
+    }
+  }
+
   ngOnDestroy() {
+    this.projectService.setProject(null);
+    this.permission.reset();
     this.destroy$.next();
     this.destroy$.complete();
   }

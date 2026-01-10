@@ -5,11 +5,13 @@
   [cdkDropListData]="list"
   class="example-list"
   (cdkDropListDropped)="drop($event)"
+
 >
   @for (item of list; track item.id) {
   <div
     class="example-box"
     cdkDrag
+    [blockPermission]="Action.MOVE_TASK"
     [cdkDragData]="item"
     (cdkDragStarted)="isDragging = true"
     (cdkDragEnded)="isDragging = false"

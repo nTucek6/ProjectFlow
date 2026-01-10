@@ -4,10 +4,13 @@ import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { TaskStatus } from '../../enums/task-status.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectItemEditModal } from '@shared/modals/project-item-edit-modal/project-item-edit-modal';
+import { Action } from '@shared/enums/action.enum';
+import { BlockPermissionDirective } from 'app/core/directives/block-permission.directive';
+
 
 @Component({
   selector: 'app-kanban-list',
-  imports: [CdkDropList, CdkDrag],
+  imports: [CdkDropList, CdkDrag, BlockPermissionDirective],
   templateUrl: './kanban-list.html',
   styleUrl: './kanban-list.scss',
 })
@@ -21,6 +24,7 @@ export class KanbanList {
   @Output() onUpdate = new EventEmitter<any>();
 
   readonly dialog = inject(MatDialog);
+  readonly Action = Action;
 
   taskStatus = TaskStatus;
 

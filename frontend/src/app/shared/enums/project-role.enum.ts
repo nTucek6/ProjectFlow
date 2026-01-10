@@ -1,6 +1,6 @@
 export enum ProjectRole {
-  OWNER,
-  MEMBER,
-  VIEWER,
-  MENTOR,
+  OWNER = 'OWNER',
+  MEMBER = 'MEMBER',
+  VIEWER = 'VIEWER',
+  MENTOR = 'MENTOR',
 }

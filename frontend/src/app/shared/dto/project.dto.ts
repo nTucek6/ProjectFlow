@@ -1,3 +1,5 @@
+import { ProjectRole } from "@shared/enums/project-role.enum";
+
 export type ProjectDto = {
     id: number;
     name: string;
@@ -9,4 +11,5 @@ export type ProjectDto = {
     progress: number;
     totalTasks: number;
     membersCount: number;
+    role?: ProjectRole;
 }

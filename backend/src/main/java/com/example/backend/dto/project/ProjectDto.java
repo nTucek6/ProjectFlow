@@ -1,5 +1,6 @@
 package com.example.backend.dto.project;
 
+import com.example.backend.enums.ProjectRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,5 @@ public class ProjectDto {
     public int progress;
     public int totalTasks;
     public int membersCount;
+    private ProjectRole role;
 }

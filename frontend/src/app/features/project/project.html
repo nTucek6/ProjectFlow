@@ -16,11 +16,11 @@
     </div>
 
     <div id="project-options">
-      <button (click)="openEditDialog()"><mat-icon>edit</mat-icon><span>Edit</span></button>
-      <button (click)="openMembersDialog()">
+      <button *hasPermission="Action.EDIT_PROJECT" (click)="openEditDialog()"><mat-icon>edit</mat-icon><span>Edit</span></button>
+      <button *hasPermission="Action.MANAGE_MEMBERS" (click)="openMembersDialog()">
         <mat-icon>people_outline</mat-icon><span>Members</span>
       </button>
-      <button><mat-icon>receipt</mat-icon><span>Report</span></button>
+      <button *hasPermission="Action.VIEW" (click)="generateProjectPdf()"><mat-icon>receipt</mat-icon><span>Report</span></button>
     </div>
   </div>
 
@@ -57,6 +57,7 @@
   [projectName]="projectName"
   [userId]="userId"
   [userFullName]="userFullName"
+  *hasPermission="Action.READ_CHAT"
 ></app-chat-box>
 }
 <section class="project-content">

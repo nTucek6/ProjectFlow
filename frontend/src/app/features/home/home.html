@@ -45,7 +45,9 @@
       [deadline]="p.deadline"
       [members]="p.membersCount"
     ></app-project-overview-card>
-    } }
+    } } @else {
+       <p>No recent projects.</p>
+    }
   </div>
 </section>
 
