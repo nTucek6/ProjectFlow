@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.dto.SelectDto;
 import com.example.backend.dto.project.DashboardSummaryDto;
 import com.example.backend.dto.project.NewProjectDto;
 import com.example.backend.dto.project.ProjectDto;

@@ -20,6 +20,7 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  merge,
   Observable,
   Subject,
   switchMap,
@@ -32,11 +33,12 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
 import { AsyncPipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-project-members-modal',
   imports: [
-    // MatFormField,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -51,6 +53,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     AsyncPipe,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    MatChipsModule,
+    MatIconModule,
   ],
   templateUrl: './project-members-modal.html',
   styleUrl: './project-members-modal.scss',
@@ -74,6 +78,7 @@ export class ProjectMembersModal {
   myControl = new FormControl('');
   options!: Observable<Select[]>;
 
+  selectedUsers: Select[] = [];
 
   roles = [
     { value: 'MEMBER', label: 'MEMEBER' },
@@ -81,12 +86,26 @@ export class ProjectMembersModal {
   ];
 
   private searchSubject = new Subject<string>();
+  private refreshSubject = new Subject<void>();
 
-  readonly membersPosts$ = this.searchSubject.pipe(
+  /*readonly membersPosts$ = this.searchSubject.pipe(
     debounceTime(250),
     distinctUntilChanged(),
     switchMap((search) =>
       this.projectMemberService.fetchProjectMembers(this.data.projectId, search)
+    )
+  ); */
+
+  readonly membersPosts$ = merge(
+    this.searchSubject.pipe(
+      debounceTime(250),
+      distinctUntilChanged(),
+      switchMap((search) =>
+        this.projectMemberService.fetchProjectMembers(this.data.projectId, search)
+      )
+    ),
+    this.refreshSubject.pipe(
+      switchMap(() => this.projectMemberService.fetchProjectMembers(this.data.projectId, ''))
     )
   );
 
@@ -108,8 +127,7 @@ export class ProjectMembersModal {
               users.filter(
                 (u) =>
                   u.value !== this.authService.getUserId() &&
-                  //!this.selectedUsers.some((m) => m.value === u.value)
-                  !this.projectMembers.some((m)=> m.userId === u.value)
+                  !this.projectMembers.some((m) => m.userId === u.value)
               )
             )
           )
@@ -141,10 +159,31 @@ export class ProjectMembersModal {
   }
 
   addMember(user: any) {
-    console.log(user);
-   /* if (!this.selectedUsers.some((m) => m.value === user.value)) {
+    if (!this.selectedUsers.some((m) => m.value === user.value)) {
       this.selectedUsers.push(user);
       this.myControl.setValue('');
-    } */
+    }
+  }
+
+  refreshMembers() {
+    this.refreshSubject.next(); // Bypasses debounce
+  }
+
+  inviteNewMembers() {
+    this.projectMemberService
+      .addNewMembers(this.data.projectId, this.selectedUsers)
+      .subscribe(() => {
+        this.toast.success('Members added successfully!');
+        this.toggleAddNewMembers();
+        this.refreshMembers();
+      });
+  }
+
+  removeMember(userId: number) {
+    this.search = '';
+    this.projectMemberService.removeMember(this.data.projectId, userId).subscribe(() => {
+      this.toast.success('Member removed successfully!');
+      this.refreshMembers();
+    });
   }
 }

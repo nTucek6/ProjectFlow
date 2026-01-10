@@ -43,7 +43,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Override
     public List<SelectDto> searchProjectMembers(Long projectId, String search) {
         List<ProjectRole> excludedRoles = List.of(ProjectRole.MENTOR);
-        return projectMemberRepository.findAllByProject_IdAndSearch(projectId,excludedRoles,search).stream().map(ProjectMemberMapper::mapProjectMemberToSelectDto).toList();
+        return projectMemberRepository.findAllByProject_IdAndSearch(projectId, excludedRoles, search).stream().map(ProjectMemberMapper::mapProjectMemberToSelectDto).toList();
     }
 
 
@@ -98,4 +98,29 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         }
         return projectsDto;
     }
+
+    @Override
+    public void addNewMember(Long projectId, List<SelectDto> newMembers) {
+        Project project = projectRepository.findById(projectId).orElseThrow(EntityNotFoundException::new);
+
+        List<ProjectMember> members = project.getMembers();
+
+        newMembers.forEach((m) -> {
+            User member = userRepository.findById(m.getValue()).orElseThrow(EntityNotFoundException::new);
+            ProjectMember newMember = new ProjectMember(project, member, ProjectRole.MEMBER);
+            members.add(newMember);
+        });
+
+        projectRepository.save(project);
+        //return ProjectMapper.mapProjectToProjectDto(updatedProject, updatedProject.getProgress(), updatedProject.getTotalTasks(), updatedProject.getMembersCount());
+    }
+
+    @Override
+    public void removeMember(Long projectId, Long userId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(EntityNotFoundException::new);
+        ProjectMember userToRemove = projectMemberRepository.findByProject_IdAndUser_Id(project.getId(), userId);
+        project.getMembers().remove(userToRemove);
+        projectRepository.save(project);
+    }
+
 }

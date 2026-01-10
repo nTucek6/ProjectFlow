@@ -8,7 +8,6 @@ import { UpdateLastAccessedDto } from '@shared/dto/last-accessed.dto';
 import { ProjectDto } from '@shared/dto/project.dto';
 import { Select } from '@shared/model/select';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -41,12 +40,20 @@ export class ProjectMemberService {
       userId: userId,
       projectId: projectId,
     };
-    return this.http.put<void>(`${this.apiUrl}/lastAccessed`, dto );
+    return this.http.put<void>(`${this.apiUrl}/lastAccessed`, dto);
   }
 
-
-  getRecentUserProjects(userId: number) : Observable<ProjectDto[]>{
-     return this.http.get<ProjectDto[]>(`${this.apiUrl}/user/${userId}`);
+  getRecentUserProjects(userId: number): Observable<ProjectDto[]> {
+    return this.http.get<ProjectDto[]>(`${this.apiUrl}/user/${userId}`);
   }
 
+  addNewMembers(projectId: number, update: Select[]): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/project/${projectId}`, update);
+  }
+  removeMember(projectId: number, userId: number): Observable<void> {
+    const params = {
+      userId: userId,
+    };
+    return this.http.delete<void>(`${this.apiUrl}/project/${projectId}`, { params });
+  }
 }

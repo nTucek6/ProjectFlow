@@ -24,5 +24,7 @@ public interface ProjectMemberService {
     void updateLastAccessed(UpdateLastAccessedDto lastAccessedDto);
 
     List<ProjectDto> recentUserProjects(Long userId);
+    void addNewMember(Long projectId, List<SelectDto> newMembers);
+    void removeMember(Long projectId, Long userId);
 
 }

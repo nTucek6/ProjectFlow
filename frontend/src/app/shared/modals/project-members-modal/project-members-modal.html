@@ -17,7 +17,7 @@
     <div class="add-new-member">
       <span>Invite new member</span>
       <div class="search-members">
-          <mat-form-field class="example-full-width" appearance="outline">
+        <mat-form-field class="example-full-width" appearance="outline">
           <input
             type="text"
             placeholder="Search memebers"
@@ -35,9 +35,17 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
+      <div class="selected-chip">
+        @for (user of selectedUsers; track $index) {
+        <mat-chip (removed)="this.selectedUsers.splice($index, 1)"
+          >{{ user.label }}
+          <mat-icon matChipRemove>X</mat-icon>
+        </mat-chip>
+        }
+      </div>
       <div align="end">
         <button mat-button (click)="toggleAddNewMembers()">Close</button>
-        <button mat-button>Send invite</button>
+        <button mat-button (click)="inviteNewMembers()">Send invite</button>
       </div>
     </div>
     }
@@ -51,12 +59,17 @@
             <span class="email">{{ m.email }}</span>
           </div>
         </div>
-        <div class="role">
-          <select [(ngModel)]="m.role" (ngModelChange)="onRoleChange($event, m.id)">
-            @for (item of roles; track $index) {
-            <option [value]="item.value">{{ item.label }}</option>
-            }
-          </select>
+        <div class="options-member">
+          <div class="role">
+            <select [(ngModel)]="m.role" (ngModelChange)="onRoleChange($event, m.id)">
+              @for (item of roles; track $index) {
+              <option [value]="item.value">{{ item.label }}</option>
+              }
+            </select>
+          </div>
+          <div class="remove">
+            <button mat-button (click)="removeMember(m.userId)"><mat-icon>delete_outline</mat-icon></button>
+          </div>
         </div>
       </div>
       }

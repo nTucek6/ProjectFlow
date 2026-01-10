@@ -100,5 +100,27 @@ public class ProjectMemberController {
         }
     }
 
+    @PutMapping("/project/{projectId}")
+    public ResponseEntity<?> addNewMember(@PathVariable Long projectId , @RequestBody List<SelectDto> update) {
+        try {
+            projectMemberService.addNewMember(projectId ,update);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/project/{projectId}")
+    public ResponseEntity<?> removeMember(@PathVariable Long projectId , @RequestParam Long userId) {
+        try {
+            projectMemberService.removeMember(projectId ,userId);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 
 }
