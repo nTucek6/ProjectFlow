@@ -12,12 +12,15 @@ import com.example.backend.mapper.ProjectMemberMapper;
 import com.example.backend.mapper.TaskMapper;
 import com.example.backend.model.table.Project;
 import com.example.backend.model.table.ProjectMember;
+import com.example.backend.model.table.Task;
 import com.example.backend.model.table.User;
 import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.ProjectRepository;
+import com.example.backend.repository.TaskRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.ProjectMemberService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +36,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     private final ProjectMemberRepository projectMemberRepository;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
 
     @Override
     public List<ProjectMemberDto> getProjectMembers(Long projectId, String search) {
@@ -116,9 +120,14 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
+    @Transactional
     public void removeMember(Long projectId, Long userId) {
         Project project = projectRepository.findById(projectId).orElseThrow(EntityNotFoundException::new);
         ProjectMember userToRemove = projectMemberRepository.findByProject_IdAndUser_Id(project.getId(), userId);
+        List<Task> tasks = taskRepository.findAllByProject_IdAndAssignees_Id(projectId, userId);
+        tasks.forEach((task)->{
+            task.getAssignees().remove(userToRemove.getUser());
+        });
         project.getMembers().remove(userToRemove);
         projectRepository.save(project);
     }

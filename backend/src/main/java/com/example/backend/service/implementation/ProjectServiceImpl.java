@@ -139,6 +139,7 @@ public class ProjectServiceImpl implements ProjectService {
                         description
                 )
         );
+
         return ProjectMapper.mapProjectToProjectDto(savedProject, 0, 0, membersCount);
     }
 
@@ -180,7 +181,13 @@ public class ProjectServiceImpl implements ProjectService {
                 )
         );
 
-        return ProjectMapper.mapProjectToProjectDto(updatedProject, updatedProject.getProgress(), updatedProject.getTotalTasks(), updatedProject.getMembersCount());
+        Long userId = user.getId();
+
+        ProjectMember u = updatedProject.getMembers().stream().filter(f-> Objects.equals(f.getUser().getId(), userId)).findFirst().orElseThrow();
+        ProjectDto dto = ProjectMapper.mapProjectToProjectDto(updatedProject, updatedProject.getProgress(), updatedProject.getTotalTasks(), updatedProject.getMembersCount());
+        dto.setRole(u.getRole());
+
+        return dto;
         //return ProjectMapper.mapProjectToProjectDto(proToUpdate, proToUpdate.getProgress(), proToUpdate.getTotalTasks(), proToUpdate.getMembersCount());
     }
 

@@ -34,5 +34,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query("UPDATE Task t SET t.order = t.order - 1 WHERE t.project.id = :projectId AND t.status = :status AND t.order > :deletedOrder")
     void decrementOrdersAfter(@Param("projectId") Long projectId, @Param("status") TaskStatus status, @Param("deletedOrder") int deletedOrder);
 
+    List<Task> findAllByProject_IdAndAssignees_Id(Long projectId, Long userId);
 
 }

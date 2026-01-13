@@ -35,6 +35,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { ProjectService } from '@shared/services/api/project.service';
 
 @Component({
   selector: 'app-project-members-modal',
@@ -66,6 +67,7 @@ export class ProjectMembersModal {
   private projectMemberService = inject(ProjectMemberService);
   private userService = inject(UserService);
   private authService = inject(AuthService);
+  private projectService = inject(ProjectService);
 
   private toast = inject(NgToastService);
 
@@ -184,6 +186,13 @@ export class ProjectMembersModal {
     this.projectMemberService.removeMember(this.data.projectId, userId).subscribe(() => {
       this.toast.success('Member removed successfully!');
       this.refreshMembers();
+      this.refreshProject();
+    });
+  }
+
+  refreshProject() {
+    this.projectService.getProjectById(parseInt(this.data.projectId)).subscribe((response) => {
+      this.projectService.setProject(response);
     });
   }
 }
