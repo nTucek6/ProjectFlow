@@ -6,11 +6,15 @@
         <input
           type="text"
           matInput
+          #nameRef="ngModel"
           name="name"
           required
           [(ngModel)]="name"
           placeholder="Project name..."
         />
+        @if (nameRef.invalid && nameRef.touched) {
+        <mat-error> Project name required </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field class="form-group" appearance="outline">
@@ -20,9 +24,18 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Choose a deadline date</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="deadline" />
+        <input
+          matInput
+          [matDatepicker]="picker"
+          [(ngModel)]="deadline"
+          required
+          #deadlineRef="ngModel"
+        />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        @if (deadlineRef.invalid && deadlineRef.touched) {
+        <mat-error> Deadline required </mat-error>
+        }
       </mat-form-field>
 
       <!--[placeholder]="'auth.email' | translate" -->

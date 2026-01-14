@@ -130,6 +130,14 @@ export class NewProjectModal {
     let milesones: NewProjectMilestoneDto[] = [];
     let membersId: number[] = [];
 
+    if(this.name.trim().length == 0){
+      return;
+    }
+    if(this.deadline.length == 0){
+      return;
+    }
+
+
     if (this.showCustomMilestones && this.customMilestone.length > 0) {
       milesones = this.customMilestone;
     }
