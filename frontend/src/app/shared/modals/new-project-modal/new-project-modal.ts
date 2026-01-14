@@ -1,8 +1,16 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NgModel,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,7 +42,6 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { ProjectService } from '@shared/services/api/project.service';
 
 import { NgToastService } from 'ng-angular-popup';
-
 @Component({
   selector: 'app-new-project-modal',
   providers: [provideNativeDateAdapter()],
@@ -81,6 +88,8 @@ export class NewProjectModal {
   showCustomMilestones: boolean = false;
 
   customMilestone: NewProjectMilestoneDto[] = [];
+
+  minDateOneWeek = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
 
   milestoneName = '';
   milestoneDescription = '';
@@ -130,13 +139,12 @@ export class NewProjectModal {
     let milesones: NewProjectMilestoneDto[] = [];
     let membersId: number[] = [];
 
-    if(this.name.trim().length == 0){
+    if (this.name.trim().length == 0) {
       return;
     }
-    if(this.deadline.length == 0){
+    if (this.deadline.length == 0) {
       return;
     }
-
 
     if (this.showCustomMilestones && this.customMilestone.length > 0) {
       milesones = this.customMilestone;
@@ -162,7 +170,7 @@ export class NewProjectModal {
       this.projectService.createNewProject(newProject).subscribe((response) => {
         console.log(response);
         this.dialogRef.close('done');
-        this.toast.success('Project added, ' + response.name)
+        this.toast.success('Project added, ' + response.name);
       });
     }
   }

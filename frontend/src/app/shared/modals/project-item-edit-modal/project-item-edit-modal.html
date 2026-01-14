@@ -13,9 +13,14 @@
           name="name"
           required
           [(ngModel)]="title"
-          placeholder="Project name..."
+          placeholder="Task title..."
+          #nameRef="ngModel"
+          (keydown.space)="$event.preventDefault()"
         />
       </mat-form-field>
+      @if (nameRef.invalid && nameRef.touched) {
+      <mat-error> Title required </mat-error>
+      }
     </div>
     <div>
       <span>Description</span>
@@ -23,7 +28,6 @@
         <textarea
           matInput
           name="description"
-          required
           [(ngModel)]="description"
           placeholder="Description"
         ></textarea>
@@ -68,6 +72,8 @@
 
   <mat-dialog-actions align="end">
     <button matButton mat-dialog-close>Cancel</button>
-    <button matButton (click)="submit()" cdkFocusInitial>Submit</button>
+    <button matButton (click)="submit()" cdkFocusInitial [disabled]="nameRef.invalid">
+      Submit
+    </button>
   </mat-dialog-actions>
 </section>

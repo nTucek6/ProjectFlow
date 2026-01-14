@@ -99,6 +99,11 @@ export class ProjectItemEditModal {
   }
 
   submit() {
+
+    if(this.title.trim().length == 0){
+      return;
+    }
+
     if (this.taskId == 0) {
       const newTask: CreateTaskDto = {
         projectId: this.data.projectId,

@@ -1,16 +1,18 @@
 <section>
   <h2 mat-dialog-title>New project</h2>
+
   <mat-dialog-content>
     <div id="form_data">
       <mat-form-field class="form-group" appearance="outline">
         <input
           type="text"
           matInput
-          #nameRef="ngModel"
           name="name"
           required
           [(ngModel)]="name"
           placeholder="Project name..."
+          #nameRef="ngModel"
+          (keydown.space)="$event.preventDefault()"
         />
         @if (nameRef.invalid && nameRef.touched) {
         <mat-error> Project name required </mat-error>
@@ -19,17 +21,26 @@
 
       <mat-form-field class="form-group" appearance="outline">
         <mat-label>Description...</mat-label>
-        <textarea matInput [(ngModel)]="description" placeholder="Description..."></textarea>
+        <textarea
+          matInput
+          [(ngModel)]="description"
+          placeholder="Description..."
+          name="description"
+          (keydown.space)="$event.preventDefault()"
+        ></textarea>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Choose a deadline date</mat-label>
         <input
           matInput
+          name="deadline"
           [matDatepicker]="picker"
           [(ngModel)]="deadline"
           required
           #deadlineRef="ngModel"
+          [min]="minDateOneWeek"
+          (keydown.space)="$event.preventDefault()"
         />
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -44,6 +55,7 @@
         <mat-form-field class="example-full-width" appearance="outline">
           <input
             type="text"
+            name="search"
             placeholder="Search memebers"
             matInput
             [formControl]="myControl"
@@ -79,7 +91,6 @@
             type="text"
             matInput
             name="milestone"
-            required
             placeholder="Milestone name..."
             [(ngModel)]="milestoneName"
           />
@@ -90,7 +101,7 @@
           <textarea matInput [(ngModel)]="milestoneDescription"></textarea>
         </mat-form-field>
 
-        <button mat-button (click)="addCustomMilestone()">Add milestone</button>
+        <button mat-button (click)="addCustomMilestone()" type="button">Add milestone</button>
 
         <div class="selected-chip">
           @for (cm of customMilestone; track $index) {
@@ -106,6 +117,13 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button matButton mat-dialog-close>Cancel</button>
-    <button matButton (click)="submit()" cdkFocusInitial>Submit</button>
+    <button
+      matButton
+      cdkFocusInitial
+      (click)="submit()"
+      [disabled]="nameRef.invalid || deadlineRef.invalid"
+    >
+      Submit
+    </button>
   </mat-dialog-actions>
 </section>
